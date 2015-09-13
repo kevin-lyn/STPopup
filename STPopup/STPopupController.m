@@ -519,6 +519,7 @@ CGFloat const STPopupTitleHeight = 44;
 
 - (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidMoveWithOffset:(CGFloat)offset
 {
+    [_containerView endEditing:YES];
     _containerView.transform = CGAffineTransformMakeTranslation(0, offset);
 }
 
