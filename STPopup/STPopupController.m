@@ -8,11 +8,12 @@
 
 #import "STPopupController.h"
 #import "STPopupLeftBarItem.h"
+#import "STPopupNavigationBar.h"
 
 static STPopupController *_currentPopupController;
 CGFloat const STPopupTitleHeight = 44;
 
-@interface STPopupController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning>
+@interface STPopupController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, STPopupNavigationTouchEventDelegate>
 
 @end
 
@@ -109,10 +110,15 @@ CGFloat const STPopupTitleHeight = 44;
 
 - (void)dismiss
 {
+    [self dismissWithTransitionStyle:self.transitionStyle];
+}
+
+- (void)dismissWithTransitionStyle:(STPopupTransitionStyle)transitionStyle
+{
     _containerView.userInteractionEnabled = NO;
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _bgView.alpha = 0;
-        switch (self.transitionStyle) {
+        switch (transitionStyle) {
             case STPopupTransitionStyleFade: {
                 _containerView.alpha = 0;
                 _containerView.transform = CGAffineTransformMakeScale(0.9, 0.9);
@@ -313,7 +319,7 @@ CGFloat const STPopupTitleHeight = 44;
     _containerViewController.transitioningDelegate = self;
     [self setupBackgroundView];
     [self setupContainerView];
-    [self setupTitleView];
+    [self setupNavigationBar];
 }
 
 - (void)setupBackgroundView
@@ -333,9 +339,12 @@ CGFloat const STPopupTitleHeight = 44;
     [_containerViewController.view addSubview:_containerView];
 }
 
-- (void)setupTitleView
+- (void)setupNavigationBar
 {
-    _navigationBar = [UINavigationBar new];
+    STPopupNavigationBar *navigationBar = [STPopupNavigationBar new];
+    navigationBar.touchEventDelegate = self;
+    
+    _navigationBar = navigationBar;
     [_containerView addSubview:_navigationBar];
     
     _defaultTitleLabel = [UILabel new];
@@ -467,6 +476,25 @@ CGFloat const STPopupTitleHeight = 44;
     toViewController.view.frame = fromViewController.view.frame;
     [containerView addSubview:toViewController.view];
     [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+}
+
+#pragma mark - STPopupNavigationTouchEventDelegate
+
+- (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidMoveWithOffset:(CGFloat)offset
+{
+    _containerView.transform = CGAffineTransformMakeTranslation(0, offset);
+}
+
+- (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidEndWithOffset:(CGFloat)offset
+{
+    if (offset > 100) {
+        [self dismissWithTransitionStyle:STPopupTransitionStylePopVertical];
+    }
+    else {
+        [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            _containerView.transform = CGAffineTransformIdentity;
+        } completion:nil];
+    }
 }
 
 @end
