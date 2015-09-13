@@ -9,8 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "UIViewController+STPopupController.h"
 
+typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
+    STPopupTransitionStylePopVertical,
+    STPopupTransitionStyleFade
+};
+
 @interface STPopupController : NSObject
 
+@property (nonatomic, assign) STPopupTransitionStyle transitionStyle;
 @property (nonatomic, assign) CGFloat cornerRadius;
 @property (nonatomic, strong, readonly) UINavigationBar *navigationBar;
 

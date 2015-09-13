@@ -82,10 +82,24 @@ CGFloat const STPopupTitleHeight = 44;
     _containerView.alpha = 0; // Hide _containerView before _containerViewController is ready
     
     [viewController presentViewController:_containerViewController animated:YES completion:^{
+        [self layoutTopView];
         [self layoutContainerView];
-        _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
-        _containerView.alpha = 1;
+        
+        switch (self.transitionStyle) {
+            case STPopupTransitionStyleFade: {
+                _containerView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+            }
+                break;
+            case STPopupTransitionStylePopVertical:
+            default: {
+                _containerView.alpha = 1;
+                _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
+            }
+                break;
+        }
+        
         [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            _containerView.alpha = 1;
             _bgView.alpha = 1;
             _containerView.transform = CGAffineTransformIdentity;
         } completion:nil];
@@ -97,8 +111,20 @@ CGFloat const STPopupTitleHeight = 44;
     _containerView.userInteractionEnabled = NO;
     [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _bgView.alpha = 0;
-        _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
+        switch (self.transitionStyle) {
+            case STPopupTransitionStyleFade: {
+                _containerView.alpha = 0;
+                _containerView.transform = CGAffineTransformMakeScale(0.9, 0.9);
+            }
+                break;
+            case STPopupTransitionStylePopVertical:
+            default: {
+                _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
+            }
+                break;
+        }
     } completion:^(BOOL finished) {
+        _containerView.transform = CGAffineTransformIdentity;
         _containerView.userInteractionEnabled = YES;
         _currentPopupController = nil;
         [_containerViewController dismissViewControllerAnimated:NO completion:nil];
