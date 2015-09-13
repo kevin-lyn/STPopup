@@ -31,9 +31,18 @@ CGFloat const STPopupTitleHeight = 44;
 {
     if (self = [super init]) {
         [self setup];
+        
+        // Observe navigation bar
         [_navigationBar addObserver:self forKeyPath:NSStringFromSelector(@selector(tintColor)) options:NSKeyValueObservingOptionNew context:nil];
         [_navigationBar addObserver:self forKeyPath:NSStringFromSelector(@selector(titleTextAttributes)) options:NSKeyValueObservingOptionNew context:nil];
+        
+        // Observe orientation change
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+        
+        // Observe keyboard
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     }
     return self;
 }
@@ -283,6 +292,7 @@ CGFloat const STPopupTitleHeight = 44;
     _bgView = [UIView new];
     _bgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     _bgView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+    [_bgView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bgViewDidTap)]];
     [_containerViewController.view addSubview:_bgView];
 }
 
@@ -320,6 +330,11 @@ CGFloat const STPopupTitleHeight = 44;
     }
 }
 
+- (void)bgViewDidTap
+{
+    [_containerView endEditing:YES];
+}
+
 - (void)setCornerRadius:(CGFloat)cornerRadius
 {
     _cornerRadius = cornerRadius;
@@ -331,6 +346,7 @@ CGFloat const STPopupTitleHeight = 44;
 - (void)orientationDidChange:(NSNotification *)notification
 {
     _orientation = [UIApplication sharedApplication].statusBarOrientation;
+    [_containerView endEditing:YES];
     [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _containerView.alpha = 0;
     } completion:^(BOOL finished) {
@@ -340,6 +356,66 @@ CGFloat const STPopupTitleHeight = 44;
             _containerView.alpha = 1;
         } completion:nil];
     }];
+}
+
+#pragma mark - UIKeyboardWillShowNotification & UIKeyboardWillHideNotification
+
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    UIView<UITextInputTraits> *currentTextInput = [self getCurrentTextInputInView:_containerView];
+    if (!currentTextInput) {
+        return;
+    }
+    
+    CGSize containerViewSize = _containerViewController.view.bounds.size;
+    CGPoint textFieldOrigin = [currentTextInput convertPoint:CGPointZero toView:_containerViewController.view];
+    CGSize keyboardSize = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    CGFloat minOffsetY = textFieldOrigin.y + currentTextInput.bounds.size.height + 5;
+    if (containerViewSize.height - keyboardSize.height < minOffsetY) {
+        CGFloat offetY = (_containerViewController.view.bounds.size.height - keyboardSize.height) - minOffsetY;
+        
+        NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        UIViewAnimationCurve curve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
+        
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:curve];
+        [UIView setAnimationDuration:duration];
+        
+        _containerView.transform = CGAffineTransformMakeTranslation(0, offetY);
+        
+        [UIView commitAnimations];
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:curve];
+    [UIView setAnimationDuration:duration];
+    
+    _containerView.transform = CGAffineTransformIdentity;
+    
+    [UIView commitAnimations];
+}
+
+- (UIView<UITextInputTraits> *)getCurrentTextInputInView:(UIView *)view
+{
+    if ([view conformsToProtocol:@protocol(UITextInputTraits)] && view.isFirstResponder) {
+        return (UIView<UITextInputTraits> *)view;
+    }
+    
+    for (UIView *subview in view.subviews) {
+        UIView<UITextInputTraits> *view = [self getCurrentTextInputInView:subview];
+        if (view) {
+            return view;
+        }
+    }
+    return nil;
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate
@@ -364,7 +440,7 @@ CGFloat const STPopupTitleHeight = 44;
     
     toViewController.view.frame = fromViewController.view.frame;
     [containerView addSubview:toViewController.view];
-    [transitionContext completeTransition:YES];
+    [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
 }
 
 @end

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		766A9BA21BA55F350062C75B /* PopupViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 766A9BA11BA55F350062C75B /* PopupViewController3.m */; };
 		76ACB5541BA2934D00A09710 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5531BA2934D00A09710 /* main.m */; };
 		76ACB5571BA2934D00A09710 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5561BA2934D00A09710 /* AppDelegate.m */; };
 		76ACB55A1BA2934D00A09710 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5591BA2934D00A09710 /* ViewController.m */; };
@@ -32,6 +33,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		766A9BA01BA55F350062C75B /* PopupViewController3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupViewController3.h; sourceTree = "<group>"; };
+		766A9BA11BA55F350062C75B /* PopupViewController3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupViewController3.m; sourceTree = "<group>"; };
 		76ACB54E1BA2934D00A09710 /* STPopupExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STPopupExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76ACB5521BA2934D00A09710 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76ACB5531BA2934D00A09710 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -105,6 +108,8 @@
 				76ACB5821BA2BE7500A09710 /* PopupViewController1.m */,
 				76ACB5841BA2BE8100A09710 /* PopupViewController2.h */,
 				76ACB5851BA2BE8100A09710 /* PopupViewController2.m */,
+				766A9BA01BA55F350062C75B /* PopupViewController3.h */,
+				766A9BA11BA55F350062C75B /* PopupViewController3.m */,
 				76ACB55B1BA2934D00A09710 /* Main.storyboard */,
 				76ACB55E1BA2934D00A09710 /* Images.xcassets */,
 				76ACB5601BA2934D00A09710 /* LaunchScreen.xib */,
@@ -258,6 +263,7 @@
 				76ACB5891BA4977D00A09710 /* UIViewController+STPopupController.m in Sources */,
 				76ACB5831BA2BE7500A09710 /* PopupViewController1.m in Sources */,
 				76ACB5801BA29CF500A09710 /* STPopupController.m in Sources */,
+				766A9BA21BA55F350062C75B /* PopupViewController3.m in Sources */,
 				76ACB55A1BA2934D00A09710 /* ViewController.m in Sources */,
 				76ACB5571BA2934D00A09710 /* AppDelegate.m in Sources */,
 				76ACB5541BA2934D00A09710 /* main.m in Sources */,
