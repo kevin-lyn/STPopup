@@ -12,10 +12,14 @@
 static STPopupController *_currentPopupController;
 CGFloat const STPopupTitleHeight = 44;
 
+@interface STPopupController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning>
+
+@end
+
 @implementation STPopupController
 {
     UIViewController *_containerViewController;
-    NSMutableArray *_viewControllers; // <STPopupViewController>
+    NSMutableArray *_viewControllers; // <UIViewController>
     UIView *_bgView;
     UIView *_containerView;
     UILabel *_defaultTitleLabel;
@@ -80,6 +84,7 @@ CGFloat const STPopupTitleHeight = 44;
     [viewController presentViewController:_containerViewController animated:YES completion:^{
         [self layoutTopView];
         [self layoutContainerView];
+        [self updateNavigationBarAniamted:NO];
         
         switch (self.transitionStyle) {
             case STPopupTransitionStyleFade: {
@@ -164,7 +169,7 @@ CGFloat const STPopupTitleHeight = 44;
     [_containerView insertSubview:toViewController.view atIndex:0];
     [toViewController viewWillAppear:animated];
     
-    [self updateTitleViewAnimated:animated];
+    [self updateNavigationBarAniamted:animated];
     
     if (animated) {
         _containerView.userInteractionEnabled = NO;
@@ -191,7 +196,7 @@ CGFloat const STPopupTitleHeight = 44;
     }
 }
 
-- (void)updateTitleViewAnimated:(BOOL)animated
+- (void)updateNavigationBarAniamted:(BOOL)animated
 {
     UIViewController *topViewController = [self topViewController];
     UIView *lastTitleView = _navigationBar.topItem.titleView;
@@ -217,8 +222,6 @@ CGFloat const STPopupTitleHeight = 44;
         }
         else {
             _defaultTitleLabel = [UILabel new];
-            _defaultTitleLabel.textColor = [UIColor colorWithWhite:0.2 alpha:1];
-            _defaultTitleLabel.font = [UIFont systemFontOfSize:17];
             _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:topViewController.title attributes:_navigationBar.titleTextAttributes];
             [_defaultTitleLabel sizeToFit];
             toTitleView = _defaultTitleLabel;
@@ -240,11 +243,13 @@ CGFloat const STPopupTitleHeight = 44;
             _navigationBar.topItem.titleView = topViewController.navigationItem.titleView;
         }
         else {
+            _defaultTitleLabel = [UILabel new];
             _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:topViewController.title attributes:_navigationBar.titleTextAttributes];
             [_defaultTitleLabel sizeToFit];
             _navigationBar.topItem.titleView = _defaultTitleLabel;
         }
     }
+    _defaultLeftBarItem.tintColor = _navigationBar.tintColor;
     [_defaultLeftBarItem setType:_viewControllers.count > 1 ? STPopupLeftBarItemArrow : STPopupLeftBarItemCross animated:animated];
 }
 
@@ -334,9 +339,6 @@ CGFloat const STPopupTitleHeight = 44;
     [_containerView addSubview:_navigationBar];
     
     _defaultTitleLabel = [UILabel new];
-    _defaultTitleLabel.textColor = [UIColor colorWithWhite:0.2 alpha:1];
-    _defaultTitleLabel.font = [UIFont systemFontOfSize:17];
-    
     _defaultLeftBarItem = [[STPopupLeftBarItem alloc] initWithTarget:self action:@selector(leftBarItemDidTap)];
 }
 
