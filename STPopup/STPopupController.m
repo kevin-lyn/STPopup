@@ -124,6 +124,7 @@ CGFloat const STPopupTitleHeight = 44;
                 break;
         }
     } completion:^(BOOL finished) {
+        _containerView.alpha = 0;
         _containerView.transform = CGAffineTransformIdentity;
         _containerView.userInteractionEnabled = YES;
         _currentPopupController = nil;
