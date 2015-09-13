@@ -30,6 +30,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Image" style:UIBarButtonItemStylePlain target:self action:@selector(imageBtnDidTap)];
+    
     _label = [UILabel new];
     _label.numberOfLines = 0;
     _label.text = @"Popup view will be adjusted to appropriate position if keyboard is shown";
@@ -55,6 +57,12 @@
     _textField.frame = CGRectMake(0, self.view.frame.size.height - 44, self.view.frame.size.width, 44);
     _separatorView.frame = CGRectMake(0, _textField.frame.origin.y - 0.5, self.view.frame.size.width, 0.5);
     _label.frame = CGRectMake(20, 10, self.view.frame.size.width - 40, self.view.frame.size.height - 20 - _textField.frame.size.height);
+}
+
+- (void)imageBtnDidTap
+{
+    UIImagePickerController *imagePickerViewController = [UIImagePickerController new];
+    [self presentViewController:imagePickerViewController animated:YES completion:nil];
 }
 
 @end

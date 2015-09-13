@@ -7,6 +7,7 @@
 //
 
 #import "UIViewController+STPopupController.h"
+#import "STPopupController.h"
 #import <objc/runtime.h>
 
 @implementation UIViewController (STPopupController)
@@ -19,31 +20,35 @@
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        Class class = [self class];
-        
-        SEL originalSelector = @selector(loadView);
-        SEL swizzledSelector = @selector(st_loadView);
-        
-        Method originalMethod = class_getInstanceMethod(class, originalSelector);
-        Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
-        
-        BOOL didAddMethod = class_addMethod(class, originalSelector,
-                                            method_getImplementation(swizzledMethod),
-                                            method_getTypeEncoding(swizzledMethod));
-        if (didAddMethod) {
-            class_replaceMethod(class, swizzledSelector,
-                                method_getImplementation(originalMethod),
-                                method_getTypeEncoding(originalMethod));
-        }
-        else {
-            method_exchangeImplementations(originalMethod, swizzledMethod);
-        }
+        [self swizzleSelector:@selector(loadView) toSelector:@selector(st_loadView)];
+        [self swizzleSelector:@selector(presentViewController:animated:completion:) toSelector:@selector(st_presentViewController:animated:completion:)];
     });
+}
+
++ (void)swizzleSelector:(SEL)originalSelector toSelector:(SEL)swizzledSelector
+{
+    Class class = [self class];
+    
+    Method originalMethod = class_getInstanceMethod(class, originalSelector);
+    Method swizzledMethod = class_getInstanceMethod(class, swizzledSelector);
+    
+    BOOL didAddMethod = class_addMethod(class, originalSelector,
+                                        method_getImplementation(swizzledMethod),
+                                        method_getTypeEncoding(swizzledMethod));
+    if (didAddMethod) {
+        class_replaceMethod(class, swizzledSelector,
+                            method_getImplementation(originalMethod),
+                            method_getTypeEncoding(originalMethod));
+    }
+    else {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    }
 }
 
 - (void)st_loadView
 {
-    if (CGSizeEqualToSize(self.contentSizeInPopup, CGSizeZero)) {
+    if (CGSizeEqualToSize(self.contentSizeInPopup, CGSizeZero) &&
+        CGSizeEqualToSize(self.landscapeContentSizeInPopup, CGSizeZero)) {
         [self st_loadView];
         return;
     }
@@ -53,6 +58,16 @@
     UIView *view = [UIView new];
     view.frame = CGRectMake(0, 0, contentSizeInPopup.width, contentSizeInPopup.height);
     self.view = view;
+}
+
+- (void)st_presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
+{
+    if (!self.popupController) {
+        [self st_presentViewController:viewControllerToPresent animated:flag completion:completion];
+        return;
+    }
+    
+    [[self.popupController valueForKey:@"containerViewController"] presentViewController:viewControllerToPresent animated:flag completion:completion];
 }
 
 - (void)setContentSizeInPopup:(CGSize)contentSizeInPopup

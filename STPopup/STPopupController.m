@@ -12,10 +12,6 @@
 static STPopupController *_currentPopupController;
 CGFloat const STPopupTitleHeight = 44;
 
-@interface STPopupController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning>
-
-@end
-
 @implementation STPopupController
 {
     UIViewController *_containerViewController;
@@ -200,8 +196,8 @@ CGFloat const STPopupTitleHeight = 44;
     UIViewController *topViewController = [self topViewController];
     UIView *lastTitleView = _navigationBar.topItem.titleView;
     _navigationBar.items = @[ [UINavigationItem new] ];
-    _navigationBar.topItem.leftBarButtonItem = topViewController.navigationItem.leftBarButtonItem ? : _defaultLeftBarItem;
-    _navigationBar.topItem.rightBarButtonItem = topViewController.navigationItem.rightBarButtonItem;
+    _navigationBar.topItem.leftBarButtonItems = topViewController.navigationItem.leftBarButtonItems ? : @[ _defaultLeftBarItem ];
+    _navigationBar.topItem.rightBarButtonItems = topViewController.navigationItem.rightBarButtonItems;
     
     if (animated) {
         UIView *fromTitleView, *toTitleView;
@@ -292,8 +288,9 @@ CGFloat const STPopupTitleHeight = 44;
             }
         }
             break;
-        default:
+        default: {
             contentSize = topViewController.contentSizeInPopup;
+        }
             break;
     }
     return contentSize;
