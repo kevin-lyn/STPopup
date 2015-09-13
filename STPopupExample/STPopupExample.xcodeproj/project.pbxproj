@@ -61,6 +61,7 @@
 		76ACB58B1BA497EB00A09710 /* STPopupLeftBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupLeftBarItem.m; sourceTree = "<group>"; };
 		76BA1F771BA5C00400A28DC1 /* STPopupNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupNavigationBar.h; sourceTree = "<group>"; };
 		76BA1F781BA5C00400A28DC1 /* STPopupNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupNavigationBar.m; sourceTree = "<group>"; };
+		76BA1FB91BA5C4AD00A28DC1 /* STPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopup.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +151,7 @@
 		76ACB5771BA2936A00A09710 /* STPopup */ = {
 			isa = PBXGroup;
 			children = (
+				76BA1FB91BA5C4AD00A28DC1 /* STPopup.h */,
 				76ACB57E1BA29CF500A09710 /* STPopupController.h */,
 				76ACB57F1BA29CF500A09710 /* STPopupController.m */,
 				76ACB58A1BA497EB00A09710 /* STPopupLeftBarItem.h */,
