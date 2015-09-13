@@ -13,13 +13,34 @@
 static STPopupController *_currentPopupController;
 CGFloat const STPopupTitleHeight = 44;
 
+@interface STPopupContainerViewController : UIViewController
+
+@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+
+@end
+
+@implementation STPopupContainerViewController
+
+- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle
+{
+    _statusBarStyle = statusBarStyle;
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return self.statusBarStyle;
+}
+
+@end
+
 @interface STPopupController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, STPopupNavigationTouchEventDelegate>
 
 @end
 
 @implementation STPopupController
 {
-    UIViewController *_containerViewController;
+    STPopupContainerViewController *_containerViewController;
     NSMutableArray *_viewControllers; // <UIViewController>
     UIView *_bgView;
     UIView *_containerView;
@@ -171,6 +192,8 @@ CGFloat const STPopupTitleHeight = 44;
 
 - (void)transitFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController animated:(BOOL)animated
 {
+    _containerViewController.statusBarStyle = toViewController.preferredStatusBarStyle;
+    
     [fromViewController viewWillDisappear:animated];
     
     [self layoutTopView];
@@ -315,7 +338,7 @@ CGFloat const STPopupTitleHeight = 44;
 {
     _orientation = [UIApplication sharedApplication].statusBarOrientation;
     
-    _containerViewController = [UIViewController new];
+    _containerViewController = [STPopupContainerViewController new];
     _containerViewController.view.backgroundColor = [UIColor clearColor];
     _containerViewController.modalPresentationStyle = UIModalPresentationCustom;
     _containerViewController.transitioningDelegate = self;
