@@ -10,7 +10,7 @@
 #import "STPopupLeftBarItem.h"
 #import "STPopupNavigationBar.h"
 
-static STPopupController *_currentPopupController;
+static NSMutableSet *_retainedPopupControllers;
 CGFloat const STPopupTitleHeight = 44;
 
 @interface STPopupContainerViewController : UIViewController
@@ -47,6 +47,14 @@ CGFloat const STPopupTitleHeight = 44;
     UILabel *_defaultTitleLabel;
     STPopupLeftBarItem *_defaultLeftBarItem;
     UIInterfaceOrientation _orientation;
+}
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _retainedPopupControllers = [NSMutableSet new];
+    });
 }
 
 - (instancetype)init
@@ -99,7 +107,7 @@ CGFloat const STPopupTitleHeight = 44;
 
 - (void)presentInViewController:(UIViewController *)viewController
 {
-    _currentPopupController = self;
+    [_retainedPopupControllers addObject:self];
     
     _bgView.alpha = 0;
     _containerView.alpha = 0; // Hide _containerView before _containerViewController is ready
@@ -158,7 +166,7 @@ CGFloat const STPopupTitleHeight = 44;
         _containerView.alpha = 0;
         _containerView.transform = CGAffineTransformIdentity;
         _containerView.userInteractionEnabled = YES;
-        _currentPopupController = nil;
+        [_retainedPopupControllers removeObject:self];
         [_containerViewController dismissViewControllerAnimated:NO completion:nil];
     }];
 }
