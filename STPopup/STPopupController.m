@@ -91,7 +91,8 @@ CGFloat const STPopupTitleHeight = 44;
             _defaultLeftBarItem.tintColor = change[@"new"];
         }
         else if ([keyPath isEqualToString:NSStringFromSelector(@selector(titleTextAttributes))]) {
-            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:_defaultTitleLabel.text attributes:change[@"new"]];
+            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:_defaultTitleLabel.text ? : @""
+                                                                                attributes:change[@"new"]];
         }
     }
 }
@@ -241,7 +242,8 @@ CGFloat const STPopupTitleHeight = 44;
             UILabel *tempLabel = [[UILabel alloc] initWithFrame:_defaultTitleLabel.frame];
             tempLabel.textColor = _defaultTitleLabel.textColor;
             tempLabel.font = _defaultTitleLabel.font;
-            tempLabel.attributedText = [[NSAttributedString alloc] initWithString:_defaultTitleLabel.text attributes:_navigationBar.titleTextAttributes];
+            tempLabel.attributedText = [[NSAttributedString alloc] initWithString:_defaultTitleLabel.text ? : @""
+                                                                       attributes:_navigationBar.titleTextAttributes];
             fromTitleView = tempLabel;
         }
         else {
@@ -253,7 +255,8 @@ CGFloat const STPopupTitleHeight = 44;
         }
         else {
             _defaultTitleLabel = [UILabel new];
-            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:topViewController.title attributes:_navigationBar.titleTextAttributes];
+            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:topViewController.title ? : @""
+                                                                                attributes:_navigationBar.titleTextAttributes];
             [_defaultTitleLabel sizeToFit];
             toTitleView = _defaultTitleLabel;
         }
@@ -275,7 +278,8 @@ CGFloat const STPopupTitleHeight = 44;
         }
         else {
             _defaultTitleLabel = [UILabel new];
-            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:topViewController.title attributes:_navigationBar.titleTextAttributes];
+            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:topViewController.title ? : @""
+                                                                                attributes:_navigationBar.titleTextAttributes];
             [_defaultTitleLabel sizeToFit];
             _navigationBar.topItem.titleView = _defaultTitleLabel;
         }
