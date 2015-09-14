@@ -234,8 +234,6 @@ CGFloat const STPopupTitleHeight = 44;
     [self layoutTopView];
     [_containerView insertSubview:toViewController.view atIndex:0];
     
-    [self updateNavigationBarAniamted:animated];
-    
     if (animated) {
         _containerView.userInteractionEnabled = NO;
         toViewController.view.alpha = 0;
@@ -248,9 +246,11 @@ CGFloat const STPopupTitleHeight = 44;
             fromViewController.view.alpha = 1;
             _containerView.userInteractionEnabled = YES;
         }];
+        [self updateNavigationBarAniamted:animated];
     }
     else {
         [self layoutContainerView];
+        [self updateNavigationBarAniamted:animated];
         [fromViewController.view removeFromSuperview];
     }
 }
