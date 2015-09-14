@@ -47,6 +47,7 @@ CGFloat const STPopupTitleHeight = 44;
     UILabel *_defaultTitleLabel;
     STPopupLeftBarItem *_defaultLeftBarItem;
     UIInterfaceOrientation _orientation;
+    BOOL _presented;
 }
 
 + (void)load
@@ -117,28 +118,32 @@ CGFloat const STPopupTitleHeight = 44;
     _containerView.alpha = 0; // Hide _containerView before _containerViewController is ready
     
     [viewController presentViewController:_containerViewController animated:YES completion:^{
-        [self layoutTopView];
-        [self layoutContainerView];
-        [self updateNavigationBarAniamted:NO];
         
-        switch (self.transitionStyle) {
-            case STPopupTransitionStyleFade: {
-                _containerView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIViewController *firstViewController = _viewControllers.firstObject;
+            [self transitFromViewController:nil toViewController:firstViewController animated:NO];
+            
+            switch (self.transitionStyle) {
+                case STPopupTransitionStyleFade: {
+                    _containerView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+                }
+                    break;
+                case STPopupTransitionStylePopVertical:
+                default: {
+                    _containerView.alpha = 1;
+                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
+                }
+                    break;
             }
-                break;
-            case STPopupTransitionStylePopVertical:
-            default: {
+            
+            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
                 _containerView.alpha = 1;
-                _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
-            }
-                break;
-        }
-        
-        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            _containerView.alpha = 1;
-            _bgView.alpha = 1;
-            _containerView.transform = CGAffineTransformIdentity;
-        } completion:nil];
+                _bgView.alpha = 1;
+                _containerView.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished) {
+                _presented = YES;
+            }];
+        });
     }];
 }
 
@@ -151,9 +156,6 @@ CGFloat const STPopupTitleHeight = 44;
 {
     [_containerView endEditing:YES];
     _containerView.userInteractionEnabled = NO;
-    
-    UIViewController *topViewController = [self topViewController];
-    [topViewController viewWillDisappear:YES];
     
     [UIView animateWithDuration:0.7 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _bgView.alpha = 0;
@@ -170,13 +172,16 @@ CGFloat const STPopupTitleHeight = 44;
                 break;
         }
     } completion:^(BOOL finished) {
-        [topViewController viewDidDisappear:YES];
-        
         _containerView.alpha = 0;
         _containerView.transform = CGAffineTransformIdentity;
         _containerView.userInteractionEnabled = YES;
         [_retainedPopupControllers removeObject:self];
-        [_containerViewController dismissViewControllerAnimated:NO completion:completion];
+        [_containerViewController dismissViewControllerAnimated:NO completion:^{
+            _presented = NO;
+            if (completion) {
+                completion();
+            }
+        }];
     }];
 }
 
@@ -187,11 +192,12 @@ CGFloat const STPopupTitleHeight = 44;
     }
     
     UIViewController *topViewController = [self topViewController];
-    
     [viewController setValue:self forKey:@"popupController"];
     [_viewControllers addObject:viewController];
     
-    [self transitFromViewController:topViewController toViewController:viewController animated:animated];
+    if (_presented) {
+        [self transitFromViewController:topViewController toViewController:viewController animated:animated];
+    }
 }
 
 - (void)popViewControllerAnimated:(BOOL)animated
@@ -205,18 +211,17 @@ CGFloat const STPopupTitleHeight = 44;
     [topViewController setValue:nil forKey:@"popupController"];
     [_viewControllers removeObject:topViewController];
     
-    [self transitFromViewController:topViewController toViewController:[self topViewController] animated:animated];
+    if (_presented) {
+        [self transitFromViewController:topViewController toViewController:[self topViewController] animated:animated];
+    }
 }
 
 - (void)transitFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController animated:(BOOL)animated
 {
     _containerViewController.statusBarStyle = toViewController.preferredStatusBarStyle;
     
-    [fromViewController viewWillDisappear:animated];
-    
     [self layoutTopView];
     [_containerView insertSubview:toViewController.view atIndex:0];
-    [toViewController viewWillAppear:animated];
     
     [self updateNavigationBarAniamted:animated];
     
@@ -230,18 +235,12 @@ CGFloat const STPopupTitleHeight = 44;
         } completion:^(BOOL finished) {
             [fromViewController.view removeFromSuperview];
             fromViewController.view.alpha = 1;
-            [fromViewController viewDidDisappear:animated];
-            [toViewController viewDidAppear:animated];
             _containerView.userInteractionEnabled = YES;
         }];
     }
     else {
         [self layoutContainerView];
-        
         [fromViewController.view removeFromSuperview];
-        [fromViewController viewDidDisappear:animated];
-        
-        [toViewController viewDidAppear:animated];
     }
 }
 

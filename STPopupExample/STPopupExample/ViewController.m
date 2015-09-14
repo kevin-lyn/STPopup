@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "STPopupController.h"
-#import "PopupViewController3.h"
+#import "PopupViewController1.h"
 
 @interface ViewController ()
 
@@ -25,7 +25,7 @@
 {
     [super viewDidAppear:animated];
     
-    STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController3 new]];
+    STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController1 new]];
     popupController.cornerRadius = 4;
     [popupController presentInViewController:self];
 }
