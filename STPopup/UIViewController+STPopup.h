@@ -1,5 +1,5 @@
 //
-//  UIViewController+STPopupController.h
+//  UIViewController+STPopup.h
 //  Sth4Me
 //
 //  Created by Kevin Lin on 13/9/15.
@@ -10,7 +10,7 @@
 
 @class STPopupController;
 
-@interface UIViewController (STPopupController)
+@interface UIViewController (STPopup)
 
 @property (nonatomic, assign) CGSize contentSizeInPopup;
 @property (nonatomic, assign) CGSize landscapeContentSizeInPopup;

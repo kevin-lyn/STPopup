@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "UIViewController+STPopupController.h"
+#import "UIViewController+STPopup.h"
 
 typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
     STPopupTransitionStyleSlideVertical,

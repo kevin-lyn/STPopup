@@ -1,16 +1,16 @@
 //
-//  UIViewController+STPopupController.m
+//  UIViewController+STPopup.m
 //  Sth4Me
 //
 //  Created by Kevin Lin on 13/9/15.
 //  Copyright (c) 2015 Sth4Me. All rights reserved.
 //
 
-#import "UIViewController+STPopupController.h"
+#import "UIViewController+STPopup.h"
 #import "STPopupController.h"
 #import <objc/runtime.h>
 
-@implementation UIViewController (STPopupController)
+@implementation UIViewController (STPopup)
 
 @dynamic contentSizeInPopup;
 @dynamic landscapeContentSizeInPopup;

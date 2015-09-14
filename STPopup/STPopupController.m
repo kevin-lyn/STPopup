@@ -453,7 +453,7 @@ CGFloat const STPopupTitleHeight = 44;
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-    UIView<UITextInputTraits> *currentTextInput = [self getCurrentTextInputInView:_containerView];
+    UIView<UIKeyInput> *currentTextInput = [self getCurrentTextInputInView:_containerView];
     if (!currentTextInput) {
         return;
     }
@@ -494,14 +494,14 @@ CGFloat const STPopupTitleHeight = 44;
     [UIView commitAnimations];
 }
 
-- (UIView<UITextInputTraits> *)getCurrentTextInputInView:(UIView *)view
+- (UIView<UIKeyInput> *)getCurrentTextInputInView:(UIView *)view
 {
-    if ([view conformsToProtocol:@protocol(UITextInputTraits)] && view.isFirstResponder) {
-        return (UIView<UITextInputTraits> *)view;
+    if ([view conformsToProtocol:@protocol(UIKeyInput)] && view.isFirstResponder) {
+        return (UIView<UIKeyInput> *)view;
     }
     
     for (UIView *subview in view.subviews) {
-        UIView<UITextInputTraits> *view = [self getCurrentTextInputInView:subview];
+        UIView<UIKeyInput> *view = [self getCurrentTextInputInView:subview];
         if (view) {
             return view;
         }

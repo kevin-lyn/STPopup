@@ -18,7 +18,7 @@
 		76ACB5801BA29CF500A09710 /* STPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB57F1BA29CF500A09710 /* STPopupController.m */; };
 		76ACB5831BA2BE7500A09710 /* PopupViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5821BA2BE7500A09710 /* PopupViewController1.m */; };
 		76ACB5861BA2BE8100A09710 /* PopupViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5851BA2BE8100A09710 /* PopupViewController2.m */; };
-		76ACB5891BA4977D00A09710 /* UIViewController+STPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5881BA4977D00A09710 /* UIViewController+STPopupController.m */; };
+		76ACB5891BA4977D00A09710 /* UIViewController+STPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5881BA4977D00A09710 /* UIViewController+STPopup.m */; };
 		76ACB58C1BA497EB00A09710 /* STPopupLeftBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB58B1BA497EB00A09710 /* STPopupLeftBarItem.m */; };
 		76BA1F791BA5C00400A28DC1 /* STPopupNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BA1F781BA5C00400A28DC1 /* STPopupNavigationBar.m */; };
 /* End PBXBuildFile section */
@@ -55,8 +55,8 @@
 		76ACB5821BA2BE7500A09710 /* PopupViewController1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupViewController1.m; sourceTree = "<group>"; };
 		76ACB5841BA2BE8100A09710 /* PopupViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupViewController2.h; sourceTree = "<group>"; };
 		76ACB5851BA2BE8100A09710 /* PopupViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupViewController2.m; sourceTree = "<group>"; };
-		76ACB5871BA4977D00A09710 /* UIViewController+STPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+STPopupController.h"; sourceTree = "<group>"; };
-		76ACB5881BA4977D00A09710 /* UIViewController+STPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+STPopupController.m"; sourceTree = "<group>"; };
+		76ACB5871BA4977D00A09710 /* UIViewController+STPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+STPopup.h"; sourceTree = "<group>"; };
+		76ACB5881BA4977D00A09710 /* UIViewController+STPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+STPopup.m"; sourceTree = "<group>"; };
 		76ACB58A1BA497EB00A09710 /* STPopupLeftBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupLeftBarItem.h; sourceTree = "<group>"; };
 		76ACB58B1BA497EB00A09710 /* STPopupLeftBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupLeftBarItem.m; sourceTree = "<group>"; };
 		76BA1F771BA5C00400A28DC1 /* STPopupNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupNavigationBar.h; sourceTree = "<group>"; };
@@ -158,8 +158,8 @@
 				76ACB58B1BA497EB00A09710 /* STPopupLeftBarItem.m */,
 				76BA1F771BA5C00400A28DC1 /* STPopupNavigationBar.h */,
 				76BA1F781BA5C00400A28DC1 /* STPopupNavigationBar.m */,
-				76ACB5871BA4977D00A09710 /* UIViewController+STPopupController.h */,
-				76ACB5881BA4977D00A09710 /* UIViewController+STPopupController.m */,
+				76ACB5871BA4977D00A09710 /* UIViewController+STPopup.h */,
+				76ACB5881BA4977D00A09710 /* UIViewController+STPopup.m */,
 			);
 			name = STPopup;
 			path = ../../STPopup;
@@ -267,7 +267,7 @@
 			files = (
 				76ACB5861BA2BE8100A09710 /* PopupViewController2.m in Sources */,
 				76ACB58C1BA497EB00A09710 /* STPopupLeftBarItem.m in Sources */,
-				76ACB5891BA4977D00A09710 /* UIViewController+STPopupController.m in Sources */,
+				76ACB5891BA4977D00A09710 /* UIViewController+STPopup.m in Sources */,
 				76ACB5831BA2BE7500A09710 /* PopupViewController1.m in Sources */,
 				76ACB5801BA29CF500A09710 /* STPopupController.m in Sources */,
 				76BA1F791BA5C00400A28DC1 /* STPopupNavigationBar.m in Sources */,
