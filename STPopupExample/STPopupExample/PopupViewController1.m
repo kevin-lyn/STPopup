@@ -7,8 +7,8 @@
 //
 
 #import "PopupViewController1.h"
-#import "STPopupController.h"
 #import "PopupViewController2.h"
+#import "STPopup.h"
 
 @implementation PopupViewController1
 {

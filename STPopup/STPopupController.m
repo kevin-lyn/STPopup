@@ -9,6 +9,8 @@
 #import "STPopupController.h"
 #import "STPopupLeftBarItem.h"
 #import "STPopupNavigationBar.h"
+#import "UIViewController+STPopup.h"
+#import "UIResponder+STPopup.h"
 
 static NSMutableSet *_retainedPopupControllers;
 CGFloat const STPopupTitleHeight = 44;
@@ -48,6 +50,7 @@ CGFloat const STPopupTitleHeight = 44;
     STPopupLeftBarItem *_defaultLeftBarItem;
     UIInterfaceOrientation _orientation;
     BOOL _presented;
+    NSDictionary *_keyboardInfo;
 }
 
 + (void)load
@@ -74,6 +77,9 @@ CGFloat const STPopupTitleHeight = 44;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+        
+        // Observe responder change
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstResponderDidChange:) name:STPopupFirstResponderDidChangeNotification object:nil];
     }
     return self;
 }
@@ -458,29 +464,14 @@ CGFloat const STPopupTitleHeight = 44;
         return;
     }
     
-    CGSize containerViewSize = _containerViewController.view.bounds.size;
-    CGPoint textFieldOrigin = [currentTextInput convertPoint:CGPointZero toView:_containerViewController.view];
-    CGSize keyboardSize = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-    CGFloat minOffsetY = textFieldOrigin.y + currentTextInput.bounds.size.height + 5;
-    if (containerViewSize.height - keyboardSize.height < minOffsetY) {
-        CGFloat offetY = (_containerViewController.view.bounds.size.height - keyboardSize.height) - minOffsetY;
-        
-        NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-        UIViewAnimationCurve curve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
-        
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:curve];
-        [UIView setAnimationDuration:duration];
-        
-        _containerView.transform = CGAffineTransformMakeTranslation(0, offetY);
-        
-        [UIView commitAnimations];
-    }
+    _keyboardInfo = notification.userInfo;
+    [self adjustContainerViewOrigin];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
+    _keyboardInfo = nil;
+    
     NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     UIViewAnimationCurve curve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
     
@@ -492,6 +483,38 @@ CGFloat const STPopupTitleHeight = 44;
     _containerView.transform = CGAffineTransformIdentity;
     
     [UIView commitAnimations];
+}
+
+- (void)adjustContainerViewOrigin
+{
+    if (!_keyboardInfo) {
+        return;
+    }
+    
+    UIView<UIKeyInput> *currentTextInput = [self getCurrentTextInputInView:_containerView];
+    if (!currentTextInput) {
+        return;
+    }
+    
+    CGSize containerViewSize = _containerViewController.view.bounds.size;
+    CGPoint textFieldOrigin = [currentTextInput convertPoint:CGPointZero toView:_containerViewController.view];
+    CGFloat minOffsetY = textFieldOrigin.y + currentTextInput.bounds.size.height + 5;
+    CGFloat keyboardHeight = [_keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    if (containerViewSize.height - keyboardHeight < minOffsetY) {
+        CGFloat offetY = (_containerViewController.view.bounds.size.height - keyboardHeight) - minOffsetY;
+        
+        NSTimeInterval duration = [_keyboardInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+        UIViewAnimationCurve curve = [_keyboardInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
+        
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationBeginsFromCurrentState:YES];
+        [UIView setAnimationCurve:curve];
+        [UIView setAnimationDuration:duration];
+        
+        _containerView.transform = CGAffineTransformMakeTranslation(0, offetY);
+        
+        [UIView commitAnimations];
+    }
 }
 
 - (UIView<UIKeyInput> *)getCurrentTextInputInView:(UIView *)view
@@ -507,6 +530,15 @@ CGFloat const STPopupTitleHeight = 44;
         }
     }
     return nil;
+}
+
+#pragma mark - STPopupFirstResponderDidChangeNotification
+
+- (void)firstResponderDidChange:(NSNotification *)notification
+{
+    // "keyboardWillShow" won't be called if height of keyboard is not changed.
+    // Manually adjust container view origin according to last keyboard info.
+    [self adjustContainerViewOrigin];
 }
 
 #pragma mark - UIViewControllerTransitioningDelegate

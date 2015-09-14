@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		765E28311BA718E700861EE2 /* UIResponder+STPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 765E28301BA718E700861EE2 /* UIResponder+STPopup.m */; };
 		766A9BA21BA55F350062C75B /* PopupViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 766A9BA11BA55F350062C75B /* PopupViewController3.m */; };
 		76ACB5541BA2934D00A09710 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5531BA2934D00A09710 /* main.m */; };
 		76ACB5571BA2934D00A09710 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5561BA2934D00A09710 /* AppDelegate.m */; };
@@ -34,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		765E282F1BA718E700861EE2 /* UIResponder+STPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+STPopup.h"; sourceTree = "<group>"; };
+		765E28301BA718E700861EE2 /* UIResponder+STPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+STPopup.m"; sourceTree = "<group>"; };
 		766A9BA01BA55F350062C75B /* PopupViewController3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupViewController3.h; sourceTree = "<group>"; };
 		766A9BA11BA55F350062C75B /* PopupViewController3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupViewController3.m; sourceTree = "<group>"; };
 		76ACB54E1BA2934D00A09710 /* STPopupExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STPopupExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,6 +163,8 @@
 				76BA1F781BA5C00400A28DC1 /* STPopupNavigationBar.m */,
 				76ACB5871BA4977D00A09710 /* UIViewController+STPopup.h */,
 				76ACB5881BA4977D00A09710 /* UIViewController+STPopup.m */,
+				765E282F1BA718E700861EE2 /* UIResponder+STPopup.h */,
+				765E28301BA718E700861EE2 /* UIResponder+STPopup.m */,
 			);
 			name = STPopup;
 			path = ../../STPopup;
@@ -267,6 +272,7 @@
 			files = (
 				76ACB5861BA2BE8100A09710 /* PopupViewController2.m in Sources */,
 				76ACB58C1BA497EB00A09710 /* STPopupLeftBarItem.m in Sources */,
+				765E28311BA718E700861EE2 /* UIResponder+STPopup.m in Sources */,
 				76ACB5891BA4977D00A09710 /* UIViewController+STPopup.m in Sources */,
 				76ACB5831BA2BE7500A09710 /* PopupViewController1.m in Sources */,
 				76ACB5801BA29CF500A09710 /* STPopupController.m in Sources */,
