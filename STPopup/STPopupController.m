@@ -138,17 +138,20 @@ CGFloat const STPopupTitleHeight = 44;
     }];
 }
 
-- (void)dismiss
+- (void)dismissWithCompletion:(void (^)(void))completion
 {
-    [self dismissWithTransitionStyle:self.transitionStyle];
+    [self dismissWithTransitionStyle:self.transitionStyle withCompletion:completion];
 }
 
-- (void)dismissWithTransitionStyle:(STPopupTransitionStyle)transitionStyle
+- (void)dismissWithTransitionStyle:(STPopupTransitionStyle)transitionStyle withCompletion:(void (^)(void))completion
 {
     [_containerView endEditing:YES];
-    
     _containerView.userInteractionEnabled = NO;
-    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    
+    UIViewController *topViewController = [self topViewController];
+    [topViewController viewWillDisappear:YES];
+    
+    [UIView animateWithDuration:0.7 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _bgView.alpha = 0;
         switch (transitionStyle) {
             case STPopupTransitionStyleFade: {
@@ -163,11 +166,13 @@ CGFloat const STPopupTitleHeight = 44;
                 break;
         }
     } completion:^(BOOL finished) {
+        [topViewController viewDidDisappear:YES];
+        
         _containerView.alpha = 0;
         _containerView.transform = CGAffineTransformIdentity;
         _containerView.userInteractionEnabled = YES;
         [_retainedPopupControllers removeObject:self];
-        [_containerViewController dismissViewControllerAnimated:NO completion:nil];
+        [_containerViewController dismissViewControllerAnimated:NO completion:completion];
     }];
 }
 
@@ -188,7 +193,7 @@ CGFloat const STPopupTitleHeight = 44;
 - (void)popViewControllerAnimated:(BOOL)animated
 {
     if (_viewControllers.count <= 1) {
-        [self dismiss];
+        [self dismissWithCompletion:nil];
         return;
     }
     
@@ -232,7 +237,7 @@ CGFloat const STPopupTitleHeight = 44;
         [fromViewController.view removeFromSuperview];
         [fromViewController viewDidDisappear:animated];
         
-        [toViewController viewDidDisappear:animated];
+        [toViewController viewDidAppear:animated];
     }
 }
 
@@ -392,7 +397,7 @@ CGFloat const STPopupTitleHeight = 44;
 {
     switch (_defaultLeftBarItem.type) {
         case STPopupLeftBarItemCross:
-            [self dismiss];
+            [self dismissWithCompletion:nil];
             break;
         case STPopupLeftBarItemArrow:
             [self popViewControllerAnimated:YES];
@@ -525,8 +530,8 @@ CGFloat const STPopupTitleHeight = 44;
 
 - (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidEndWithOffset:(CGFloat)offset
 {
-    if (offset > 100) {
-        [self dismissWithTransitionStyle:STPopupTransitionStylePopVertical];
+    if (offset > 150) {
+        [self dismissWithTransitionStyle:STPopupTransitionStylePopVertical withCompletion:nil];
     }
     else {
         [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{

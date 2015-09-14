@@ -10,5 +10,6 @@
 #define STPopupExample_STPopup_h
 
 #import <STPopup/STPopupController.h>
+#import <STPopup/STPopupNavigationBar.h>
 
 #endif

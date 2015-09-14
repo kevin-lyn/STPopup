@@ -23,7 +23,7 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController;
 
 - (void)presentInViewController:(UIViewController *)viewController;
-- (void)dismiss;
+- (void)dismissWithCompletion:(void (^)(void))completion;
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;
 - (void)popViewControllerAnimated:(BOOL)animated;
