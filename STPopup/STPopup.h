@@ -9,7 +9,7 @@
 #ifndef STPopupExample_STPopup_h
 #define STPopupExample_STPopup_h
 
-#import <STPopup/STPopupController.h>
-#import <STPopup/STPopupNavigationBar.h>
+#import "STPopupController.h"
+#import "STPopupNavigationBar.h"
 
 #endif
