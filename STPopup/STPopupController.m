@@ -134,7 +134,7 @@ CGFloat const STPopupTitleHeight = 44;
                     _containerView.transform = CGAffineTransformMakeScale(1.1, 1.1);
                 }
                     break;
-                case STPopupTransitionStylePopVertical:
+                case STPopupTransitionStyleSlideVertical:
                 default: {
                     _containerView.alpha = 1;
                     _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
@@ -176,7 +176,7 @@ CGFloat const STPopupTitleHeight = 44;
                 _containerView.transform = CGAffineTransformMakeScale(0.9, 0.9);
             }
                 break;
-            case STPopupTransitionStylePopVertical:
+            case STPopupTransitionStyleSlideVertical:
             default: {
                 _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
             }
@@ -545,7 +545,7 @@ CGFloat const STPopupTitleHeight = 44;
 - (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidEndWithOffset:(CGFloat)offset
 {
     if (offset > 150) {
-        [self dismissWithTransitionStyle:STPopupTransitionStylePopVertical withCompletion:nil];
+        [self dismissWithTransitionStyle:STPopupTransitionStyleSlideVertical withCompletion:nil];
     }
     else {
         [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
