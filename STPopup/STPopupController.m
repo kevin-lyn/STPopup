@@ -91,7 +91,7 @@ CGFloat const STPopupTitleHeight = 44;
     [_navigationBar removeObserver:self forKeyPath:NSStringFromSelector(@selector(tintColor))];
     [_navigationBar removeObserver:self forKeyPath:NSStringFromSelector(@selector(titleTextAttributes))];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    for (UIViewController *viewController in _viewControllers) {
+    for (UIViewController *viewController in _viewControllers) { // Avoid crash when try to access unsafe unretained property
         [viewController setValue:nil forKey:@"popupController"];
     }
 }
