@@ -137,8 +137,8 @@ CGFloat const STPopupTitleHeight = 44;
             }
             
             [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                _containerView.alpha = 1;
                 _bgView.alpha = 1;
+                _containerView.alpha = 1;
                 _containerView.transform = CGAffineTransformIdentity;
             } completion:^(BOOL finished) {
                 _presented = YES;
