@@ -92,6 +92,8 @@ CGFloat const STPopupTitleHeight = 44;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark - KVO
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if (object == _navigationBar) {
@@ -104,6 +106,8 @@ CGFloat const STPopupTitleHeight = 44;
         }
     }
 }
+
+#pragma mark - STPopupController present & dismiss & push & pop
 
 - (void)presentInViewController:(UIViewController *)viewController
 {
