@@ -91,6 +91,9 @@ CGFloat const STPopupTitleHeight = 44;
     [_navigationBar removeObserver:self forKeyPath:NSStringFromSelector(@selector(tintColor))];
     [_navigationBar removeObserver:self forKeyPath:NSStringFromSelector(@selector(titleTextAttributes))];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    for (UIViewController *viewController in _viewControllers) {
+        [viewController setValue:nil forKey:@"popupController"];
+    }
 }
 
 #pragma mark - KVO
@@ -112,6 +115,10 @@ CGFloat const STPopupTitleHeight = 44;
 
 - (void)presentInViewController:(UIViewController *)viewController
 {
+    if (_presented) {
+        return;
+    }
+    
     [_retainedPopupControllers addObject:self];
     
     _bgView.alpha = 0;
@@ -120,8 +127,7 @@ CGFloat const STPopupTitleHeight = 44;
     [viewController presentViewController:_containerViewController animated:YES completion:^{
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIViewController *firstViewController = _viewControllers.firstObject;
-            [self transitFromViewController:nil toViewController:firstViewController animated:NO];
+            [self transitFromViewController:nil toViewController:[self topViewController] animated:NO];
             
             switch (self.transitionStyle) {
                 case STPopupTransitionStyleFade: {
@@ -154,6 +160,10 @@ CGFloat const STPopupTitleHeight = 44;
 
 - (void)dismissWithTransitionStyle:(STPopupTransitionStyle)transitionStyle withCompletion:(void (^)(void))completion
 {
+    if (!_presented) {
+        return;
+    }
+    
     [_containerView endEditing:YES];
     _containerView.userInteractionEnabled = NO;
     
