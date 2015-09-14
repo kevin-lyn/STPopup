@@ -157,7 +157,8 @@ CGFloat const STPopupTitleHeight = 44;
     [_containerView endEditing:YES];
     _containerView.userInteractionEnabled = NO;
     
-    [UIView animateWithDuration:0.7 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    NSTimeInterval duration = self.transitionStyle == STPopupTransitionStyleFade ? 0.4 : 0.7;    
+    [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _bgView.alpha = 0;
         switch (transitionStyle) {
             case STPopupTransitionStyleFade: {
