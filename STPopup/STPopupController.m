@@ -13,7 +13,6 @@
 #import "UIResponder+STPopup.h"
 
 static NSMutableSet *_retainedPopupControllers;
-CGFloat const STPopupTitleHeight = 44;
 
 @interface STPopupContainerViewController : UIViewController
 
@@ -321,7 +320,7 @@ CGFloat const STPopupTitleHeight = 44;
 {
     UIViewController *topViewController = [self topViewController];
     CGSize contentSize = [self contentSizeOfTopView];
-    topViewController.view.frame = CGRectMake(0, STPopupTitleHeight, contentSize.width, contentSize.height);
+    topViewController.view.frame = CGRectMake(0, [self navigationBarHeight], contentSize.width, contentSize.height);
 }
 
 - (void)layoutContainerView
@@ -329,12 +328,12 @@ CGFloat const STPopupTitleHeight = 44;
     _bgView.frame = _containerViewController.view.bounds;
  
     CGSize contentSizeOfTopView = [self contentSizeOfTopView];
-    CGSize containerViewSize = CGSizeMake(contentSizeOfTopView.width, contentSizeOfTopView.height + STPopupTitleHeight);
+    CGSize containerViewSize = CGSizeMake(contentSizeOfTopView.width, contentSizeOfTopView.height + [self navigationBarHeight]);
     
     _containerView.frame = CGRectMake((_containerViewController.view.bounds.size.width - containerViewSize.width) / 2,
                                       (_containerViewController.view.bounds.size.height - containerViewSize.height) / 2,
                                       containerViewSize.width, containerViewSize.height);
-    _navigationBar.frame = CGRectMake(0, 0, containerViewSize.width, STPopupTitleHeight);
+    _navigationBar.frame = CGRectMake(0, 0, containerViewSize.width, [self navigationBarHeight]);
 }
 
 - (CGSize)contentSizeOfTopView
@@ -356,6 +355,14 @@ CGFloat const STPopupTitleHeight = 44;
             break;
     }
     return contentSize;
+}
+
+- (CGFloat)navigationBarHeight
+{
+    // The preferred height of navigation bar is different between iPhone (4, 5, 6) and 6 Plus.
+    // Create a navigation controller to get the preferred height of navigation bar.
+    UINavigationController *navigationController = [UINavigationController new];
+    return navigationController.navigationBar.bounds.size.height;
 }
 
 #pragma mark - UI setup
