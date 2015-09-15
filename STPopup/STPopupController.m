@@ -17,11 +17,19 @@ CGFloat const STPopupTitleHeight = 44;
 
 @interface STPopupContainerViewController : UIViewController
 
+@property (nonatomic, assign) BOOL statusBarHidden;
 @property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
+@property (nonatomic, assign) UIStatusBarAnimation statusBarUpdateAnimation;
 
 @end
 
 @implementation STPopupContainerViewController
+
+- (void)setStatusBarHidden:(BOOL)statusBarHidden
+{
+    _statusBarHidden = statusBarHidden;
+    [self setNeedsStatusBarAppearanceUpdate];
+}
 
 - (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle
 {
@@ -29,9 +37,25 @@ CGFloat const STPopupTitleHeight = 44;
     [self setNeedsStatusBarAppearanceUpdate];
 }
 
+- (void)setStatusBarUpdateAnimation:(UIStatusBarAnimation)statusBarUpdateAnimation
+{
+    _statusBarUpdateAnimation = statusBarUpdateAnimation;
+    [self setNeedsStatusBarAppearanceUpdate];
+}
+
+- (BOOL)prefersStatusBarHidden
+{
+    return self.statusBarHidden;
+}
+
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return self.statusBarStyle;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return self.statusBarUpdateAnimation;
 }
 
 @end
@@ -49,8 +73,8 @@ CGFloat const STPopupTitleHeight = 44;
     UILabel *_defaultTitleLabel;
     STPopupLeftBarItem *_defaultLeftBarItem;
     UIInterfaceOrientation _orientation;
-    BOOL _presented;
     NSDictionary *_keyboardInfo;
+    BOOL _observing;
 }
 
 + (void)load
@@ -65,21 +89,6 @@ CGFloat const STPopupTitleHeight = 44;
 {
     if (self = [super init]) {
         [self setup];
-        
-        // Observe navigation bar
-        [_navigationBar addObserver:self forKeyPath:NSStringFromSelector(@selector(tintColor)) options:NSKeyValueObservingOptionNew context:nil];
-        [_navigationBar addObserver:self forKeyPath:NSStringFromSelector(@selector(titleTextAttributes)) options:NSKeyValueObservingOptionNew context:nil];
-        
-        // Observe orientation change
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
-        
-        // Observe keyboard
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-        
-        // Observe responder change
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstResponderDidChange:) name:STPopupFirstResponderDidChangeNotification object:nil];
     }
     return self;
 }
@@ -94,15 +103,48 @@ CGFloat const STPopupTitleHeight = 44;
 
 - (void)dealloc
 {
-    [_navigationBar removeObserver:self forKeyPath:NSStringFromSelector(@selector(tintColor))];
-    [_navigationBar removeObserver:self forKeyPath:NSStringFromSelector(@selector(titleTextAttributes))];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self destroyObservers];
     for (UIViewController *viewController in _viewControllers) { // Avoid crash when try to access unsafe unretained property
         [viewController setValue:nil forKey:@"popupController"];
     }
 }
 
-#pragma mark - KVO
+#pragma mark - Observers
+
+- (void)setupObservers
+{
+    if (_observing) {
+        return;
+    }
+    _observing = YES;
+    
+    // Observe navigation bar
+    [_navigationBar addObserver:self forKeyPath:NSStringFromSelector(@selector(tintColor)) options:NSKeyValueObservingOptionNew context:nil];
+    [_navigationBar addObserver:self forKeyPath:NSStringFromSelector(@selector(titleTextAttributes)) options:NSKeyValueObservingOptionNew context:nil];
+    
+    // Observe orientation change
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+    
+    // Observe keyboard
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    // Observe responder change
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstResponderDidChange:) name:STPopupFirstResponderDidChangeNotification object:nil];
+}
+
+- (void)destroyObservers
+{
+    if (!_observing) {
+        return;
+    }
+    _observing = NO;
+    
+    [_navigationBar removeObserver:self forKeyPath:NSStringFromSelector(@selector(tintColor))];
+    [_navigationBar removeObserver:self forKeyPath:NSStringFromSelector(@selector(titleTextAttributes))];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -121,84 +163,29 @@ CGFloat const STPopupTitleHeight = 44;
 
 - (void)presentInViewController:(UIViewController *)viewController
 {
-    if (_presented) {
+    if (_containerViewController.presentingViewController) {
         return;
     }
     
+    [self setupObservers];
+    
     [_retainedPopupControllers addObject:self];
-    
-    _bgView.alpha = 0;
-    _containerView.alpha = 0; // Hide _containerView before _containerViewController is ready
-    
-    [viewController presentViewController:_containerViewController animated:YES completion:^{
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self transitFromViewController:nil toViewController:[self topViewController] animated:NO];
-            
-            switch (self.transitionStyle) {
-                case STPopupTransitionStyleFade: {
-                    _containerView.transform = CGAffineTransformMakeScale(1.1, 1.1);
-                }
-                    break;
-                case STPopupTransitionStyleSlideVertical:
-                default: {
-                    _containerView.alpha = 1;
-                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
-                }
-                    break;
-            }
-            
-            [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                _bgView.alpha = 1;
-                _containerView.alpha = 1;
-                _containerView.transform = CGAffineTransformIdentity;
-            } completion:^(BOOL finished) {
-                _presented = YES;
-            }];
-        });
-    }];
+    [viewController presentViewController:_containerViewController animated:YES completion:nil];
 }
 
 - (void)dismissWithCompletion:(void (^)(void))completion
 {
-    [self dismissWithTransitionStyle:self.transitionStyle withCompletion:completion];
-}
-
-- (void)dismissWithTransitionStyle:(STPopupTransitionStyle)transitionStyle withCompletion:(void (^)(void))completion
-{
-    if (!_presented) {
+    if (!_containerViewController.presentingViewController) {
         return;
     }
     
-    [_containerView endEditing:YES];
-    _containerView.userInteractionEnabled = NO;
+    [self destroyObservers];
     
-    NSTimeInterval duration = self.transitionStyle == STPopupTransitionStyleFade ? 0.4 : 0.7;    
-    [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        _bgView.alpha = 0;
-        switch (transitionStyle) {
-            case STPopupTransitionStyleFade: {
-                _containerView.alpha = 0;
-                _containerView.transform = CGAffineTransformMakeScale(0.9, 0.9);
-            }
-                break;
-            case STPopupTransitionStyleSlideVertical:
-            default: {
-                _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
-            }
-                break;
-        }
-    } completion:^(BOOL finished) {
-        _containerView.alpha = 0;
-        _containerView.transform = CGAffineTransformIdentity;
-        _containerView.userInteractionEnabled = YES;
+    [_containerViewController dismissViewControllerAnimated:YES completion:^{
         [_retainedPopupControllers removeObject:self];
-        [_containerViewController dismissViewControllerAnimated:NO completion:^{
-            _presented = NO;
-            if (completion) {
-                completion();
-            }
-        }];
+        if (completion) {
+            completion();
+        }
     }];
 }
 
@@ -212,7 +199,7 @@ CGFloat const STPopupTitleHeight = 44;
     [viewController setValue:self forKey:@"popupController"];
     [_viewControllers addObject:viewController];
     
-    if (_presented) {
+    if (_containerViewController.presentingViewController) {
         [self transitFromViewController:topViewController toViewController:viewController animated:animated];
     }
 }
@@ -228,14 +215,16 @@ CGFloat const STPopupTitleHeight = 44;
     [topViewController setValue:nil forKey:@"popupController"];
     [_viewControllers removeObject:topViewController];
     
-    if (_presented) {
+    if (_containerViewController.presentingViewController) {
         [self transitFromViewController:topViewController toViewController:[self topViewController] animated:animated];
     }
 }
 
 - (void)transitFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController animated:(BOOL)animated
 {
+    _containerViewController.statusBarHidden = toViewController.prefersStatusBarHidden;
     _containerViewController.statusBarStyle = toViewController.preferredStatusBarStyle;
+    _containerViewController.statusBarUpdateAnimation = toViewController.preferredStatusBarUpdateAnimation;
     
     [self layoutTopView];
     [_containerView insertSubview:toViewController.view atIndex:0];
@@ -548,22 +537,85 @@ CGFloat const STPopupTitleHeight = 44;
     return self;
 }
 
+- (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed
+{
+    return self;
+}
+
 #pragma mark - UIViewControllerAnimatedTransitioning
 
 - (NSTimeInterval)transitionDuration:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    return 0;
+    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+    if (toViewController == _containerViewController) {
+        return 0.5;
+    }
+    else {
+        return self.transitionStyle == STPopupTransitionStyleFade ? 0.4 : 0.7;
+    }
 }
 
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 {
-    UIView *containerView = [transitionContext containerView];
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     
     toViewController.view.frame = fromViewController.view.frame;
-    [containerView addSubview:toViewController.view];
-    [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+    
+    if (toViewController == _containerViewController) {
+        [[transitionContext containerView] addSubview:toViewController.view];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{ // To avoid calling viewDidAppear before the animation is finished
+            [self transitFromViewController:nil toViewController:[self topViewController] animated:NO];
+            
+            switch (self.transitionStyle) {
+                case STPopupTransitionStyleFade: {
+                    _containerView.alpha = 0;
+                    _containerView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+                }
+                    break;
+                case STPopupTransitionStyleSlideVertical:
+                default: {
+                    _containerView.alpha = 1;
+                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
+                }
+                    break;
+            }
+            _bgView.alpha = 0;
+            
+            _containerView.userInteractionEnabled = NO;
+            [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                _bgView.alpha = 1;
+                _containerView.alpha = 1;
+                _containerView.transform = CGAffineTransformIdentity;
+            } completion:^(BOOL finished) {
+                _containerView.userInteractionEnabled = YES;
+                [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+            }];
+        });
+    }
+    else {
+        _containerView.userInteractionEnabled = NO;
+        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            _bgView.alpha = 0;
+            switch (self.transitionStyle) {
+                case STPopupTransitionStyleFade: {
+                    _containerView.alpha = 0;
+                    _containerView.transform = CGAffineTransformMakeScale(0.9, 0.9);
+                }
+                    break;
+                case STPopupTransitionStyleSlideVertical:
+                default: {
+                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
+                }
+                    break;
+            }
+        } completion:^(BOOL finished) {
+            _containerView.userInteractionEnabled = YES;
+            [fromViewController.view removeFromSuperview];
+            [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+        }];
+    }
 }
 
 #pragma mark - STPopupNavigationTouchEventDelegate
@@ -577,9 +629,14 @@ CGFloat const STPopupTitleHeight = 44;
 - (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidEndWithOffset:(CGFloat)offset
 {
     if (offset > 150) {
-        [self dismissWithTransitionStyle:STPopupTransitionStyleSlideVertical withCompletion:nil];
+        STPopupTransitionStyle transitionStyle = self.transitionStyle;
+        self.transitionStyle = STPopupTransitionStyleSlideVertical;
+        [self dismissWithCompletion:^{
+            self.transitionStyle = transitionStyle;
+        }];
     }
     else {
+        [_containerView endEditing:YES];
         [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             _containerView.transform = CGAffineTransformIdentity;
         } completion:nil];
