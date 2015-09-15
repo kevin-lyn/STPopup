@@ -59,11 +59,11 @@
     
     float spacing = 40;
     float totalHeight = [[_views valueForKeyPath:@"@sum.layer.frame.size.height"] floatValue] + spacing * (_views.count - 1);
-    float y = (self.view.frame.size.height - totalHeight) / 2;
+    float y = (self.view.bounds.size.height - totalHeight) / 2;
     
     for (UIView *view in _views) {
         CGRect frame = view.frame;
-        frame.origin = CGPointMake((self.view.frame.size.width - frame.size.width) / 2, y);
+        frame.origin = CGPointMake((self.view.bounds.size.width - frame.size.width) / 2, y);
         view.frame = frame;
         y += frame.size.height + spacing;
     }
