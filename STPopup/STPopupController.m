@@ -485,15 +485,26 @@ CGFloat const STPopupTitleHeight = 44;
         return;
     }
     
+    CGAffineTransform lastTransform = _containerView.transform;
+    _containerView.transform = CGAffineTransformIdentity; // Set transform to identity for calculating a correct "minOffsetY"
+    
     CGSize containerViewSize = _containerViewController.view.bounds.size;
     CGPoint textFieldOrigin = [currentTextInput convertPoint:CGPointZero toView:_containerViewController.view];
     CGFloat minOffsetY = textFieldOrigin.y + currentTextInput.bounds.size.height + 5;
     CGFloat keyboardHeight = [_keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    // For iOS 7
+    if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 &&
+        (_orientation == UIInterfaceOrientationLandscapeLeft || _orientation == UIInterfaceOrientationLandscapeRight)) {
+        keyboardHeight = [_keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.width;
+    }
+    
     if (containerViewSize.height - keyboardHeight < minOffsetY) {
         CGFloat offetY = (_containerViewController.view.bounds.size.height - keyboardHeight) - minOffsetY;
         
         NSTimeInterval duration = [_keyboardInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
         UIViewAnimationCurve curve = [_keyboardInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
+        
+        _containerView.transform = lastTransform; /// Restore transform
         
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationBeginsFromCurrentState:YES];
@@ -565,7 +576,7 @@ CGFloat const STPopupTitleHeight = 44;
     if (toViewController == _containerViewController) {
         [[transitionContext containerView] addSubview:toViewController.view];
         
-        dispatch_async(dispatch_get_main_queue(), ^{ // To avoid calling viewDidAppear before the animation is finished
+        dispatch_async(dispatch_get_main_queue(), ^{ // To avoid calling viewDidAppear before the animation is started
             [self transitFromViewController:nil toViewController:[self topViewController] animated:NO];
             
             switch (self.transitionStyle) {
@@ -577,7 +588,7 @@ CGFloat const STPopupTitleHeight = 44;
                 case STPopupTransitionStyleSlideVertical:
                 default: {
                     _containerView.alpha = 1;
-                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
+                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.bounds.size.height);
                 }
                     break;
             }
@@ -606,7 +617,7 @@ CGFloat const STPopupTitleHeight = 44;
                     break;
                 case STPopupTransitionStyleSlideVertical:
                 default: {
-                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.frame.size.height);
+                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.bounds.size.height);
                 }
                     break;
             }
