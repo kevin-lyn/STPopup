@@ -623,6 +623,7 @@ CGFloat const STPopupTitleHeight = 44;
             }
         } completion:^(BOOL finished) {
             _containerView.userInteractionEnabled = YES;
+            _containerView.transform = CGAffineTransformIdentity;
             [fromViewController.view removeFromSuperview];
             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
         }];
