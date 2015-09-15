@@ -1,6 +1,6 @@
 //
 //  main.m
-//  STPopupExample
+//  STPopup
 //
 //  Created by Kevin Lin on 11/9/15.
 //  Copyright (c) 2015 Sth4Me. All rights reserved.
