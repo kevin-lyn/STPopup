@@ -1,4 +1,4 @@
-# STPopup
+# STPopup ![CI Status](https://img.shields.io/travis/kevin0571/STPopup.svg?style=flat) ![Version](http://img.shields.io/cocoapods/v/STPopup.svg?style=flag) ![License](https://img.shields.io/cocoapods/l/STPopup.svg?style=flag)
 STPopup provides STPopupController, which works just like UINavigationController in popup style, for both iPhone and iPad.
 
 Features:
