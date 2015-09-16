@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "STPopupNavigationBar.h"
 
 typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
     STPopupTransitionStyleSlideVertical,
@@ -17,11 +18,13 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 
 @property (nonatomic, assign) STPopupTransitionStyle transitionStyle;
 @property (nonatomic, assign) CGFloat cornerRadius;
-@property (nonatomic, strong, readonly) UINavigationBar *navigationBar;
+@property (nonatomic, strong, readonly) STPopupNavigationBar *navigationBar;
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController;
 
 - (void)presentInViewController:(UIViewController *)viewController;
+- (void)presentInViewController:(UIViewController *)viewController completion:(void (^)(void))completion;
+- (void)dismiss;
 - (void)dismissWithCompletion:(void (^)(void))completion;
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated;

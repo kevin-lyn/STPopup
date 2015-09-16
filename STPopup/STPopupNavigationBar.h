@@ -20,5 +20,6 @@
 @interface STPopupNavigationBar : UINavigationBar
 
 @property (nonatomic, weak) id<STPopupNavigationTouchEventDelegate> touchEventDelegate;
+@property (nonatomic, assign) BOOL draggable; // Default: YES
 
 @end

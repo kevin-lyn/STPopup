@@ -14,8 +14,21 @@
     CGFloat _movingStartY;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame]) {
+        self.draggable = YES;
+    }
+    return self;
+}
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (!self.draggable) {
+        [super touchesBegan:touches withEvent:event];
+        return;
+    }
+    
     UITouch *touch = [touches anyObject];
     if ((touch.view == self || touch.view.superview == self) && !_moving) {
         _moving = YES;
@@ -25,6 +38,11 @@
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (!self.draggable) {
+        [super touchesMoved:touches withEvent:event];
+        return;
+    }
+    
     if (_moving) {
         UITouch *touch = [touches anyObject];
         float offset = [touch locationInView:self.window].y - _movingStartY;
@@ -36,6 +54,11 @@
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (!self.draggable) {
+        [super touchesCancelled:touches withEvent:event];
+        return;
+    }
+    
     if (_moving) {
         UITouch *touch = [touches anyObject];
         float offset = [touch locationInView:self.window].y - _movingStartY;
@@ -45,6 +68,11 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (!self.draggable) {
+        [super touchesEnded:touches withEvent:event];
+        return;
+    }
+    
     if (_moving) {
         UITouch *touch = [touches anyObject];
         float offset = [touch locationInView:self.window].y - _movingStartY;

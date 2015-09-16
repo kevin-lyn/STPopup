@@ -162,6 +162,11 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)presentInViewController:(UIViewController *)viewController
 {
+    [self presentInViewController:viewController completion:nil];
+}
+
+- (void)presentInViewController:(UIViewController *)viewController completion:(void (^)(void))completion
+{
     if (_containerViewController.presentingViewController) {
         return;
     }
@@ -169,7 +174,12 @@ static NSMutableSet *_retainedPopupControllers;
     [self setupObservers];
     
     [_retainedPopupControllers addObject:self];
-    [viewController presentViewController:_containerViewController animated:YES completion:nil];
+    [viewController presentViewController:_containerViewController animated:YES completion:completion];
+}
+
+- (void)dismiss
+{
+    [self dismissWithCompletion:nil];
 }
 
 - (void)dismissWithCompletion:(void (^)(void))completion
@@ -206,7 +216,7 @@ static NSMutableSet *_retainedPopupControllers;
 - (void)popViewControllerAnimated:(BOOL)animated
 {
     if (_viewControllers.count <= 1) {
-        [self dismissWithCompletion:nil];
+        [self dismiss];
         return;
     }
     
@@ -413,7 +423,7 @@ static NSMutableSet *_retainedPopupControllers;
 {
     switch (_defaultLeftBarItem.type) {
         case STPopupLeftBarItemCross:
-            [self dismissWithCompletion:nil];
+            [self dismiss];
             break;
         case STPopupLeftBarItemArrow:
             [self popViewControllerAnimated:YES];
