@@ -71,7 +71,7 @@ STPopupController *popupController = [[STPopupController alloc] initWithRootView
     
 [[UIBarButtonItem appearanceWhenContainedIn:[STPopupNavigationBar class], nil] setTitleTextAttributes:@{ NSFontAttributeName:[UIFont fontWithName:@"Cochin" size:17] } forState:UIControlStateNormal];
 ```
-![Customize UI](https://cloud.githubusercontent.com/assets/1491282/9858255/3e2a3e42-5b52-11e5-8ab7-b0e2f9f1d78a.png);
+![Customize UI](https://cloud.githubusercontent.com/assets/1491282/9911306/0f6db056-5cd4-11e5-9329-33b0cf02e1b0.png)
 
 **Auto-reposition when keyboard is showing up**  
 No codes needed for this feature  
@@ -85,4 +85,4 @@ No codes needed for this feature
 No codes needed for this feature  
 ![Orientation change](https://cloud.githubusercontent.com/assets/1491282/9858372/e6538880-5b52-11e5-8882-8705588606ba.gif)
 
-For more details, please download the example project .
+For more details, please download the example project.
