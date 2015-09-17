@@ -505,9 +505,7 @@ static NSMutableSet *_retainedPopupControllers;
     CGAffineTransform lastTransform = _containerView.transform;
     _containerView.transform = CGAffineTransformIdentity; // Set transform to identity for calculating a correct "minOffsetY"
     
-    CGSize containerViewSize = _containerViewController.view.bounds.size;
-    CGPoint textFieldOrigin = [currentTextInput convertPoint:CGPointZero toView:_containerViewController.view];
-    CGFloat minOffsetY = textFieldOrigin.y + currentTextInput.bounds.size.height + 5;
+    CGFloat textFieldBottomY = [currentTextInput convertPoint:CGPointZero toView:_containerViewController.view].y + currentTextInput.bounds.size.height;
     CGFloat keyboardHeight = [_keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
     // For iOS 7
     if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 &&
@@ -515,23 +513,35 @@ static NSMutableSet *_retainedPopupControllers;
         keyboardHeight = [_keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.width;
     }
     
-    if (containerViewSize.height - keyboardHeight < minOffsetY) {
-        CGFloat offetY = (_containerViewController.view.bounds.size.height - keyboardHeight) - minOffsetY;
-        
-        NSTimeInterval duration = [_keyboardInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-        UIViewAnimationCurve curve = [_keyboardInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
-        
-        _containerView.transform = lastTransform; /// Restore transform
-        
-        [UIView beginAnimations:nil context:NULL];
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:curve];
-        [UIView setAnimationDuration:duration];
-        
-        _containerView.transform = CGAffineTransformMakeTranslation(0, offetY);
-        
-        [UIView commitAnimations];
+    CGFloat spacing = 5;
+    CGFloat offsetY = _containerView.frame.origin.y + _containerView.bounds.size.height - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+    if (offsetY <= 0) { // _containerView can be totally shown, so no need to reposition
+        return;
     }
+    
+    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    
+    if (_containerView.frame.origin.y - offsetY < statusBarHeight) { // _containerView will be covered by status bar if it is repositioned with "offsetY"
+        offsetY = _containerView.frame.origin.y - statusBarHeight;
+        // currentTextField can not be totally shown if _containerView is going to repositioned with "offsetY"
+        if (textFieldBottomY - offsetY > _containerViewController.view.bounds.size.height - keyboardHeight - spacing) {
+            offsetY = textFieldBottomY - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+        }
+    }
+    
+    NSTimeInterval duration = [_keyboardInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [_keyboardInfo[UIKeyboardAnimationCurveUserInfoKey] intValue];
+    
+    _containerView.transform = lastTransform; // Restore transform
+    
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationCurve:curve];
+    [UIView setAnimationDuration:duration];
+    
+    _containerView.transform = CGAffineTransformMakeTranslation(0, -offsetY);
+    
+    [UIView commitAnimations];
 }
 
 - (UIView<UIKeyInput> *)getCurrentTextInputInView:(UIView *)view
@@ -553,8 +563,8 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)firstResponderDidChange:(NSNotification *)notification
 {
-    // "keyboardWillShow" won't be called if height of keyboard is not changed.
-    // Manually adjust container view origin according to last keyboard info.
+    // "keyboardWillShow" won't be called if height of keyboard is not changed
+    // Manually adjust container view origin according to last keyboard info
     [self adjustContainerViewOrigin];
 }
 
