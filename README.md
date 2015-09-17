@@ -1,7 +1,7 @@
 # STPopup ![CI Status](https://img.shields.io/travis/kevin0571/STPopup.svg?style=flat) ![Version](http://img.shields.io/cocoapods/v/STPopup.svg?style=flag) ![License](https://img.shields.io/cocoapods/l/STPopup.svg?style=flag)
 STPopup provides STPopupController, which works just like UINavigationController in popup style, for both iPhone and iPad.
 
-Features:
+**Features:**
 - Extend your view controller from UIViewController, build it in your familiar way.
 - Push/Pop view controller in to/out of popup view stack, and set navigation items by using self.navigationItem.leftBarButtonItem and rightBarButtonItem, just like you are using UINavigationController.
 - Customize UI by using UIAppearance.
@@ -55,10 +55,11 @@ STPopupController *popupController = [[STPopupController alloc] initWithRootView
 @end
 ```
 
-**Push & Pop view controllers**  
+**Push, pop and dismiss view controllers**  
 ```objc
 [self.popupController pushViewController:[ViewController new] animated:YES];
-[self.popupController popViewControllerAnimated:YES];
+[self.popupController popViewControllerAnimated:YES]; // Popup will be dismissed if there is only one view controller in the popup view controller stack
+[self.popupController dismiss];
 ```
 ![Push & Pop](https://cloud.githubusercontent.com/assets/1491282/9857915/0d4ab3ee-5b50-11e5-81bc-8fbae3ad8c06.gif)
 
