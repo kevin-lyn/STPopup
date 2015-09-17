@@ -45,7 +45,16 @@
         return;
     }
     
-    CGSize contentSizeInPopup = self.contentSizeInPopup;
+    CGSize contentSizeInPopup = CGSizeZero;
+    switch ([UIApplication sharedApplication].statusBarOrientation) {
+        case UIInterfaceOrientationLandscapeLeft:
+        case UIInterfaceOrientationLandscapeRight:
+            contentSizeInPopup = self.landscapeContentSizeInPopup;
+            break;
+        default:
+            contentSizeInPopup = self.contentSizeInPopup;
+            break;
+    }
     
     UIView *view = [UIView new];
     view.frame = CGRectMake(0, 0, contentSizeInPopup.width, contentSizeInPopup.height);
