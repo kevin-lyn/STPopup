@@ -108,6 +108,11 @@ static NSMutableSet *_retainedPopupControllers;
     }
 }
 
+- (BOOL)presented
+{
+    return _containerViewController.presentingViewController;
+}
+
 #pragma mark - Observers
 
 - (void)setupObservers
