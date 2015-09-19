@@ -83,7 +83,7 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (BOOL)presented
 {
-    return _containerViewController.presentingViewController;
+    return _containerViewController.presentingViewController != nil;
 }
 
 #pragma mark - Observers
