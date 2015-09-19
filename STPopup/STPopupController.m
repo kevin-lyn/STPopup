@@ -16,45 +16,18 @@ static NSMutableSet *_retainedPopupControllers;
 
 @interface STPopupContainerViewController : UIViewController
 
-@property (nonatomic, assign) BOOL statusBarHidden;
-@property (nonatomic, assign) UIStatusBarStyle statusBarStyle;
-@property (nonatomic, assign) UIStatusBarAnimation statusBarUpdateAnimation;
-
 @end
 
 @implementation STPopupContainerViewController
 
-- (void)setStatusBarHidden:(BOOL)statusBarHidden
+- (UIViewController *)childViewControllerForStatusBarHidden
 {
-    _statusBarHidden = statusBarHidden;
-    [self setNeedsStatusBarAppearanceUpdate];
+    return self.childViewControllers.lastObject;
 }
 
-- (void)setStatusBarStyle:(UIStatusBarStyle)statusBarStyle
+- (UIViewController *)childViewControllerForStatusBarStyle
 {
-    _statusBarStyle = statusBarStyle;
-    [self setNeedsStatusBarAppearanceUpdate];
-}
-
-- (void)setStatusBarUpdateAnimation:(UIStatusBarAnimation)statusBarUpdateAnimation
-{
-    _statusBarUpdateAnimation = statusBarUpdateAnimation;
-    [self setNeedsStatusBarAppearanceUpdate];
-}
-
-- (BOOL)prefersStatusBarHidden
-{
-    return self.statusBarHidden;
-}
-
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
-    return self.statusBarStyle;
-}
-
-- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
-{
-    return self.statusBarUpdateAnimation;
+    return self.childViewControllers.lastObject;
 }
 
 @end
@@ -235,10 +208,9 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)transitFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController animated:(BOOL)animated
 {
-    _containerViewController.statusBarHidden = toViewController.prefersStatusBarHidden;
-    _containerViewController.statusBarStyle = toViewController.preferredStatusBarStyle;
-    _containerViewController.statusBarUpdateAnimation = toViewController.preferredStatusBarUpdateAnimation;
+    [fromViewController willMoveToParentViewController:nil];
     
+    [_containerViewController addChildViewController:toViewController];
     [self layoutTopView];
     [_containerView insertSubview:toViewController.view atIndex:0];
     
@@ -249,17 +221,25 @@ static NSMutableSet *_retainedPopupControllers;
             [self layoutContainerView];
             fromViewController.view.alpha = 0;
             toViewController.view.alpha = 1;
+            [_containerViewController setNeedsStatusBarAppearanceUpdate];
         } completion:^(BOOL finished) {
             [fromViewController.view removeFromSuperview];
+            [fromViewController removeFromParentViewController];
             fromViewController.view.alpha = 1;
+            
             _containerView.userInteractionEnabled = YES;
+            [toViewController didMoveToParentViewController:_containerViewController];
         }];
         [self updateNavigationBarAniamted:animated];
     }
     else {
         [self layoutContainerView];
         [self updateNavigationBarAniamted:animated];
+        
         [fromViewController.view removeFromSuperview];
+        [fromViewController removeFromParentViewController];
+        
+        [toViewController didMoveToParentViewController:_containerViewController];
     }
 }
 
