@@ -235,6 +235,7 @@ static NSMutableSet *_retainedPopupControllers;
     else {
         [self layoutContainerView];
         [self updateNavigationBarAniamted:animated];
+        [_containerViewController setNeedsStatusBarAppearanceUpdate];
         
         [fromViewController.view removeFromSuperview];
         [fromViewController removeFromParentViewController];
