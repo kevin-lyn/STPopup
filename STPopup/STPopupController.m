@@ -71,7 +71,6 @@ static NSMutableSet *_retainedPopupControllers;
     UIView *_containerView;
     UILabel *_defaultTitleLabel;
     STPopupLeftBarItem *_defaultLeftBarItem;
-    UIInterfaceOrientation _orientation;
     NSDictionary *_keyboardInfo;
     BOOL _observing;
 }
@@ -127,7 +126,7 @@ static NSMutableSet *_retainedPopupControllers;
     [_navigationBar addObserver:self forKeyPath:NSStringFromSelector(@selector(titleTextAttributes)) options:NSKeyValueObservingOptionNew context:nil];
     
     // Observe orientation change
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     
     // Observe keyboard
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
@@ -135,7 +134,7 @@ static NSMutableSet *_retainedPopupControllers;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
     // Observe responder change
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstResponderDidChange:) name:STPopupFirstResponderDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstResponderDidChange) name:STPopupFirstResponderDidChangeNotification object:nil];
 }
 
 - (void)destroyObservers
@@ -355,7 +354,7 @@ static NSMutableSet *_retainedPopupControllers;
 {
     UIViewController *topViewController = [self topViewController];
     CGSize contentSize = CGSizeZero;
-    switch (_orientation) {
+    switch ([UIApplication sharedApplication].statusBarOrientation) {
         case UIInterfaceOrientationLandscapeLeft:
         case UIInterfaceOrientationLandscapeRight: {
             contentSize = topViewController.landscapeContentSizeInPopup;
@@ -384,8 +383,6 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)setup
 {
-    _orientation = [UIApplication sharedApplication].statusBarOrientation;
-    
     _containerViewController = [STPopupContainerViewController new];
     _containerViewController.view.backgroundColor = [UIColor clearColor];
     _containerViewController.modalPresentationStyle = UIModalPresentationCustom;
@@ -451,9 +448,8 @@ static NSMutableSet *_retainedPopupControllers;
 
 #pragma mark - UIApplicationDidChangeStatusBarOrientationNotification
 
-- (void)orientationDidChange:(NSNotification *)notification
+- (void)orientationDidChange
 {
-    _orientation = [UIApplication sharedApplication].statusBarOrientation;
     [_containerView endEditing:YES];
     [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _containerView.alpha = 0;
@@ -513,8 +509,9 @@ static NSMutableSet *_retainedPopupControllers;
     CGFloat textFieldBottomY = [currentTextInput convertPoint:CGPointZero toView:_containerViewController.view].y + currentTextInput.bounds.size.height;
     CGFloat keyboardHeight = [_keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
     // For iOS 7
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
     if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 &&
-        (_orientation == UIInterfaceOrientationLandscapeLeft || _orientation == UIInterfaceOrientationLandscapeRight)) {
+        (orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight)) {
         keyboardHeight = [_keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.width;
     }
     
@@ -566,7 +563,7 @@ static NSMutableSet *_retainedPopupControllers;
 
 #pragma mark - STPopupFirstResponderDidChangeNotification
 
-- (void)firstResponderDidChange:(NSNotification *)notification
+- (void)firstResponderDidChange
 {
     // "keyboardWillShow" won't be called if height of keyboard is not changed
     // Manually adjust container view origin according to last keyboard info
