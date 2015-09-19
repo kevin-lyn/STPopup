@@ -210,9 +210,7 @@ static NSMutableSet *_retainedPopupControllers;
 - (void)transitFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController animated:(BOOL)animated
 {
     [fromViewController willMoveToParentViewController:nil];
-    
     [_containerViewController addChildViewController:toViewController];
-    [_contentView addSubview:toViewController.view];
     
     if (animated) {
         // Capture view in "fromViewController" to avoid "viewWillAppear" and "viewDidAppear" being called.
@@ -232,6 +230,7 @@ static NSMutableSet *_retainedPopupControllers;
         toViewController.view.alpha = 0;
         [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             [self layoutContainerView];
+            [_contentView addSubview:toViewController.view];
             capturedView.alpha = 0;
             toViewController.view.alpha = 1;
             [_containerViewController setNeedsStatusBarAppearanceUpdate];
@@ -246,8 +245,9 @@ static NSMutableSet *_retainedPopupControllers;
     }
     else {
         [self layoutContainerView];
-        [self updateNavigationBarAniamted:animated];
+        [_contentView addSubview:toViewController.view];
         [_containerViewController setNeedsStatusBarAppearanceUpdate];
+        [self updateNavigationBarAniamted:animated];
         
         [fromViewController.view removeFromSuperview];
         [fromViewController removeFromParentViewController];
@@ -359,6 +359,9 @@ static NSMutableSet *_retainedPopupControllers;
         }
             break;
     }
+    
+    NSAssert(!CGSizeEqualToSize(contentSize, CGSizeZero), @"contentSizeInPopup should not be size zero.");
+    
     return contentSize;
 }
 
