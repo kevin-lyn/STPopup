@@ -144,7 +144,7 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)presentInViewController:(UIViewController *)viewController completion:(void (^)(void))completion
 {
-    if (_containerViewController.presentingViewController) {
+    if (self.presented) {
         return;
     }
     
@@ -161,7 +161,7 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)dismissWithCompletion:(void (^)(void))completion
 {
-    if (!_containerViewController.presentingViewController) {
+    if (!self.presented) {
         return;
     }
     
@@ -185,7 +185,7 @@ static NSMutableSet *_retainedPopupControllers;
     [viewController setValue:self forKey:@"popupController"];
     [_viewControllers addObject:viewController];
     
-    if (_containerViewController.presentingViewController) {
+    if (self.presented) {
         [self transitFromViewController:topViewController toViewController:viewController animated:animated];
     }
 }
@@ -201,7 +201,7 @@ static NSMutableSet *_retainedPopupControllers;
     [topViewController setValue:nil forKey:@"popupController"];
     [_viewControllers removeObject:topViewController];
     
-    if (_containerViewController.presentingViewController) {
+    if (self.presented) {
         [self transitFromViewController:topViewController toViewController:[self topViewController] animated:animated];
     }
 }
@@ -322,13 +322,14 @@ static NSMutableSet *_retainedPopupControllers;
 {
     _bgView.frame = _containerViewController.view.bounds;
  
+    CGFloat navigationBarHeight = [self navigationBarHeight];
     CGSize contentSizeOfTopView = [self contentSizeOfTopView];
-    CGSize containerViewSize = CGSizeMake(contentSizeOfTopView.width, contentSizeOfTopView.height + [self navigationBarHeight]);
+    CGSize containerViewSize = CGSizeMake(contentSizeOfTopView.width, contentSizeOfTopView.height + navigationBarHeight);
     
     _containerView.frame = CGRectMake((_containerViewController.view.bounds.size.width - containerViewSize.width) / 2,
                                       (_containerViewController.view.bounds.size.height - containerViewSize.height) / 2,
                                       containerViewSize.width, containerViewSize.height);
-    _navigationBar.frame = CGRectMake(0, 0, containerViewSize.width, [self navigationBarHeight]);
+    _navigationBar.frame = CGRectMake(0, 0, containerViewSize.width, navigationBarHeight);
 }
 
 - (CGSize)contentSizeOfTopView
