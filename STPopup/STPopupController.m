@@ -42,6 +42,7 @@ static NSMutableSet *_retainedPopupControllers;
     NSMutableArray *_viewControllers; // <UIViewController>
     UIView *_bgView;
     UIView *_containerView;
+    UIView *_contentView;
     UILabel *_defaultTitleLabel;
     STPopupLeftBarItem *_defaultLeftBarItem;
     NSDictionary *_keyboardInfo;
@@ -211,21 +212,32 @@ static NSMutableSet *_retainedPopupControllers;
     [fromViewController willMoveToParentViewController:nil];
     
     [_containerViewController addChildViewController:toViewController];
-    [self layoutTopView];
-    [_containerView insertSubview:toViewController.view atIndex:0];
+    [_contentView addSubview:toViewController.view];
     
     if (animated) {
+        // Capture view in "fromViewController" to avoid "viewWillAppear" and "viewDidAppear" being called.
+        UIGraphicsBeginImageContextWithOptions(fromViewController.view.bounds.size, NO, [UIScreen mainScreen].scale);
+        [fromViewController.view drawViewHierarchyInRect:fromViewController.view.bounds afterScreenUpdates:NO];
+
+        UIImageView *capturedView = [[UIImageView alloc] initWithImage:UIGraphicsGetImageFromCurrentImageContext()];
+        
+        UIGraphicsEndImageContext();
+        
+        capturedView.frame = CGRectMake(_contentView.frame.origin.x, _contentView.frame.origin.y, fromViewController.view.bounds.size.width, fromViewController.view.bounds.size.height);
+        [_containerView insertSubview:capturedView atIndex:0];
+        
+        [fromViewController.view removeFromSuperview];
+        
         _containerView.userInteractionEnabled = NO;
         toViewController.view.alpha = 0;
         [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             [self layoutContainerView];
-            fromViewController.view.alpha = 0;
+            capturedView.alpha = 0;
             toViewController.view.alpha = 1;
             [_containerViewController setNeedsStatusBarAppearanceUpdate];
         } completion:^(BOOL finished) {
-            [fromViewController.view removeFromSuperview];
+            [capturedView removeFromSuperview];
             [fromViewController removeFromParentViewController];
-            fromViewController.view.alpha = 1;
             
             _containerView.userInteractionEnabled = YES;
             [toViewController didMoveToParentViewController:_containerViewController];
@@ -311,13 +323,6 @@ static NSMutableSet *_retainedPopupControllers;
 
 #pragma mark - UI layout
 
-- (void)layoutTopView
-{
-    UIViewController *topViewController = [self topViewController];
-    CGSize contentSize = [self contentSizeOfTopView];
-    topViewController.view.frame = CGRectMake(0, [self navigationBarHeight], contentSize.width, contentSize.height);
-}
-
 - (void)layoutContainerView
 {
     _bgView.frame = _containerViewController.view.bounds;
@@ -330,6 +335,10 @@ static NSMutableSet *_retainedPopupControllers;
                                       (_containerViewController.view.bounds.size.height - containerViewSize.height) / 2,
                                       containerViewSize.width, containerViewSize.height);
     _navigationBar.frame = CGRectMake(0, 0, containerViewSize.width, navigationBarHeight);
+    _contentView.frame = CGRectMake(0, navigationBarHeight, contentSizeOfTopView.width, contentSizeOfTopView.height);
+    
+    UIViewController *topViewController = [self topViewController];
+    topViewController.view.frame = _contentView.bounds;
 }
 
 - (CGSize)contentSizeOfTopView
@@ -389,6 +398,9 @@ static NSMutableSet *_retainedPopupControllers;
     _containerView.backgroundColor = [UIColor whiteColor];
     _containerView.clipsToBounds = YES;
     [_containerViewController.view addSubview:_containerView];
+    
+    _contentView = [UIView new];
+    [_containerView addSubview:_contentView];
 }
 
 - (void)setupNavigationBar
@@ -436,7 +448,6 @@ static NSMutableSet *_retainedPopupControllers;
     [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         _containerView.alpha = 0;
     } completion:^(BOOL finished) {
-        [self layoutTopView];
         [self layoutContainerView];
         [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             _containerView.alpha = 1;

@@ -20,7 +20,7 @@
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        [self swizzleSelector:@selector(loadView) toSelector:@selector(st_loadView)];
+        [self swizzleSelector:@selector(viewDidLoad) toSelector:@selector(st_viewDidLoad)];
         [self swizzleSelector:@selector(presentViewController:animated:completion:) toSelector:@selector(st_presentViewController:animated:completion:)];
         [self swizzleSelector:@selector(parentViewController) toSelector:@selector(st_parentViewController)];
         [self swizzleSelector:@selector(presentedViewController) toSelector:@selector(st_presentedViewController)];
@@ -37,28 +37,28 @@
     method_exchangeImplementations(originalMethod, swizzledMethod);
 }
 
-- (void)st_loadView
+- (void)st_viewDidLoad
 {
-    if (CGSizeEqualToSize(self.contentSizeInPopup, CGSizeZero) &&
-        CGSizeEqualToSize(self.landscapeContentSizeInPopup, CGSizeZero)) {
-        [self st_loadView];
-        return;
-    }
-    
-    CGSize contentSizeInPopup = CGSizeZero;
+    CGSize contentSize = CGSizeZero;
     switch ([UIApplication sharedApplication].statusBarOrientation) {
         case UIInterfaceOrientationLandscapeLeft:
-        case UIInterfaceOrientationLandscapeRight:
-            contentSizeInPopup = self.landscapeContentSizeInPopup;
+        case UIInterfaceOrientationLandscapeRight: {
+            contentSize = self.landscapeContentSizeInPopup;
+            if (CGSizeEqualToSize(contentSize, CGSizeZero)) {
+                contentSize = self.contentSizeInPopup;
+            }
+        }
             break;
-        default:
-            contentSizeInPopup = self.contentSizeInPopup;
+        default: {
+            contentSize = self.contentSizeInPopup;
+        }
             break;
     }
     
-    UIView *view = [UIView new];
-    view.frame = CGRectMake(0, 0, contentSizeInPopup.width, contentSizeInPopup.height);
-    self.view = view;
+    if (!CGSizeEqualToSize(contentSize, CGSizeZero)) {
+        self.view.frame = CGRectMake(0, 0, contentSize.width, contentSize.height);
+    }
+    [self st_viewDidLoad];
 }
 
 - (void)st_presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
