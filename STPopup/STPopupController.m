@@ -20,6 +20,14 @@ static NSMutableSet *_retainedPopupControllers;
 
 @implementation STPopupContainerViewController
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    if (self.childViewControllers.count || !self.presentingViewController) {
+        return [super preferredStatusBarStyle];
+    }
+    return [self.presentingViewController preferredStatusBarStyle];
+}
+
 - (UIViewController *)childViewControllerForStatusBarHidden
 {
     return self.childViewControllers.lastObject;
