@@ -324,6 +324,33 @@ static NSMutableSet *_retainedPopupControllers;
     [_defaultLeftBarItem setType:_viewControllers.count > 1 ? STPopupLeftBarItemArrow : STPopupLeftBarItemCross animated:animated];
 }
 
+- (void)setNavigationBarHidden:(BOOL)navigationBarHidden
+{
+    [self setNavigationBarHidden:navigationBarHidden animated:NO];
+}
+
+- (void)setNavigationBarHidden:(BOOL)navigationBarHidden animated:(BOOL)animated
+{
+    _navigationBarHidden = navigationBarHidden;
+    _navigationBar.alpha = navigationBarHidden ? 1 : 0;
+    
+    if (!animated) {
+        [self layoutContainerView];
+        _navigationBar.hidden = navigationBarHidden;
+        return;
+    }
+    
+    if (!navigationBarHidden) {
+        _navigationBar.hidden = navigationBarHidden;
+    }
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        _navigationBar.alpha = navigationBarHidden ? 0 : 1;
+        [self layoutContainerView];
+    } completion:^(BOOL finished) {
+        _navigationBar.hidden = navigationBarHidden;
+    }];
+}
+
 - (UIViewController *)topViewController
 {
     return _viewControllers.lastObject;
@@ -335,14 +362,15 @@ static NSMutableSet *_retainedPopupControllers;
 {
     _bgView.frame = _containerViewController.view.bounds;
  
-    CGFloat navigationBarHeight = [self navigationBarHeight];
+    CGFloat preferredNavigationBarHeight = [self preferredNavigationBarHeight];
+    CGFloat navigationBarHeight = _navigationBarHidden ? 0 : preferredNavigationBarHeight;
     CGSize contentSizeOfTopView = [self contentSizeOfTopView];
     CGSize containerViewSize = CGSizeMake(contentSizeOfTopView.width, contentSizeOfTopView.height + navigationBarHeight);
     
     _containerView.frame = CGRectMake((_containerViewController.view.bounds.size.width - containerViewSize.width) / 2,
                                       (_containerViewController.view.bounds.size.height - containerViewSize.height) / 2,
                                       containerViewSize.width, containerViewSize.height);
-    _navigationBar.frame = CGRectMake(0, 0, containerViewSize.width, navigationBarHeight);
+    _navigationBar.frame = CGRectMake(0, 0, containerViewSize.width, preferredNavigationBarHeight);
     _contentView.frame = CGRectMake(0, navigationBarHeight, contentSizeOfTopView.width, contentSizeOfTopView.height);
     
     UIViewController *topViewController = [self topViewController];
@@ -373,7 +401,7 @@ static NSMutableSet *_retainedPopupControllers;
     return contentSize;
 }
 
-- (CGFloat)navigationBarHeight
+- (CGFloat)preferredNavigationBarHeight
 {
     // The preferred height of navigation bar is different between iPhone (4, 5, 6) and 6 Plus.
     // Create a navigation controller to get the preferred height of navigation bar.
