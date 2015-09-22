@@ -217,6 +217,9 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)transitFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController animated:(BOOL)animated
 {
+    [fromViewController beginAppearanceTransition:NO animated:animated];
+    [toViewController beginAppearanceTransition:YES animated:animated];
+    
     [fromViewController willMoveToParentViewController:nil];
     [_containerViewController addChildViewController:toViewController];
     
@@ -248,6 +251,9 @@ static NSMutableSet *_retainedPopupControllers;
             
             _containerView.userInteractionEnabled = YES;
             [toViewController didMoveToParentViewController:_containerViewController];
+            
+            [fromViewController endAppearanceTransition];
+            [toViewController endAppearanceTransition];
         }];
         [self updateNavigationBarAniamted:animated];
     }
@@ -261,6 +267,9 @@ static NSMutableSet *_retainedPopupControllers;
         [fromViewController removeFromParentViewController];
         
         [toViewController didMoveToParentViewController:_containerViewController];
+        
+        [fromViewController endAppearanceTransition];
+        [toViewController endAppearanceTransition];
     }
 }
 
@@ -634,39 +643,56 @@ static NSMutableSet *_retainedPopupControllers;
     
     toViewController.view.frame = fromViewController.view.frame;
     
+    UIViewController *topViewController = [self topViewController];
+    
     if (toViewController == _containerViewController) {
+        [fromViewController beginAppearanceTransition:NO animated:YES];
+        
         [[transitionContext containerView] addSubview:toViewController.view];
         
-        dispatch_async(dispatch_get_main_queue(), ^{ // To avoid calling viewDidAppear before the animation is started
-            [self transitFromViewController:nil toViewController:[self topViewController] animated:NO];
-            
-            switch (self.transitionStyle) {
-                case STPopupTransitionStyleFade: {
-                    _containerView.alpha = 0;
-                    _containerView.transform = CGAffineTransformMakeScale(1.1, 1.1);
-                }
-                    break;
-                case STPopupTransitionStyleSlideVertical:
-                default: {
-                    _containerView.alpha = 1;
-                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.bounds.size.height);
-                }
-                    break;
+        [topViewController beginAppearanceTransition:YES animated:YES];
+        [toViewController addChildViewController:topViewController];
+        
+        [self layoutContainerView];
+        [_contentView addSubview:topViewController.view];
+        [toViewController setNeedsStatusBarAppearanceUpdate];
+        [self updateNavigationBarAniamted:NO];
+        
+        switch (self.transitionStyle) {
+            case STPopupTransitionStyleFade: {
+                _containerView.alpha = 0;
+                _containerView.transform = CGAffineTransformMakeScale(1.1, 1.1);
             }
-            _bgView.alpha = 0;
-            
-            _containerView.userInteractionEnabled = NO;
-            [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-                _bgView.alpha = 1;
+                break;
+            case STPopupTransitionStyleSlideVertical:
+            default: {
                 _containerView.alpha = 1;
-                _containerView.transform = CGAffineTransformIdentity;
-            } completion:^(BOOL finished) {
-                _containerView.userInteractionEnabled = YES;
-                [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-            }];
-        });
+                _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.bounds.size.height);
+            }
+                break;
+        }
+        _bgView.alpha = 0;
+        
+        _containerView.userInteractionEnabled = NO;
+        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            _bgView.alpha = 1;
+            _containerView.alpha = 1;
+            _containerView.transform = CGAffineTransformIdentity;
+        } completion:^(BOOL finished) {
+            _containerView.userInteractionEnabled = YES;
+            [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+            
+            [topViewController didMoveToParentViewController:toViewController];
+            
+            [fromViewController endAppearanceTransition];
+        }];
     }
     else {
+        [toViewController beginAppearanceTransition:YES animated:YES];
+        
+        [topViewController beginAppearanceTransition:NO animated:YES];
+        [topViewController willMoveToParentViewController:nil];
+        
         _containerView.userInteractionEnabled = NO;
         [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             _bgView.alpha = 0;
@@ -687,6 +713,11 @@ static NSMutableSet *_retainedPopupControllers;
             _containerView.transform = CGAffineTransformIdentity;
             [fromViewController.view removeFromSuperview];
             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
+            
+            [topViewController.view removeFromSuperview];
+            [topViewController removeFromParentViewController];
+    
+            [toViewController endAppearanceTransition];
         }];
     }
 }
