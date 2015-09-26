@@ -86,6 +86,7 @@ static NSMutableSet *_retainedPopupControllers;
     [self destroyObservers];
     for (UIViewController *viewController in _viewControllers) { // Avoid crash when try to access unsafe unretained property
         [viewController setValue:nil forKey:@"popupController"];
+        [self destroyObserversOfViewController:viewController];
     }
 }
 
@@ -131,16 +132,32 @@ static NSMutableSet *_retainedPopupControllers;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)setupObserversForViewController:(UIViewController *)viewController
+{
+    [viewController.navigationItem addObserver:self forKeyPath:NSStringFromSelector(@selector(title)) options:NSKeyValueObservingOptionNew context:nil];
+    [viewController.navigationItem addObserver:self forKeyPath:NSStringFromSelector(@selector(titleView)) options:NSKeyValueObservingOptionNew context:nil];
+    [viewController.navigationItem addObserver:self forKeyPath:NSStringFromSelector(@selector(leftBarButtonItem)) options:NSKeyValueObservingOptionNew context:nil];
+    [viewController.navigationItem addObserver:self forKeyPath:NSStringFromSelector(@selector(leftBarButtonItems)) options:NSKeyValueObservingOptionNew context:nil];
+    [viewController.navigationItem addObserver:self forKeyPath:NSStringFromSelector(@selector(rightBarButtonItem)) options:NSKeyValueObservingOptionNew context:nil];
+    [viewController.navigationItem addObserver:self forKeyPath:NSStringFromSelector(@selector(rightBarButtonItems)) options:NSKeyValueObservingOptionNew context:nil];
+    [viewController.navigationItem addObserver:self forKeyPath:NSStringFromSelector(@selector(hidesBackButton)) options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)destroyObserversOfViewController:(UIViewController *)viewController
+{
+    [viewController.navigationItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(title))];
+    [viewController.navigationItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(titleView))];
+    [viewController.navigationItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(leftBarButtonItem))];
+    [viewController.navigationItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(leftBarButtonItems))];
+    [viewController.navigationItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(rightBarButtonItem))];
+    [viewController.navigationItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(rightBarButtonItems))];
+    [viewController.navigationItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(hidesBackButton))];
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == _navigationBar) {
-        if ([keyPath isEqualToString:NSStringFromSelector(@selector(tintColor))]) {
-            _defaultLeftBarItem.tintColor = change[@"new"];
-        }
-        else if ([keyPath isEqualToString:NSStringFromSelector(@selector(titleTextAttributes))]) {
-            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:_defaultTitleLabel.text ? : @""
-                                                                                attributes:change[@"new"]];
-        }
+    if (object == _navigationBar || object == [self topViewController].navigationItem) {
+        [self updateNavigationBarAniamted:NO];
     }
 }
 
@@ -197,6 +214,7 @@ static NSMutableSet *_retainedPopupControllers;
     if (self.presented) {
         [self transitFromViewController:topViewController toViewController:viewController animated:animated];
     }
+    [self setupObserversForViewController:viewController];
 }
 
 - (void)popViewControllerAnimated:(BOOL)animated
@@ -208,6 +226,7 @@ static NSMutableSet *_retainedPopupControllers;
     
     UIViewController *topViewController = [self topViewController];
     [topViewController setValue:nil forKey:@"popupController"];
+    [self destroyObserversOfViewController:topViewController];
     [_viewControllers removeObject:topViewController];
     
     if (self.presented) {
@@ -278,7 +297,7 @@ static NSMutableSet *_retainedPopupControllers;
     UIViewController *topViewController = [self topViewController];
     UIView *lastTitleView = _navigationBar.topItem.titleView;
     _navigationBar.items = @[ [UINavigationItem new] ];
-    _navigationBar.topItem.leftBarButtonItems = topViewController.navigationItem.leftBarButtonItems ? : @[ _defaultLeftBarItem ];
+    _navigationBar.topItem.leftBarButtonItems = topViewController.navigationItem.leftBarButtonItems ? : (topViewController.navigationItem.hidesBackButton ? nil : @[ _defaultLeftBarItem ]);
     _navigationBar.topItem.rightBarButtonItems = topViewController.navigationItem.rightBarButtonItems;
     
     if (animated) {
