@@ -22,6 +22,7 @@
     dispatch_once(&onceToken, ^{
         [self swizzleSelector:@selector(viewDidLoad) toSelector:@selector(st_viewDidLoad)];
         [self swizzleSelector:@selector(presentViewController:animated:completion:) toSelector:@selector(st_presentViewController:animated:completion:)];
+        [self swizzleSelector:@selector(dismissViewControllerAnimated:completion:) toSelector:@selector(st_dismissViewControllerAnimated:completion:)];
         [self swizzleSelector:@selector(parentViewController) toSelector:@selector(st_parentViewController)];
         [self swizzleSelector:@selector(presentedViewController) toSelector:@selector(st_presentedViewController)];
         [self swizzleSelector:@selector(presentingViewController) toSelector:@selector(st_presentingViewController)];
@@ -69,6 +70,16 @@
     }
     
     [[self.popupController valueForKey:@"containerViewController"] presentViewController:viewControllerToPresent animated:flag completion:completion];
+}
+
+- (void)st_dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion
+{
+    if (!self.popupController) {
+        [self st_dismissViewControllerAnimated:flag completion:completion];
+        return;
+    }
+    
+    [self.popupController dismissWithCompletion:completion];
 }
 
 - (UIViewController *)st_parentViewController
