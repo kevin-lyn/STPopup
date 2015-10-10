@@ -12,6 +12,8 @@
 #import "UIViewController+STPopup.h"
 #import "UIResponder+STPopup.h"
 
+CGFloat const STPopupBottomSheetExtraHeight = 80;
+
 static NSMutableSet *_retainedPopupControllers;
 
 @interface STPopupContainerViewController : UIViewController
@@ -403,12 +405,18 @@ static NSMutableSet *_retainedPopupControllers;
     CGFloat preferredNavigationBarHeight = [self preferredNavigationBarHeight];
     CGFloat navigationBarHeight = _navigationBarHidden ? 0 : preferredNavigationBarHeight;
     CGSize contentSizeOfTopView = [self contentSizeOfTopView];
-    CGSize containerViewSize = CGSizeMake(contentSizeOfTopView.width, contentSizeOfTopView.height + navigationBarHeight);
+    CGFloat containerViewWidth = contentSizeOfTopView.width;
+    CGFloat containerViewHeight = contentSizeOfTopView.height + navigationBarHeight;
+    CGFloat containerViewY = (_containerViewController.view.bounds.size.height - containerViewHeight) / 2;
     
-    _containerView.frame = CGRectMake((_containerViewController.view.bounds.size.width - containerViewSize.width) / 2,
-                                      (_containerViewController.view.bounds.size.height - containerViewSize.height) / 2,
-                                      containerViewSize.width, containerViewSize.height);
-    _navigationBar.frame = CGRectMake(0, 0, containerViewSize.width, preferredNavigationBarHeight);
+    if (self.style == STPopupStyleBottomSheet) {
+        containerViewY = _containerViewController.view.bounds.size.height - containerViewHeight;
+        containerViewHeight += STPopupBottomSheetExtraHeight;
+    }
+    
+    _containerView.frame = CGRectMake((_containerViewController.view.bounds.size.width - containerViewWidth) / 2,
+                                      containerViewY, containerViewWidth, containerViewHeight);
+    _navigationBar.frame = CGRectMake(0, 0, containerViewWidth, preferredNavigationBarHeight);
     _contentView.frame = CGRectMake(0, navigationBarHeight, contentSizeOfTopView.width, contentSizeOfTopView.height);
     
     UIViewController *topViewController = [self topViewController];
@@ -585,19 +593,25 @@ static NSMutableSet *_retainedPopupControllers;
         keyboardHeight = [_keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.width;
     }
     
-    CGFloat spacing = 5;
-    CGFloat offsetY = _containerView.frame.origin.y + _containerView.bounds.size.height - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
-    if (offsetY <= 0) { // _containerView can be totally shown, so no need to reposition
-        return;
+    CGFloat offsetY = 0;
+    if (self.style == STPopupStyleBottomSheet) {
+        offsetY = keyboardHeight;
     }
-    
-    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-    
-    if (_containerView.frame.origin.y - offsetY < statusBarHeight) { // _containerView will be covered by status bar if it is repositioned with "offsetY"
-        offsetY = _containerView.frame.origin.y - statusBarHeight;
-        // currentTextField can not be totally shown if _containerView is going to repositioned with "offsetY"
-        if (textFieldBottomY - offsetY > _containerViewController.view.bounds.size.height - keyboardHeight - spacing) {
-            offsetY = textFieldBottomY - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+    else {
+        CGFloat spacing = 5;
+        CGFloat offsetY = _containerView.frame.origin.y + _containerView.bounds.size.height - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+        if (offsetY <= 0) { // _containerView can be totally shown, so no need to reposition
+            return;
+        }
+        
+        CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+        
+        if (_containerView.frame.origin.y - offsetY < statusBarHeight) { // _containerView will be covered by status bar if it is repositioned with "offsetY"
+            offsetY = _containerView.frame.origin.y - statusBarHeight;
+            // currentTextField can not be totally shown if _containerView is going to repositioned with "offsetY"
+            if (textFieldBottomY - offsetY > _containerViewController.view.bounds.size.height - keyboardHeight - spacing) {
+                offsetY = textFieldBottomY - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+            }
         }
     }
     
@@ -756,6 +770,10 @@ static NSMutableSet *_retainedPopupControllers;
 - (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidMoveWithOffset:(CGFloat)offset
 {
     [_containerView endEditing:YES];
+    
+    if (self.style == STPopupStyleBottomSheet && offset < -STPopupBottomSheetExtraHeight) {
+        return;
+    }
     _containerView.transform = CGAffineTransformMakeTranslation(0, offset);
 }
 
