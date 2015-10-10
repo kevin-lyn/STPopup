@@ -134,6 +134,8 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)setupObserversForViewController:(UIViewController *)viewController
 {
+    [viewController addObserver:self forKeyPath:NSStringFromSelector(@selector(contentSizeInPopup)) options:NSKeyValueObservingOptionNew context:nil];
+    [viewController addObserver:self forKeyPath:NSStringFromSelector(@selector(landscapeContentSizeInPopup)) options:NSKeyValueObservingOptionNew context:nil];
     [viewController.navigationItem addObserver:self forKeyPath:NSStringFromSelector(@selector(title)) options:NSKeyValueObservingOptionNew context:nil];
     [viewController.navigationItem addObserver:self forKeyPath:NSStringFromSelector(@selector(titleView)) options:NSKeyValueObservingOptionNew context:nil];
     [viewController.navigationItem addObserver:self forKeyPath:NSStringFromSelector(@selector(leftBarButtonItem)) options:NSKeyValueObservingOptionNew context:nil];
@@ -145,6 +147,8 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)destroyObserversOfViewController:(UIViewController *)viewController
 {
+    [viewController removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentSizeInPopup))];
+    [viewController removeObserver:self forKeyPath:NSStringFromSelector(@selector(landscapeContentSizeInPopup))];
     [viewController.navigationItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(title))];
     [viewController.navigationItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(titleView))];
     [viewController.navigationItem removeObserver:self forKeyPath:NSStringFromSelector(@selector(leftBarButtonItem))];
@@ -158,6 +162,12 @@ static NSMutableSet *_retainedPopupControllers;
 {
     if (object == _navigationBar || object == [self topViewController].navigationItem) {
         [self updateNavigationBarAniamted:NO];
+    }
+    else if (object == [self topViewController]) {
+        [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut
+         animations:^{
+             [self layoutContainerView];
+         } completion:nil];
     }
 }
 
