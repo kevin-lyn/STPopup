@@ -4,6 +4,8 @@ STPopup provides STPopupController, which works just like UINavigationController
 **Features:**
 - Extend your view controller from UIViewController, build it in your familiar way.
 - Push/Pop view controller in to/out of popup view stack, and set navigation items by using self.navigationItem.leftBarButtonItem and rightBarButtonItem, just like you are using UINavigationController.
+- Support both "Form Sheet" and "Bottom Sheet" style.
+- Work well with storyboard(including segue).
 - Customize UI by using UIAppearance.
 - Auto-reposition of popup view when keyboard is showing up, make sure your UITextField/UITextView won't be covered by the keyboard.
 - Drag navigation bar to dismiss popup view.
@@ -62,6 +64,23 @@ STPopupController *popupController = [[STPopupController alloc] initWithRootView
 [self.popupController dismiss];
 ```
 ![Push & Pop](https://cloud.githubusercontent.com/assets/1491282/9857915/0d4ab3ee-5b50-11e5-81bc-8fbae3ad8c06.gif)
+
+**Bottom sheet style**
+```objc
+STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[ViewController new]];
+popupController.style = STPopupStyleBottomSheet;
+[popupController presentInViewController:self];
+```
+![Bottom Sheet](https://cloud.githubusercontent.com/assets/1491282/10417963/7649f356-7080-11e5-8f3c-0cb817b8353e.gif)
+
+**Blur background**
+```objc
+STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController1 new]];
+if (NSClassFromString(@"UIBlurEffect")) {
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    popupController.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+}
+```
 
 **Customize UI**
 ```objc
