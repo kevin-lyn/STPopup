@@ -26,6 +26,7 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 @property (nonatomic, assign) CGFloat cornerRadius;
 @property (nonatomic, assign) BOOL navigationBarHidden;
 @property (nonatomic, strong, readonly) STPopupNavigationBar *navigationBar;
+@property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, assign, readonly) BOOL presented;
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController;

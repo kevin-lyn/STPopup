@@ -50,7 +50,6 @@ static NSMutableSet *_retainedPopupControllers;
 {
     STPopupContainerViewController *_containerViewController;
     NSMutableArray *_viewControllers; // <UIViewController>
-    UIView *_bgView;
     UIView *_containerView;
     UIView *_contentView;
     UILabel *_defaultTitleLabel;
@@ -95,6 +94,15 @@ static NSMutableSet *_retainedPopupControllers;
 - (BOOL)presented
 {
     return _containerViewController.presentingViewController != nil;
+}
+
+- (void)setBackgroundView:(UIView *)backgroundView
+{
+    [_backgroundView removeFromSuperview];
+    _backgroundView = backgroundView;
+    _backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [_backgroundView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bgViewDidTap)]];
+    [_containerViewController.view insertSubview:_backgroundView atIndex:0];
 }
 
 #pragma mark - Observers
@@ -401,7 +409,7 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)layoutContainerView
 {
-    _bgView.frame = _containerViewController.view.bounds;
+    _backgroundView.frame = _containerViewController.view.bounds;
  
     CGFloat preferredNavigationBarHeight = [self preferredNavigationBarHeight];
     CGFloat navigationBarHeight = _navigationBarHidden ? 0 : preferredNavigationBarHeight;
@@ -471,11 +479,9 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)setupBackgroundView
 {
-    _bgView = [UIView new];
-    _bgView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    _bgView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
-    [_bgView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bgViewDidTap)]];
-    [_containerViewController.view addSubview:_bgView];
+    UIView *backgroundView = [UIView new];
+    backgroundView.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+    self.backgroundView = backgroundView;
 }
 
 - (void)setupContainerView
@@ -715,11 +721,12 @@ static NSMutableSet *_retainedPopupControllers;
             }
                 break;
         }
-        _bgView.alpha = 0;
         
+        CGFloat lastBackgroundViewAlpha = _backgroundView.alpha;
+        _backgroundView.alpha = 0;
         _containerView.userInteractionEnabled = NO;
         [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            _bgView.alpha = 1;
+            _backgroundView.alpha = lastBackgroundViewAlpha;
             _containerView.alpha = 1;
             _containerView.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished) {
@@ -737,9 +744,10 @@ static NSMutableSet *_retainedPopupControllers;
         [topViewController beginAppearanceTransition:NO animated:YES];
         [topViewController willMoveToParentViewController:nil];
         
+        CGFloat lastBackgroundViewAlpha = _backgroundView.alpha;
         _containerView.userInteractionEnabled = NO;
         [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            _bgView.alpha = 0;
+            _backgroundView.alpha = 0;
             switch (self.transitionStyle) {
                 case STPopupTransitionStyleFade: {
                     _containerView.alpha = 0;
@@ -762,6 +770,8 @@ static NSMutableSet *_retainedPopupControllers;
             [topViewController removeFromParentViewController];
     
             [toViewController endAppearanceTransition];
+            
+            _backgroundView.alpha = lastBackgroundViewAlpha;
         }];
     }
 }
