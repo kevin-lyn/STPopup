@@ -44,7 +44,8 @@ static NSMutableSet *_retainedPopupControllers;
 {
     if (!CGSizeEqualToSize(vc.contentSizeInPopup, CGSizeZero) ||
         !CGSizeEqualToSize(vc.landscapeContentSizeInPopup, CGSizeZero)) {
-        [self.childViewControllers.lastObject.popupController pushViewController:vc animated:YES];
+        UIViewController *childViewController = self.childViewControllers.lastObject;
+        [childViewController.popupController pushViewController:vc animated:YES];
     }
     else {
         [self presentViewController:vc animated:YES completion:nil];
@@ -55,7 +56,8 @@ static NSMutableSet *_retainedPopupControllers;
 {
     if (!CGSizeEqualToSize(vc.contentSizeInPopup, CGSizeZero) ||
         !CGSizeEqualToSize(vc.landscapeContentSizeInPopup, CGSizeZero)) {
-        [self.childViewControllers.lastObject.popupController pushViewController:vc animated:YES];
+        UIViewController *childViewController = self.childViewControllers.lastObject;
+        [childViewController.popupController pushViewController:vc animated:YES];
     }
     else {
         [self presentViewController:vc animated:YES completion:nil];
