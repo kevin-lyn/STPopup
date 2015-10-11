@@ -16,30 +16,26 @@
 
 @implementation ViewController
 
-- (STPopupController *)popupControllerWithTransitionStyle:(STPopupTransitionStyle)transitionStyle rootViewController:(UIViewController *)rootViewController
-{
-    STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:rootViewController];
-    popupController.cornerRadius = 4;
-    popupController.transitionStyle = transitionStyle;
-    return popupController;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     switch (indexPath.row) {
         case 0: {
-            STPopupController *popupController = [self popupControllerWithTransitionStyle:STPopupTransitionStyleSlideVertical rootViewController:[PopupViewController1 new]];
+            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController1 new]];
+            popupController.cornerRadius = 4;
             [popupController presentInViewController:self];
         }
             break;
         case 1: {
-            STPopupController *popupController = [self popupControllerWithTransitionStyle:STPopupTransitionStyleFade rootViewController:[PopupViewController1 new]];
+            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController1 new]];
+            popupController.cornerRadius = 4;
+            popupController.transitionStyle = STPopupTransitionStyleFade;
             [popupController presentInViewController:self];
         }
             break;
         case 2: {
-            STPopupController *popupController = [self popupControllerWithTransitionStyle:STPopupTransitionStyleSlideVertical rootViewController:[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PopupViewController2"]];
+            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PopupViewController2"]];
+            popupController.cornerRadius = 4;
             [popupController presentInViewController:self];
         }
             break;
@@ -52,17 +48,25 @@
             
             [[UIBarButtonItem appearanceWhenContainedIn:[STPopupNavigationBar class], nil] setTitleTextAttributes:@{ NSFontAttributeName:[UIFont fontWithName:@"Cochin" size:17] } forState:UIControlStateNormal];
             
-            STPopupController *popupController = [self popupControllerWithTransitionStyle:STPopupTransitionStyleSlideVertical rootViewController:[PopupViewController1 new]];
+            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController1 new]];
+            popupController.cornerRadius = 4;
             [popupController presentInViewController:self];
         }
             break;
         case 4: {
-            STPopupController *popupController = [self popupControllerWithTransitionStyle:STPopupTransitionStyleSlideVertical rootViewController:[PopupViewController1 new]];
+            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController1 new]];
+            popupController.cornerRadius = 4;
             if (NSClassFromString(@"UIBlurEffect")) {
                 UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
                 popupController.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
                 popupController.backgroundView.alpha = 0.8; // This is not necessary
             }
+            [popupController presentInViewController:self];
+        }
+            break;
+        case 5: {
+            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"BottomSheetDemoViewController"]];
+            popupController.style = STPopupStyleBottomSheet;
             [popupController presentInViewController:self];
         }
             break;

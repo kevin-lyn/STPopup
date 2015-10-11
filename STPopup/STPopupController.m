@@ -40,6 +40,28 @@ static NSMutableSet *_retainedPopupControllers;
     return self.childViewControllers.lastObject;
 }
 
+- (void)showViewController:(UIViewController *)vc sender:(id)sender
+{
+    if (!CGSizeEqualToSize(vc.contentSizeInPopup, CGSizeZero) ||
+        !CGSizeEqualToSize(vc.landscapeContentSizeInPopup, CGSizeZero)) {
+        [self.childViewControllers.lastObject.popupController pushViewController:vc animated:YES];
+    }
+    else {
+        [self presentViewController:vc animated:YES completion:nil];
+    }
+}
+
+- (void)showDetailViewController:(UIViewController *)vc sender:(id)sender
+{
+    if (!CGSizeEqualToSize(vc.contentSizeInPopup, CGSizeZero) ||
+        !CGSizeEqualToSize(vc.landscapeContentSizeInPopup, CGSizeZero)) {
+        [self.childViewControllers.lastObject.popupController pushViewController:vc animated:YES];
+    }
+    else {
+        [self presentViewController:vc animated:YES completion:nil];
+    }
+}
+
 @end
 
 @interface STPopupController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, STPopupNavigationTouchEventDelegate>
@@ -606,7 +628,7 @@ static NSMutableSet *_retainedPopupControllers;
     }
     else {
         CGFloat spacing = 5;
-        CGFloat offsetY = _containerView.frame.origin.y + _containerView.bounds.size.height - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+        offsetY = _containerView.frame.origin.y + _containerView.bounds.size.height - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
         if (offsetY <= 0) { // _containerView can be totally shown, so no need to reposition
             return;
         }
@@ -708,6 +730,13 @@ static NSMutableSet *_retainedPopupControllers;
         [toViewController setNeedsStatusBarAppearanceUpdate];
         [self updateNavigationBarAniamted:NO];
         
+        CGAffineTransform lastTransform = _containerView.transform;
+        _containerView.transform = CGAffineTransformIdentity; // Set transform to identity for getting a correct origin.y
+        
+        CGFloat originY = _containerView.frame.origin.y;
+        
+        _containerView.transform = lastTransform;
+        
         switch (self.transitionStyle) {
             case STPopupTransitionStyleFade: {
                 _containerView.alpha = 0;
@@ -717,7 +746,7 @@ static NSMutableSet *_retainedPopupControllers;
             case STPopupTransitionStyleSlideVertical:
             default: {
                 _containerView.alpha = 1;
-                _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.bounds.size.height);
+                _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height - originY);
             }
                 break;
         }
@@ -744,6 +773,13 @@ static NSMutableSet *_retainedPopupControllers;
         [topViewController beginAppearanceTransition:NO animated:YES];
         [topViewController willMoveToParentViewController:nil];
         
+        CGAffineTransform lastTransform = _containerView.transform;
+        _containerView.transform = CGAffineTransformIdentity; // Set transform to identity for getting a correct origin.y
+        
+        CGFloat originY = _containerView.frame.origin.y;
+        
+        _containerView.transform = lastTransform;
+        
         CGFloat lastBackgroundViewAlpha = _backgroundView.alpha;
         _containerView.userInteractionEnabled = NO;
         [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
@@ -756,7 +792,7 @@ static NSMutableSet *_retainedPopupControllers;
                     break;
                 case STPopupTransitionStyleSlideVertical:
                 default: {
-                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height + _containerView.bounds.size.height);
+                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height - originY + _containerView.frame.size.height);
                 }
                     break;
             }
