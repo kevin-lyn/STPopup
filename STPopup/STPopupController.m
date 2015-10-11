@@ -86,8 +86,8 @@ static NSMutableSet *_retainedPopupControllers;
 - (void)dealloc
 {
     [self destroyObservers];
-    for (UIViewController *viewController in _viewControllers) { // Avoid crash when try to access unsafe unretained property
-        [viewController setValue:nil forKey:@"popupController"];
+    for (UIViewController *viewController in _viewControllers) {
+        [viewController setValue:nil forKey:@"popupController"]; // Avoid crash when try to access unsafe unretained property
         [self destroyObserversOfViewController:viewController];
     }
 }
@@ -162,10 +162,11 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == _navigationBar || object == [self topViewController].navigationItem) {
+    UIViewController *topViewController = [self topViewController];
+    if (object == _navigationBar || object == topViewController.navigationItem) {
         [self updateNavigationBarAniamted:NO];
     }
-    else if (object == [self topViewController]) {
+    else if (object == topViewController && topViewController.isViewLoaded && topViewController.view.superview) {
         [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut
          animations:^{
              [self layoutContainerView];
