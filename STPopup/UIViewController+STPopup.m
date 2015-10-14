@@ -23,7 +23,6 @@
         [self swizzleSelector:@selector(viewDidLoad) toSelector:@selector(st_viewDidLoad)];
         [self swizzleSelector:@selector(presentViewController:animated:completion:) toSelector:@selector(st_presentViewController:animated:completion:)];
         [self swizzleSelector:@selector(dismissViewControllerAnimated:completion:) toSelector:@selector(st_dismissViewControllerAnimated:completion:)];
-        [self swizzleSelector:@selector(parentViewController) toSelector:@selector(st_parentViewController)];
         [self swizzleSelector:@selector(presentedViewController) toSelector:@selector(st_presentedViewController)];
         [self swizzleSelector:@selector(presentingViewController) toSelector:@selector(st_presentingViewController)];
     });
@@ -80,14 +79,6 @@
     }
     
     [self.popupController dismissWithCompletion:completion];
-}
-
-- (UIViewController *)st_parentViewController
-{
-    if (!self.popupController) {
-        return [self st_parentViewController];
-    }
-    return [[self.popupController valueForKey:@"containerViewController"] parentViewController];
 }
 
 - (UIViewController *)st_presentedViewController
