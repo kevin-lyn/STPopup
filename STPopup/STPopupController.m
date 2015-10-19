@@ -68,6 +68,8 @@ static NSMutableSet *_retainedPopupControllers;
 
 @interface STPopupController () <UIViewControllerTransitioningDelegate, UIViewControllerAnimatedTransitioning, STPopupNavigationTouchEventDelegate>
 
+@property (nonatomic) UITapGestureRecognizer* backgroundTapGesture;
+
 @end
 
 @implementation STPopupController
@@ -244,6 +246,12 @@ static NSMutableSet *_retainedPopupControllers;
             completion();
         }
     }];
+}
+
+- (void)dismissOnBackgroundTab
+{
+    self.backgroundTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismiss)];
+    [self.backgroundView addGestureRecognizer:self.backgroundTapGesture];
 }
 
 - (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
