@@ -218,7 +218,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="iOS" id="uS2-dk-pZF">
-                        <barButtonItem key="rightBarButtonItem" title="Next" style="plain" id="zBf-rq-ShH">
+                        <barButtonItem key="rightBarButtonItem" title="Next" id="zBf-rq-ShH">
                             <connections>
                                 <action selector="nextBtnDidTap" destination="10e-re-wtR" id="vWu-bl-wQb"/>
                             </connections>
@@ -260,8 +260,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="59.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PRy-sw-q5t">
-                                                    <rect key="frame" x="0.0" y="0.0" width="600" height="60"/>
+                                                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PRy-sw-q5t">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                                     <animations/>
                                                 </scrollView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No Selections" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DVx-kv-Bds">
