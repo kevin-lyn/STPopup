@@ -363,8 +363,9 @@ static NSMutableSet *_retainedPopupControllers;
             toTitleView = topViewController.navigationItem.titleView;
         }
         else {
+            NSString *title = (topViewController.title ? : topViewController.navigationItem.title) ? : @"";
             _defaultTitleLabel = [UILabel new];
-            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:topViewController.title ? : @""
+            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:title
                                                                                 attributes:_navigationBar.titleTextAttributes];
             [_defaultTitleLabel sizeToFit];
             toTitleView = _defaultTitleLabel;
@@ -386,8 +387,9 @@ static NSMutableSet *_retainedPopupControllers;
             _navigationBar.topItem.titleView = topViewController.navigationItem.titleView;
         }
         else {
+            NSString *title = (topViewController.title ? : topViewController.navigationItem.title) ? : @"";
             _defaultTitleLabel = [UILabel new];
-            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:topViewController.title ? : @""
+            _defaultTitleLabel.attributedText = [[NSAttributedString alloc] initWithString:title
                                                                                 attributes:_navigationBar.titleTextAttributes];
             [_defaultTitleLabel sizeToFit];
             _navigationBar.topItem.titleView = _defaultTitleLabel;

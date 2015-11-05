@@ -20,7 +20,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextBtnDidTap)];
 }
 
-- (void)nextBtnDidTap
+- (IBAction)nextBtnDidTap
 {
     [self.popupController pushViewController:[PopupViewController3 new] animated:YES];
 }

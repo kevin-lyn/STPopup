@@ -68,13 +68,6 @@ NSString * const BottomSheetDemoVegetables = @"Vegetables";
     NSArray *_vegetablesSelections;
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    self.contentSizeInPopup = CGSizeMake([UIScreen mainScreen].bounds.size.width, 180);
-    self.landscapeContentSizeInPopup = CGSizeMake([UIScreen mainScreen].bounds.size.height, 180);
-}
-
 - (void)multiSelectionViewController:(MultiSelectionViewController *)vc didFinishWithSelections:(NSArray *)selections
 {
     if ([vc.title isEqualToString:BottomSheetDemoFruits]) {

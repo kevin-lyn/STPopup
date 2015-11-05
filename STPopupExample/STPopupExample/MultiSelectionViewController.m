@@ -9,25 +9,12 @@
 #import "MultiSelectionViewController.h"
 #import "STPopup.h"
 
-@interface MultiSelectionViewController ()
-
-- (IBAction)done:(id)sender;
-
-@end
-
 @implementation MultiSelectionViewController
 {
     NSMutableSet *_mutableSelections;
 }
 
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    self.contentSizeInPopup = CGSizeMake([UIScreen mainScreen].bounds.size.width, 300);
-    self.landscapeContentSizeInPopup = CGSizeMake([UIScreen mainScreen].bounds.size.height, 300);
-}
-
-- (void)done:(id)sender
+- (IBAction)done:(id)sender
 {
     if ([self.delegate respondsToSelector:@selector(multiSelectionViewController:didFinishWithSelections:)]) {
         [self.delegate multiSelectionViewController:self didFinishWithSelections:_mutableSelections.allObjects];

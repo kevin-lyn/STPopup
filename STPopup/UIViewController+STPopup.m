@@ -99,6 +99,9 @@
 
 - (void)setContentSizeInPopup:(CGSize)contentSizeInPopup
 {
+    if (!CGSizeEqualToSize(CGSizeZero, contentSizeInPopup) && contentSizeInPopup.width == 0) {
+        contentSizeInPopup.width = [UIScreen mainScreen].bounds.size.width;
+    }
     objc_setAssociatedObject(self, @selector(contentSizeInPopup), [NSValue valueWithCGSize:contentSizeInPopup], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -109,6 +112,9 @@
 
 - (void)setLandscapeContentSizeInPopup:(CGSize)landscapeContentSizeInPopup
 {
+    if (!CGSizeEqualToSize(CGSizeZero, landscapeContentSizeInPopup) && landscapeContentSizeInPopup.width == 0) {
+        landscapeContentSizeInPopup.width = [UIScreen mainScreen].bounds.size.height;
+    }
     objc_setAssociatedObject(self, @selector(landscapeContentSizeInPopup), [NSValue valueWithCGSize:landscapeContentSizeInPopup], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
