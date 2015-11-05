@@ -82,6 +82,12 @@ if (NSClassFromString(@"UIBlurEffect")) {
 }
 ```
 
+**Dismiss by tapping background**
+```objc
+popupController = [[STPopupController alloc] initWithRootViewController:self];
+[popupController.backgroundView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundViewDidTap)]];
+```
+
 **Customize UI**
 ```objc
 [STPopupNavigationBar appearance].barTintColor = [UIColor colorWithRed:0.20 green:0.60 blue:0.86 alpha:1.0];
