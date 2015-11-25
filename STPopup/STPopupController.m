@@ -449,8 +449,10 @@ static NSMutableSet *_retainedPopupControllers;
         containerViewHeight += STPopupBottomSheetExtraHeight;
     }
     
-    _containerView.frame = CGRectMake((_containerViewController.view.bounds.size.width - containerViewWidth) / 2,
+    CGFloat mainScreenWidth = [UIScreen mainScreen].bounds.size.width;
+    _containerView.frame = CGRectMake((mainScreenWidth - containerViewWidth) / 2,
                                       containerViewY, containerViewWidth, containerViewHeight);
+    
     _navigationBar.frame = CGRectMake(0, 0, containerViewWidth, preferredNavigationBarHeight);
     _contentView.frame = CGRectMake(0, navigationBarHeight, contentSizeOfTopView.width, contentSizeOfTopView.height);
     
