@@ -486,8 +486,8 @@ static NSMutableSet *_retainedPopupControllers;
 {
     // The preferred height of navigation bar is different between iPhone (4, 5, 6) and 6 Plus.
     // Create a navigation controller to get the preferred height of navigation bar.
-    UINavigationController *navigationController = [UINavigationController new];
-    return navigationController.navigationBar.bounds.size.height;
+    
+    return [_navigationBar sizeThatFits:CGSizeZero].height;
 }
 
 #pragma mark - UI setup
