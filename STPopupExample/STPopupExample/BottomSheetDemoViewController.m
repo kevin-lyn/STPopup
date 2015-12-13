@@ -8,7 +8,7 @@
 
 #import "BottomSheetDemoViewController.h"
 #import "MultiSelectionViewController.h"
-#import "STPopup.h"
+#import <STPopup/STPopup.h>
 
 NSString * const BottomSheetDemoFruits = @"Fruits";
 NSString * const BottomSheetDemoVegetables = @"Vegetables";

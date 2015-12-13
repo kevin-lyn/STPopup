@@ -8,15 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		76D8223C1C1DB5E400FCF988 /* STPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D8223B1C1DB5E400FCF988 /* STPopup.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		76D8224D1C1DB62600FCF988 /* STPopupController.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822431C1DB62600FCF988 /* STPopupController.h */; };
+		76D8224D1C1DB62600FCF988 /* STPopupController.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822431C1DB62600FCF988 /* STPopupController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76D8224E1C1DB62600FCF988 /* STPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D822441C1DB62600FCF988 /* STPopupController.m */; };
-		76D8224F1C1DB62600FCF988 /* STPopupLeftBarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822451C1DB62600FCF988 /* STPopupLeftBarItem.h */; };
+		76D8224F1C1DB62600FCF988 /* STPopupLeftBarItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822451C1DB62600FCF988 /* STPopupLeftBarItem.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		76D822501C1DB62600FCF988 /* STPopupLeftBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D822461C1DB62600FCF988 /* STPopupLeftBarItem.m */; };
-		76D822511C1DB62600FCF988 /* STPopupNavigationBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822471C1DB62600FCF988 /* STPopupNavigationBar.h */; };
+		76D822511C1DB62600FCF988 /* STPopupNavigationBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822471C1DB62600FCF988 /* STPopupNavigationBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76D822521C1DB62600FCF988 /* STPopupNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D822481C1DB62600FCF988 /* STPopupNavigationBar.m */; };
-		76D822531C1DB62600FCF988 /* UIResponder+STPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822491C1DB62600FCF988 /* UIResponder+STPopup.h */; };
+		76D822531C1DB62600FCF988 /* UIResponder+STPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822491C1DB62600FCF988 /* UIResponder+STPopup.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		76D822541C1DB62600FCF988 /* UIResponder+STPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D8224A1C1DB62600FCF988 /* UIResponder+STPopup.m */; };
-		76D822551C1DB62600FCF988 /* UIViewController+STPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D8224B1C1DB62600FCF988 /* UIViewController+STPopup.h */; };
+		76D822551C1DB62600FCF988 /* UIViewController+STPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D8224B1C1DB62600FCF988 /* UIViewController+STPopup.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76D822561C1DB62600FCF988 /* UIViewController+STPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D8224C1C1DB62600FCF988 /* UIViewController+STPopup.m */; };
 /* End PBXBuildFile section */
 

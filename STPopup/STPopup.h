@@ -9,8 +9,8 @@
 #ifndef STPopup_STPopup_h
 #define STPopup_STPopup_h
 
-#import "STPopupController.h"
-#import "STPopupNavigationBar.h"
-#import "UIViewController+STPopup.h"
+#import <STPopup/STPopupController.h>
+#import <STPopup/STPopupNavigationBar.h>
+#import <STPopup/UIViewController+STPopup.h>
 
 #endif

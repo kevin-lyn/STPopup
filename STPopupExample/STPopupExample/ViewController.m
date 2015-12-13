@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "PopupViewController1.h"
-#import "STPopup.h"
+#import <STPopup/STPopup.h>
 
 @interface ViewController ()
 

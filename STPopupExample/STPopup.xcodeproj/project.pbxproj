@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		763128D21BCA9EE8009C5D7E /* BottomSheetDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 763128D11BCA9EE8009C5D7E /* BottomSheetDemoViewController.m */; settings = {ASSET_TAGS = (); }; };
-		763128D51BCAA3C5009C5D7E /* MultiSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 763128D41BCAA3C5009C5D7E /* MultiSelectionViewController.m */; settings = {ASSET_TAGS = (); }; };
-		765E28311BA718E700861EE2 /* UIResponder+STPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 765E28301BA718E700861EE2 /* UIResponder+STPopup.m */; };
+		763128D21BCA9EE8009C5D7E /* BottomSheetDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 763128D11BCA9EE8009C5D7E /* BottomSheetDemoViewController.m */; };
+		763128D51BCAA3C5009C5D7E /* MultiSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 763128D41BCAA3C5009C5D7E /* MultiSelectionViewController.m */; };
 		766A9BA21BA55F350062C75B /* PopupViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 766A9BA11BA55F350062C75B /* PopupViewController3.m */; };
 		76ACB5541BA2934D00A09710 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5531BA2934D00A09710 /* main.m */; };
 		76ACB5571BA2934D00A09710 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5561BA2934D00A09710 /* AppDelegate.m */; };
@@ -17,21 +16,32 @@
 		76ACB55D1BA2934D00A09710 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76ACB55B1BA2934D00A09710 /* Main.storyboard */; };
 		76ACB55F1BA2934D00A09710 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76ACB55E1BA2934D00A09710 /* Images.xcassets */; };
 		76ACB5621BA2934D00A09710 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 76ACB5601BA2934D00A09710 /* LaunchScreen.xib */; };
-		76ACB5801BA29CF500A09710 /* STPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB57F1BA29CF500A09710 /* STPopupController.m */; };
 		76ACB5831BA2BE7500A09710 /* PopupViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5821BA2BE7500A09710 /* PopupViewController1.m */; };
 		76ACB5861BA2BE8100A09710 /* PopupViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5851BA2BE8100A09710 /* PopupViewController2.m */; };
-		76ACB5891BA4977D00A09710 /* UIViewController+STPopup.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5881BA4977D00A09710 /* UIViewController+STPopup.m */; };
-		76ACB58C1BA497EB00A09710 /* STPopupLeftBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB58B1BA497EB00A09710 /* STPopupLeftBarItem.m */; };
-		76BA1F791BA5C00400A28DC1 /* STPopupNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BA1F781BA5C00400A28DC1 /* STPopupNavigationBar.m */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		76D822801C1DBDB800FCF988 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76D8227C1C1DBDB800FCF988 /* STPopup.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 76D822381C1DB5E400FCF988;
+			remoteInfo = STPopup;
+		};
+		76D822821C1DBDDC00FCF988 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76D8227C1C1DBDB800FCF988 /* STPopup.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 76D822371C1DB5E400FCF988;
+			remoteInfo = STPopup;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		763128D01BCA9EE8009C5D7E /* BottomSheetDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BottomSheetDemoViewController.h; sourceTree = "<group>"; };
 		763128D11BCA9EE8009C5D7E /* BottomSheetDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BottomSheetDemoViewController.m; sourceTree = "<group>"; };
 		763128D31BCAA3C5009C5D7E /* MultiSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MultiSelectionViewController.h; sourceTree = "<group>"; };
 		763128D41BCAA3C5009C5D7E /* MultiSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectionViewController.m; sourceTree = "<group>"; };
-		765E282F1BA718E700861EE2 /* UIResponder+STPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+STPopup.h"; sourceTree = "<group>"; };
-		765E28301BA718E700861EE2 /* UIResponder+STPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+STPopup.m"; sourceTree = "<group>"; };
 		766A9BA01BA55F350062C75B /* PopupViewController3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupViewController3.h; sourceTree = "<group>"; };
 		766A9BA11BA55F350062C75B /* PopupViewController3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupViewController3.m; sourceTree = "<group>"; };
 		76ACB54E1BA2934D00A09710 /* STPopup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STPopup.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,19 +54,11 @@
 		76ACB55C1BA2934D00A09710 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		76ACB55E1BA2934D00A09710 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		76ACB5611BA2934D00A09710 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		76ACB57E1BA29CF500A09710 /* STPopupController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupController.h; sourceTree = "<group>"; };
-		76ACB57F1BA29CF500A09710 /* STPopupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupController.m; sourceTree = "<group>"; };
 		76ACB5811BA2BE7500A09710 /* PopupViewController1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupViewController1.h; sourceTree = "<group>"; };
 		76ACB5821BA2BE7500A09710 /* PopupViewController1.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupViewController1.m; sourceTree = "<group>"; };
 		76ACB5841BA2BE8100A09710 /* PopupViewController2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupViewController2.h; sourceTree = "<group>"; };
 		76ACB5851BA2BE8100A09710 /* PopupViewController2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupViewController2.m; sourceTree = "<group>"; };
-		76ACB5871BA4977D00A09710 /* UIViewController+STPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+STPopup.h"; sourceTree = "<group>"; };
-		76ACB5881BA4977D00A09710 /* UIViewController+STPopup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+STPopup.m"; sourceTree = "<group>"; };
-		76ACB58A1BA497EB00A09710 /* STPopupLeftBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupLeftBarItem.h; sourceTree = "<group>"; };
-		76ACB58B1BA497EB00A09710 /* STPopupLeftBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupLeftBarItem.m; sourceTree = "<group>"; };
-		76BA1F771BA5C00400A28DC1 /* STPopupNavigationBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupNavigationBar.h; sourceTree = "<group>"; };
-		76BA1F781BA5C00400A28DC1 /* STPopupNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupNavigationBar.m; sourceTree = "<group>"; };
-		76BA1FB91BA5C4AD00A28DC1 /* STPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopup.h; sourceTree = "<group>"; };
+		76D8227C1C1DBDB800FCF988 /* STPopup.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = STPopup.xcodeproj; path = ../STPopup.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 		76ACB5451BA2934D00A09710 = {
 			isa = PBXGroup;
 			children = (
+				76D8227C1C1DBDB800FCF988 /* STPopup.xcodeproj */,
 				76ACB5501BA2934D00A09710 /* STPopupExample */,
 				76ACB54F1BA2934D00A09710 /* Products */,
 			);
@@ -89,7 +92,6 @@
 		76ACB5501BA2934D00A09710 /* STPopupExample */ = {
 			isa = PBXGroup;
 			children = (
-				76ACB5771BA2936A00A09710 /* STPopup */,
 				76ACB5551BA2934D00A09710 /* AppDelegate.h */,
 				76ACB5561BA2934D00A09710 /* AppDelegate.m */,
 				76ACB5581BA2934D00A09710 /* ViewController.h */,
@@ -121,23 +123,12 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		76ACB5771BA2936A00A09710 /* STPopup */ = {
+		76D8227D1C1DBDB800FCF988 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				76BA1FB91BA5C4AD00A28DC1 /* STPopup.h */,
-				76ACB57E1BA29CF500A09710 /* STPopupController.h */,
-				76ACB57F1BA29CF500A09710 /* STPopupController.m */,
-				76ACB58A1BA497EB00A09710 /* STPopupLeftBarItem.h */,
-				76ACB58B1BA497EB00A09710 /* STPopupLeftBarItem.m */,
-				76BA1F771BA5C00400A28DC1 /* STPopupNavigationBar.h */,
-				76BA1F781BA5C00400A28DC1 /* STPopupNavigationBar.m */,
-				76ACB5871BA4977D00A09710 /* UIViewController+STPopup.h */,
-				76ACB5881BA4977D00A09710 /* UIViewController+STPopup.m */,
-				765E282F1BA718E700861EE2 /* UIResponder+STPopup.h */,
-				765E28301BA718E700861EE2 /* UIResponder+STPopup.m */,
+				76D822811C1DBDB800FCF988 /* STPopup.framework */,
 			);
-			name = STPopup;
-			path = ../../STPopup;
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +145,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				76D822831C1DBDDC00FCF988 /* PBXTargetDependency */,
 			);
 			name = STPopup;
 			productName = STPopupExample;
@@ -166,7 +158,7 @@
 		76ACB5461BA2934D00A09710 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = Sth4Me;
 				TargetAttributes = {
 					76ACB54D1BA2934D00A09710 = {
@@ -185,12 +177,28 @@
 			mainGroup = 76ACB5451BA2934D00A09710;
 			productRefGroup = 76ACB54F1BA2934D00A09710 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 76D8227D1C1DBDB800FCF988 /* Products */;
+					ProjectRef = 76D8227C1C1DBDB800FCF988 /* STPopup.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				76ACB54D1BA2934D00A09710 /* STPopup */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		76D822811C1DBDB800FCF988 /* STPopup.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = STPopup.framework;
+			remoteRef = 76D822801C1DBDB800FCF988 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		76ACB54C1BA2934D00A09710 /* Resources */ = {
@@ -211,13 +219,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				76ACB5861BA2BE8100A09710 /* PopupViewController2.m in Sources */,
-				76ACB58C1BA497EB00A09710 /* STPopupLeftBarItem.m in Sources */,
-				765E28311BA718E700861EE2 /* UIResponder+STPopup.m in Sources */,
-				76ACB5891BA4977D00A09710 /* UIViewController+STPopup.m in Sources */,
 				763128D21BCA9EE8009C5D7E /* BottomSheetDemoViewController.m in Sources */,
 				76ACB5831BA2BE7500A09710 /* PopupViewController1.m in Sources */,
-				76ACB5801BA29CF500A09710 /* STPopupController.m in Sources */,
-				76BA1F791BA5C00400A28DC1 /* STPopupNavigationBar.m in Sources */,
 				763128D51BCAA3C5009C5D7E /* MultiSelectionViewController.m in Sources */,
 				766A9BA21BA55F350062C75B /* PopupViewController3.m in Sources */,
 				76ACB55A1BA2934D00A09710 /* ViewController.m in Sources */,
@@ -227,6 +230,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		76D822831C1DBDDC00FCF988 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = STPopup;
+			targetProxy = 76D822821C1DBDDC00FCF988 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		76ACB55B1BA2934D00A09710 /* Main.storyboard */ = {
@@ -269,6 +280,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -284,7 +296,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -322,7 +334,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -335,8 +347,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = STPopupExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "me.sth4.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = STPopup;
 			};
 			name = Debug;
@@ -346,8 +359,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = STPopupExample/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "me.sth4.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = STPopup;
 			};
 			name = Release;

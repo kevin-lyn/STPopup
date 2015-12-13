@@ -7,7 +7,7 @@
 //
 
 #import "MultiSelectionViewController.h"
-#import "STPopup.h"
+#import <STPopup/STPopup.h>
 
 @implementation MultiSelectionViewController
 {
