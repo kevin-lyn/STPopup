@@ -100,7 +100,17 @@
 - (void)setContentSizeInPopup:(CGSize)contentSizeInPopup
 {
     if (!CGSizeEqualToSize(CGSizeZero, contentSizeInPopup) && contentSizeInPopup.width == 0) {
-        contentSizeInPopup.width = [UIScreen mainScreen].bounds.size.width;
+        switch ([UIApplication sharedApplication].statusBarOrientation) {
+            case UIInterfaceOrientationLandscapeLeft:
+            case UIInterfaceOrientationLandscapeRight: {
+                contentSizeInPopup.width = [UIScreen mainScreen].bounds.size.height;
+            }
+                break;
+            default: {
+                contentSizeInPopup.width = [UIScreen mainScreen].bounds.size.width;
+            }
+                break;
+        }
     }
     objc_setAssociatedObject(self, @selector(contentSizeInPopup), [NSValue valueWithCGSize:contentSizeInPopup], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -113,7 +123,17 @@
 - (void)setLandscapeContentSizeInPopup:(CGSize)landscapeContentSizeInPopup
 {
     if (!CGSizeEqualToSize(CGSizeZero, landscapeContentSizeInPopup) && landscapeContentSizeInPopup.width == 0) {
-        landscapeContentSizeInPopup.width = [UIScreen mainScreen].bounds.size.height;
+        switch ([UIApplication sharedApplication].statusBarOrientation) {
+            case UIInterfaceOrientationLandscapeLeft:
+            case UIInterfaceOrientationLandscapeRight: {
+                landscapeContentSizeInPopup.width = [UIScreen mainScreen].bounds.size.width;
+            }
+                break;
+            default: {
+                landscapeContentSizeInPopup.width = [UIScreen mainScreen].bounds.size.height;
+            }
+                break;
+        }
     }
     objc_setAssociatedObject(self, @selector(landscapeContentSizeInPopup), [NSValue valueWithCGSize:landscapeContentSizeInPopup], OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
