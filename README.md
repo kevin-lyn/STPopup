@@ -16,9 +16,14 @@ STPopup provides STPopupController, which works just like UINavigationController
 ![Sth4Me](https://cloud.githubusercontent.com/assets/1491282/9857827/8fa0125e-5b4f-11e5-9c0d-ff955c007360.gif)
 
 ## Get Started
+**CocoaPods**
 ```ruby
 platform :ios, '7.0'
 pod 'STPopup'
+```
+**Carthage**
+```ruby
+github "kevin0571/STPopup"
 ```
 **Import header file**
 ```objc
