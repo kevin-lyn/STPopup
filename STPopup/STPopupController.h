@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "STPopupNavigationBar.h"
+#import <STPopup/STPopupNavigationBar.h>
 
 typedef NS_ENUM(NSUInteger, STPopupStyle) {
     STPopupStyleFormSheet,
