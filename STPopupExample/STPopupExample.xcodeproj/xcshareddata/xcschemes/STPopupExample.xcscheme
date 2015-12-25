@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "76ACB54D1BA2934D00A09710"
                BuildableName = "STPopup.app"
-               BlueprintName = "STPopup"
-               ReferencedContainer = "container:STPopup.xcodeproj">
+               BlueprintName = "STPopupExample"
+               ReferencedContainer = "container:STPopupExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,8 +34,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "76ACB54D1BA2934D00A09710"
             BuildableName = "STPopup.app"
-            BlueprintName = "STPopup"
-            ReferencedContainer = "container:STPopup.xcodeproj">
+            BlueprintName = "STPopupExample"
+            ReferencedContainer = "container:STPopupExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -57,8 +57,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "76ACB54D1BA2934D00A09710"
             BuildableName = "STPopup.app"
-            BlueprintName = "STPopup"
-            ReferencedContainer = "container:STPopup.xcodeproj">
+            BlueprintName = "STPopupExample"
+            ReferencedContainer = "container:STPopupExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -76,8 +76,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "76ACB54D1BA2934D00A09710"
             BuildableName = "STPopup.app"
-            BlueprintName = "STPopup"
-            ReferencedContainer = "container:STPopup.xcodeproj">
+            BlueprintName = "STPopupExample"
+            ReferencedContainer = "container:STPopupExample.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -44,7 +44,7 @@
 		763128D41BCAA3C5009C5D7E /* MultiSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectionViewController.m; sourceTree = "<group>"; };
 		766A9BA01BA55F350062C75B /* PopupViewController3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupViewController3.h; sourceTree = "<group>"; };
 		766A9BA11BA55F350062C75B /* PopupViewController3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupViewController3.m; sourceTree = "<group>"; };
-		76ACB54E1BA2934D00A09710 /* STPopup.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STPopup.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		76ACB54E1BA2934D00A09710 /* STPopupExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STPopupExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76ACB5521BA2934D00A09710 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76ACB5531BA2934D00A09710 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		76ACB5551BA2934D00A09710 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -84,7 +84,7 @@
 		76ACB54F1BA2934D00A09710 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				76ACB54E1BA2934D00A09710 /* STPopup.app */,
+				76ACB54E1BA2934D00A09710 /* STPopupExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -134,9 +134,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		76ACB54D1BA2934D00A09710 /* STPopup */ = {
+		76ACB54D1BA2934D00A09710 /* STPopupExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 76ACB5711BA2934D00A09710 /* Build configuration list for PBXNativeTarget "STPopup" */;
+			buildConfigurationList = 76ACB5711BA2934D00A09710 /* Build configuration list for PBXNativeTarget "STPopupExample" */;
 			buildPhases = (
 				76ACB54A1BA2934D00A09710 /* Sources */,
 				76ACB54B1BA2934D00A09710 /* Frameworks */,
@@ -147,9 +147,9 @@
 			dependencies = (
 				76D822831C1DBDDC00FCF988 /* PBXTargetDependency */,
 			);
-			name = STPopup;
+			name = STPopupExample;
 			productName = STPopupExample;
-			productReference = 76ACB54E1BA2934D00A09710 /* STPopup.app */;
+			productReference = 76ACB54E1BA2934D00A09710 /* STPopupExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -166,7 +166,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 76ACB5491BA2934D00A09710 /* Build configuration list for PBXProject "STPopup" */;
+			buildConfigurationList = 76ACB5491BA2934D00A09710 /* Build configuration list for PBXProject "STPopupExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -185,7 +185,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				76ACB54D1BA2934D00A09710 /* STPopup */,
+				76ACB54D1BA2934D00A09710 /* STPopupExample */,
 			);
 		};
 /* End PBXProject section */
@@ -350,7 +350,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "me.sth4.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = STPopup;
+				PRODUCT_NAME = STPopupExample;
 			};
 			name = Debug;
 		};
@@ -362,14 +362,14 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "me.sth4.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = STPopup;
+				PRODUCT_NAME = STPopupExample;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		76ACB5491BA2934D00A09710 /* Build configuration list for PBXProject "STPopup" */ = {
+		76ACB5491BA2934D00A09710 /* Build configuration list for PBXProject "STPopupExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				76ACB56F1BA2934D00A09710 /* Debug */,
@@ -378,7 +378,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		76ACB5711BA2934D00A09710 /* Build configuration list for PBXNativeTarget "STPopup" */ = {
+		76ACB5711BA2934D00A09710 /* Build configuration list for PBXNativeTarget "STPopupExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				76ACB5721BA2934D00A09710 /* Debug */,
