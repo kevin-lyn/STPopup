@@ -2,4 +2,4 @@ language: objective-c
 before_script:
     - brew update && brew upgrade xctool
 script:
-    - xctool test -project STPopupExample/STPopup.xcodeproj -scheme STPopupExample -sdk iphonesimulator
+    - xctool test -project STPopupExample/STPopupExample.xcodeproj -scheme STPopupExample -sdk iphonesimulator
