@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "76ACB54D1BA2934D00A09710"
-               BuildableName = "STPopup.app"
+               BuildableName = "STPopupExample.app"
                BlueprintName = "STPopupExample"
                ReferencedContainer = "container:STPopupExample.xcodeproj">
             </BuildableReference>
@@ -33,7 +33,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "76ACB54D1BA2934D00A09710"
-            BuildableName = "STPopup.app"
+            BuildableName = "STPopupExample.app"
             BlueprintName = "STPopupExample"
             ReferencedContainer = "container:STPopupExample.xcodeproj">
          </BuildableReference>
@@ -56,7 +56,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "76ACB54D1BA2934D00A09710"
-            BuildableName = "STPopup.app"
+            BuildableName = "STPopupExample.app"
             BlueprintName = "STPopupExample"
             ReferencedContainer = "container:STPopupExample.xcodeproj">
          </BuildableReference>
@@ -75,7 +75,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "76ACB54D1BA2934D00A09710"
-            BuildableName = "STPopup.app"
+            BuildableName = "STPopupExample.app"
             BlueprintName = "STPopupExample"
             ReferencedContainer = "container:STPopupExample.xcodeproj">
          </BuildableReference>
