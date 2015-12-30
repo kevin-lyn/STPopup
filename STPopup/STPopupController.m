@@ -16,10 +16,6 @@ CGFloat const STPopupBottomSheetExtraHeight = 80;
 
 static NSMutableSet *_retainedPopupControllers;
 
-@interface STPopupContainerViewController : UIViewController
-
-@end
-
 @implementation STPopupContainerViewController
 
 - (UIStatusBarStyle)preferredStatusBarStyle

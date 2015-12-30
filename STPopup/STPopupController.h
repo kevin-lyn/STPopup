@@ -19,6 +19,10 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
     STPopupTransitionStyleFade
 };
 
+@interface STPopupContainerViewController : UIViewController
+
+@end
+
 @interface STPopupController : NSObject
 
 @property (nonatomic, assign) STPopupStyle style;
