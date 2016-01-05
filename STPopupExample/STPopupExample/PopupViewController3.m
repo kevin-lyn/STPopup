@@ -1,13 +1,13 @@
 //
 //  PopupViewController3.m
-//  STPopup
+//  STPopupExample
 //
 //  Created by Kevin Lin on 13/9/15.
 //  Copyright (c) 2015 Sth4Me. All rights reserved.
 //
 
 #import "PopupViewController3.h"
-#import "STPopup.h"
+#import <STPopup/STPopup.h>
 
 @implementation PopupViewController3
 {

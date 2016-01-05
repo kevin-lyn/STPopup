@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  STPopup
+//  STPopupExample
 //
 //  Created by Kevin Lin on 11/9/15.
 //  Copyright (c) 2015 Sth4Me. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "PopupViewController1.h"
-#import "STPopup.h"
+#import <STPopup/STPopup.h>
 
 @interface ViewController ()
 

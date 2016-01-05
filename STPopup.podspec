@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name         = "STPopup"
-  s.version      = "1.3.0"
-  s.summary      = "STPopup provides STPopupController, which works just like UINavigationController in popup style, for both iPhone and iPad."
+  s.version      = "1.5.0"
+  s.summary      = "STPopup provides STPopupController, which works just like UINavigationController in form sheet/bottom sheet style, for both iPhone and iPad."
 
   s.description  = <<-DESC
                     - Extend your view controller from UIViewController, build it in your familiar way.

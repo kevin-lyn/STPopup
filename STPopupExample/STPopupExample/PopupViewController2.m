@@ -1,6 +1,6 @@
 //
 //  PopupViewController2.m
-//  STPopup
+//  STPopupExample
 //
 //  Created by Kevin Lin on 11/9/15.
 //  Copyright (c) 2015 Sth4Me. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "PopupViewController2.h"
 #import "PopupViewController3.h"
-#import "STPopup.h"
+#import <STPopup/STPopup.h>
 
 @implementation PopupViewController2
 
@@ -20,7 +20,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:self action:@selector(nextBtnDidTap)];
 }
 
-- (void)nextBtnDidTap
+- (IBAction)nextBtnDidTap
 {
     [self.popupController pushViewController:[PopupViewController3 new] animated:YES];
 }

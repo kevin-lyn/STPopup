@@ -1,6 +1,6 @@
 //
 //  BottomSheetDemoViewController.m
-//  STPopup
+//  STPopupExample
 //
 //  Created by Kevin Lin on 11/10/15.
 //  Copyright © 2015 Sth4Me. All rights reserved.
@@ -8,7 +8,7 @@
 
 #import "BottomSheetDemoViewController.h"
 #import "MultiSelectionViewController.h"
-#import "STPopup.h"
+#import <STPopup/STPopup.h>
 
 NSString * const BottomSheetDemoFruits = @"Fruits";
 NSString * const BottomSheetDemoVegetables = @"Vegetables";
@@ -66,13 +66,6 @@ NSString * const BottomSheetDemoVegetables = @"Vegetables";
 {
     NSArray *_fruitsSelections;
     NSArray *_vegetablesSelections;
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    self.contentSizeInPopup = CGSizeMake([UIScreen mainScreen].bounds.size.width, 180);
-    self.landscapeContentSizeInPopup = CGSizeMake([UIScreen mainScreen].bounds.size.height, 180);
 }
 
 - (void)multiSelectionViewController:(MultiSelectionViewController *)vc didFinishWithSelections:(NSArray *)selections
