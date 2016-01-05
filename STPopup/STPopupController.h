@@ -29,6 +29,8 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 @property (nonatomic, strong) UIView *backgroundView;
 @property (nonatomic, assign, readonly) BOOL presented;
 
+@property (nonatomic, strong) void (^closeCompletion)(void);
+
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController;
 
 - (void)presentInViewController:(UIViewController *)viewController;
