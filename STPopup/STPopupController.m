@@ -227,8 +227,8 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)dismiss
 {
-    if (self.completion) {
-        [self dismissWithCompletion:self.completion];
+    if (_closeCompletion) {
+        [self dismissWithCompletion:_closeCompletion];
     } else {
         [self dismissWithCompletion:nil];
     }
