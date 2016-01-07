@@ -8,6 +8,19 @@
 
 #import "STPopupNavigationBar.h"
 
+@protocol STPopupNavigationTouchEventDelegate <NSObject>
+
+- (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidMoveWithOffset:(CGFloat)offset;
+- (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidEndWithOffset:(CGFloat)offset;
+
+@end
+
+@interface STPopupNavigationBar ()
+
+@property (nonatomic, weak) id<STPopupNavigationTouchEventDelegate> touchEventDelegate;
+
+@end
+
 @implementation STPopupNavigationBar
 {
     BOOL _moving;

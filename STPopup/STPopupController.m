@@ -16,6 +16,25 @@ CGFloat const STPopupBottomSheetExtraHeight = 80;
 
 static NSMutableSet *_retainedPopupControllers;
 
+@protocol STPopupNavigationTouchEventDelegate <NSObject>
+
+- (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidMoveWithOffset:(CGFloat)offset;
+- (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidEndWithOffset:(CGFloat)offset;
+
+@end
+
+@interface STPopupNavigationBar (STInternal)
+
+@property (nonatomic, weak) id<STPopupNavigationTouchEventDelegate> touchEventDelegate;
+
+@end
+
+@interface UIViewController (STInternal)
+
+@property (nonatomic, weak) STPopupController *popupController;
+
+@end
+
 @interface STPopupContainerViewController : UIViewController
 
 @end
@@ -74,7 +93,6 @@ static NSMutableSet *_retainedPopupControllers;
 {
     STPopupContainerViewController *_containerViewController;
     NSMutableArray *_viewControllers; // <UIViewController>
-    UIView *_containerView;
     UIView *_contentView;
     UILabel *_defaultTitleLabel;
     STPopupLeftBarItem *_defaultLeftBarItem;
@@ -110,7 +128,7 @@ static NSMutableSet *_retainedPopupControllers;
 {
     [self destroyObservers];
     for (UIViewController *viewController in _viewControllers) {
-        [viewController setValue:nil forKey:@"popupController"]; // Avoid crash when try to access unsafe unretained property
+        viewController.popupController = nil; // Avoid crash when try to access unsafe unretained property
         [self destroyObserversOfViewController:viewController];
     }
 }
@@ -253,7 +271,7 @@ static NSMutableSet *_retainedPopupControllers;
     }
     
     UIViewController *topViewController = [self topViewController];
-    [viewController setValue:self forKey:@"popupController"];
+    viewController.popupController = self;
     [_viewControllers addObject:viewController];
     
     if (self.presented) {
@@ -270,7 +288,7 @@ static NSMutableSet *_retainedPopupControllers;
     }
     
     UIViewController *topViewController = [self topViewController];
-    [topViewController setValue:nil forKey:@"popupController"];
+    topViewController.popupController = nil;
     [self destroyObserversOfViewController:topViewController];
     [_viewControllers removeObject:topViewController];
     
