@@ -125,4 +125,11 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
  */
 - (void)setNavigationBarHidden:(BOOL)navigationBarHidden animated:(BOOL)animated;
 
+/**
+ *  Get the top view controller in the popup's controller stack.
+ *
+ *  @return A `UIViewController`
+ */
+- (UIViewController *)topViewController;
+
 @end
