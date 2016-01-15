@@ -138,6 +138,11 @@ static NSMutableSet *_retainedPopupControllers;
     return _containerViewController.presentingViewController != nil;
 }
 
+- (UIViewController *)presentingViewController
+{
+    return _containerViewController.presentingViewController;
+}
+
 - (void)setBackgroundView:(UIView *)backgroundView
 {
     [_backgroundView removeFromSuperview];
