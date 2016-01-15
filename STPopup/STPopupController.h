@@ -79,6 +79,11 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 @property (nonatomic, assign, readonly) BOOL presented;
 
 /**
+ The view controller that presented the popup.
+ */
+@property (nonatomic, readonly) UIViewController *presentingViewController;
+
+/**
  Init the popup with root view controller.
  */
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController;
@@ -124,10 +129,5 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
  @see navigationBarHidden
  */
 - (void)setNavigationBarHidden:(BOOL)navigationBarHidden animated:(BOOL)animated;
-
-/**
- The view controller that presented the popup.
- */
-- (UIViewController *)presentingViewController;
 
 @end
