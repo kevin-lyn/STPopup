@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A46DC981C48AF270092C76B /* STPopup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76D822811C1DBDB800FCF988 /* STPopup.framework */; };
+		0A46DC991C48AF270092C76B /* STPopup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 76D822811C1DBDB800FCF988 /* STPopup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		763128D21BCA9EE8009C5D7E /* BottomSheetDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 763128D11BCA9EE8009C5D7E /* BottomSheetDemoViewController.m */; };
 		763128D51BCAA3C5009C5D7E /* MultiSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 763128D41BCAA3C5009C5D7E /* MultiSelectionViewController.m */; };
 		766A9BA21BA55F350062C75B /* PopupViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 766A9BA11BA55F350062C75B /* PopupViewController3.m */; };
@@ -21,6 +23,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0A46DC9A1C48AF270092C76B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76D8227C1C1DBDB800FCF988 /* STPopup.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 76D822371C1DB5E400FCF988;
+			remoteInfo = STPopup;
+		};
 		76D822801C1DBDB800FCF988 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 76D8227C1C1DBDB800FCF988 /* STPopup.xcodeproj */;
@@ -36,6 +45,20 @@
 			remoteInfo = STPopup;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0A46DC9C1C48AF270092C76B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0A46DC991C48AF270092C76B /* STPopup.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		763128D01BCA9EE8009C5D7E /* BottomSheetDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BottomSheetDemoViewController.h; sourceTree = "<group>"; };
@@ -66,6 +89,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A46DC981C48AF270092C76B /* STPopup.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,11 +165,13 @@
 				76ACB54A1BA2934D00A09710 /* Sources */,
 				76ACB54B1BA2934D00A09710 /* Frameworks */,
 				76ACB54C1BA2934D00A09710 /* Resources */,
+				0A46DC9C1C48AF270092C76B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				76D822831C1DBDDC00FCF988 /* PBXTargetDependency */,
+				0A46DC9B1C48AF270092C76B /* PBXTargetDependency */,
 			);
 			name = STPopupExample;
 			productName = STPopupExample;
@@ -232,6 +258,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0A46DC9B1C48AF270092C76B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = STPopup;
+			targetProxy = 0A46DC9A1C48AF270092C76B /* PBXContainerItemProxy */;
+		};
 		76D822831C1DBDDC00FCF988 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = STPopup;
