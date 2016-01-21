@@ -133,6 +133,11 @@ static NSMutableSet *_retainedPopupControllers;
     }
 }
 
+- (UIViewController *)topViewController
+{
+  return _viewControllers.lastObject;
+}
+
 - (BOOL)presented
 {
     return _containerViewController.presentingViewController != nil;
@@ -442,11 +447,6 @@ static NSMutableSet *_retainedPopupControllers;
     } completion:^(BOOL finished) {
         _navigationBar.hidden = navigationBarHidden;
     }];
-}
-
-- (UIViewController *)topViewController
-{
-    return _viewControllers.lastObject;
 }
 
 #pragma mark - UI layout

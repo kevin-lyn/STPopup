@@ -74,6 +74,11 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 @property (nonatomic, strong, readonly) UIView *containerView;
 
 /**
+ *  The top view controller in the popup's controller stack.
+ */
+@property (nonatomic, strong, readonly) UIViewController *topViewController;
+
+/**
  Indicates if the popup is current presented.
  */
 @property (nonatomic, assign, readonly) BOOL presented;
@@ -124,12 +129,5 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
  @see navigationBarHidden
  */
 - (void)setNavigationBarHidden:(BOOL)navigationBarHidden animated:(BOOL)animated;
-
-/**
- *  Get the top view controller in the popup's controller stack.
- *
- *  @return A `UIViewController`
- */
-- (UIViewController *)topViewController;
 
 @end
