@@ -169,7 +169,6 @@ static NSMutableSet *_retainedPopupControllers;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     
     // Observe keyboard
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
@@ -293,21 +292,21 @@ static NSMutableSet *_retainedPopupControllers;
     }
     
     UIViewController *topViewController = [self topViewController];
-    topViewController.popupController = nil;
     [self destroyObserversOfViewController:topViewController];
     [_viewControllers removeObject:topViewController];
     
     if (self.presented) {
         [self transitFromViewController:topViewController toViewController:[self topViewController] animated:animated];
     }
+    topViewController.popupController = nil;
 }
 
 - (void)transitFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController animated:(BOOL)animated
 {
+    [fromViewController willMoveToParentViewController:nil];
     [fromViewController beginAppearanceTransition:NO animated:animated];
     [toViewController beginAppearanceTransition:YES animated:animated];
-    
-    [fromViewController willMoveToParentViewController:nil];
+
     [_containerViewController addChildViewController:toViewController];
     
     if (animated) {
