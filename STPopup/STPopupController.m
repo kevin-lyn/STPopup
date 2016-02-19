@@ -642,9 +642,15 @@ static NSMutableSet *_retainedPopupControllers;
         (orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight)) {
         keyboardHeight = [_keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.width;
     }
-    
+
+    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+
     CGFloat offsetY = 0;
     if (self.style == STPopupStyleBottomSheet) {
+        CGFloat windowTextFieldY = [currentTextInput convertPoint:CGPointZero toView:nil].y;
+        if (windowTextFieldY <= keyboardHeight) {
+            return;
+        }
         offsetY = keyboardHeight;
     }
     else {
@@ -653,9 +659,7 @@ static NSMutableSet *_retainedPopupControllers;
         if (offsetY <= 0) { // _containerView can be totally shown, so no need to reposition
             return;
         }
-        
-        CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-        
+
         if (_containerView.frame.origin.y - offsetY < statusBarHeight) { // _containerView will be covered by status bar if it is repositioned with "offsetY"
             offsetY = _containerView.frame.origin.y - statusBarHeight;
             // currentTextField can not be totally shown if _containerView is going to repositioned with "offsetY"
