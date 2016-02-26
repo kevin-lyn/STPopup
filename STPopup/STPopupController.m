@@ -514,6 +514,7 @@ static NSMutableSet *_retainedPopupControllers;
     _containerViewController = [STPopupContainerViewController new];
     _containerViewController.view.backgroundColor = [UIColor clearColor];
     _containerViewController.modalPresentationStyle = UIModalPresentationCustom;
+    _containerViewController.modalPresentationCapturesStatusBarAppearance = YES;
     _containerViewController.transitioningDelegate = self;
     [self setupBackgroundView];
     [self setupContainerView];
