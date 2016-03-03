@@ -726,7 +726,7 @@ static NSMutableSet *_retainedPopupControllers;
         return 0.5;
     }
     else {
-        return self.transitionStyle == STPopupTransitionStyleFade ? 0.4 : 0.7;
+        return self.transitionStyle == STPopupTransitionStyleFade ? 0.2 : 0.35;
     }
 }
 
@@ -739,7 +739,7 @@ static NSMutableSet *_retainedPopupControllers;
     
     UIViewController *topViewController = [self topViewController];
     
-    if (toViewController == _containerViewController) {
+    if (toViewController == _containerViewController) { // Presenting
         [fromViewController beginAppearanceTransition:NO animated:YES];
         
         [[transitionContext containerView] addSubview:toViewController.view];
@@ -789,7 +789,7 @@ static NSMutableSet *_retainedPopupControllers;
             [fromViewController endAppearanceTransition];
         }];
     }
-    else {
+    else { // Dismissing
         [toViewController beginAppearanceTransition:YES animated:YES];
         
         [topViewController beginAppearanceTransition:NO animated:YES];
@@ -804,7 +804,7 @@ static NSMutableSet *_retainedPopupControllers;
         
         CGFloat lastBackgroundViewAlpha = _backgroundView.alpha;
         _containerView.userInteractionEnabled = NO;
-        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             _backgroundView.alpha = 0;
             switch (self.transitionStyle) {
                 case STPopupTransitionStyleFade: {
