@@ -32,11 +32,11 @@ NSString *const STPopupFirstResponderDidChangeNotification = @"STPopupFirstRespo
 
 - (BOOL)st_becomeFirstResponder
 {
-    BOOL rs = [self st_becomeFirstResponder];
-    if (rs) {
+    BOOL accepted = [self st_becomeFirstResponder];
+    if (accepted) {
         [[NSNotificationCenter defaultCenter] postNotificationName:STPopupFirstResponderDidChangeNotification object:self];
     }
-    return rs;
+    return accepted;
 }
 
 @end
