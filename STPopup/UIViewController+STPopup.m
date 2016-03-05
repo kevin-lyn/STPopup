@@ -150,7 +150,11 @@
 
 - (STPopupController *)popupController
 {
-    return objc_getAssociatedObject(self, @selector(popupController));
+    STPopupController *popupController = objc_getAssociatedObject(self, @selector(popupController));
+    if (!popupController) {
+        return self.parentViewController.popupController;
+    }
+    return popupController;
 }
 
 @end
