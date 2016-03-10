@@ -169,7 +169,6 @@ static NSMutableSet *_retainedPopupControllers;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     
     // Observe keyboard
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
@@ -293,21 +292,21 @@ static NSMutableSet *_retainedPopupControllers;
     }
     
     UIViewController *topViewController = [self topViewController];
-    topViewController.popupController = nil;
     [self destroyObserversOfViewController:topViewController];
     [_viewControllers removeObject:topViewController];
     
     if (self.presented) {
         [self transitFromViewController:topViewController toViewController:[self topViewController] animated:animated];
     }
+    topViewController.popupController = nil;
 }
 
 - (void)transitFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController animated:(BOOL)animated
 {
+    [fromViewController willMoveToParentViewController:nil];
     [fromViewController beginAppearanceTransition:NO animated:animated];
     [toViewController beginAppearanceTransition:YES animated:animated];
-    
-    [fromViewController willMoveToParentViewController:nil];
+
     [_containerViewController addChildViewController:toViewController];
     
     if (animated) {
@@ -515,6 +514,7 @@ static NSMutableSet *_retainedPopupControllers;
     _containerViewController = [STPopupContainerViewController new];
     _containerViewController.view.backgroundColor = [UIColor clearColor];
     _containerViewController.modalPresentationStyle = UIModalPresentationCustom;
+    _containerViewController.modalPresentationCapturesStatusBarAppearance = YES;
     _containerViewController.transitioningDelegate = self;
     [self setupBackgroundView];
     [self setupContainerView];
@@ -643,9 +643,15 @@ static NSMutableSet *_retainedPopupControllers;
         (orientation == UIInterfaceOrientationLandscapeLeft || orientation == UIInterfaceOrientationLandscapeRight)) {
         keyboardHeight = [_keyboardInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.width;
     }
-    
+
+    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+
     CGFloat offsetY = 0;
     if (self.style == STPopupStyleBottomSheet) {
+        CGFloat windowTextFieldY = [currentTextInput convertPoint:CGPointZero toView:nil].y;
+        if (windowTextFieldY <= keyboardHeight) {
+            return;
+        }
         offsetY = keyboardHeight;
     }
     else {
@@ -654,9 +660,7 @@ static NSMutableSet *_retainedPopupControllers;
         if (offsetY <= 0) { // _containerView can be totally shown, so no need to reposition
             return;
         }
-        
-        CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-        
+
         if (_containerView.frame.origin.y - offsetY < statusBarHeight) { // _containerView will be covered by status bar if it is repositioned with "offsetY"
             offsetY = _containerView.frame.origin.y - statusBarHeight;
             // currentTextField can not be totally shown if _containerView is going to repositioned with "offsetY"
