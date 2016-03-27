@@ -28,4 +28,7 @@
  */
 @property (nonatomic, weak, readonly) STPopupController *popupController;
 
+// Default is NO
+@property (nonatomic, assign) BOOL shouldDidTagBackgroundForDismiss;
+
 @end

@@ -223,9 +223,9 @@ static NSMutableSet *_retainedPopupControllers;
     }
     else if (object == topViewController && topViewController.isViewLoaded && topViewController.view.superview) {
         [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut
-         animations:^{
-             [self layoutContainerView];
-         } completion:nil];
+                         animations:^{
+                             [self layoutContainerView];
+                         } completion:nil];
     }
 }
 
@@ -315,7 +315,7 @@ static NSMutableSet *_retainedPopupControllers;
         // Capture view in "fromViewController" to avoid "viewWillAppear" and "viewDidAppear" being called.
         UIGraphicsBeginImageContextWithOptions(fromViewController.view.bounds.size, NO, [UIScreen mainScreen].scale);
         [fromViewController.view drawViewHierarchyInRect:fromViewController.view.bounds afterScreenUpdates:NO];
-
+        
         UIImageView *capturedView = [[UIImageView alloc] initWithImage:UIGraphicsGetImageFromCurrentImageContext()];
         
         UIGraphicsEndImageContext();
@@ -455,7 +455,7 @@ static NSMutableSet *_retainedPopupControllers;
 - (void)layoutContainerView
 {
     _backgroundView.frame = _containerViewController.view.bounds;
- 
+    
     CGFloat preferredNavigationBarHeight = [self preferredNavigationBarHeight];
     CGFloat navigationBarHeight = _navigationBarHidden ? 0 : preferredNavigationBarHeight;
     CGSize contentSizeOfTopView = [self contentSizeOfTopView];
@@ -569,6 +569,10 @@ static NSMutableSet *_retainedPopupControllers;
 - (void)bgViewDidTap
 {
     [_containerView endEditing:YES];
+    UIViewController *presentedViewController =  [_viewControllers lastObject];
+    if (presentedViewController.shouldDidTagBackgroundForDismiss) {
+        [self dismiss];
+    }
 }
 
 - (void)setCornerRadius:(CGFloat)cornerRadius
@@ -827,7 +831,7 @@ static NSMutableSet *_retainedPopupControllers;
             
             [topViewController.view removeFromSuperview];
             [topViewController removeFromParentViewController];
-    
+            
             [toViewController endAppearanceTransition];
             
             _backgroundView.alpha = lastBackgroundViewAlpha;

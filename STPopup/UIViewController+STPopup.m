@@ -157,4 +157,12 @@
     return popupController;
 }
 
+- (BOOL)shouldDidTagBackgroundForDismiss {
+    return [objc_getAssociatedObject(self, @selector(shouldDidTagBackgroundForDismiss)) boolValue];
+}
+
+- (void)setShouldDidTagBackgroundForDismiss:(BOOL)shouldDidTagBackgroundForDismiss {
+    objc_setAssociatedObject(self, @selector(shouldDidTagBackgroundForDismiss), @(shouldDidTagBackgroundForDismiss), OBJC_ASSOCIATION_ASSIGN);
+}
+
 @end
