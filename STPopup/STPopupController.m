@@ -217,7 +217,7 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    UIViewController *topViewController = [self topViewController];
+    UIViewController *topViewController = self.topViewController;
     if (object == _navigationBar || object == topViewController.navigationItem) {
         [self updateNavigationBarAniamted:NO];
     }
@@ -275,7 +275,7 @@ static NSMutableSet *_retainedPopupControllers;
         _viewControllers = [NSMutableArray new];
     }
     
-    UIViewController *topViewController = [self topViewController];
+    UIViewController *topViewController = self.topViewController;
     viewController.popupController = self;
     [_viewControllers addObject:viewController];
     
@@ -292,14 +292,15 @@ static NSMutableSet *_retainedPopupControllers;
         return;
     }
     
-    UIViewController *topViewController = [self topViewController];
-    topViewController.popupController = nil;
+    UIViewController *topViewController = self.topViewController;
     [self destroyObserversOfViewController:topViewController];
     [_viewControllers removeObject:topViewController];
     
     if (self.presented) {
-        [self transitFromViewController:topViewController toViewController:[self topViewController] animated:animated];
+        [self transitFromViewController:topViewController toViewController:self.topViewController animated:animated];
     }
+    
+    topViewController.popupController = nil;
 }
 
 - (void)transitFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController animated:(BOOL)animated
@@ -362,7 +363,7 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)updateNavigationBarAniamted:(BOOL)animated
 {
-    UIViewController *topViewController = [self topViewController];
+    UIViewController *topViewController = self.topViewController;
     UIView *lastTitleView = _navigationBar.topItem.titleView;
     _navigationBar.items = @[ [UINavigationItem new] ];
     _navigationBar.topItem.leftBarButtonItems = topViewController.navigationItem.leftBarButtonItems ? : (topViewController.navigationItem.hidesBackButton ? nil : @[ _defaultLeftBarItem ]);
@@ -472,13 +473,13 @@ static NSMutableSet *_retainedPopupControllers;
     _navigationBar.frame = CGRectMake(0, 0, containerViewWidth, preferredNavigationBarHeight);
     _contentView.frame = CGRectMake(0, navigationBarHeight, contentSizeOfTopView.width, contentSizeOfTopView.height);
     
-    UIViewController *topViewController = [self topViewController];
+    UIViewController *topViewController = self.topViewController;
     topViewController.view.frame = _contentView.bounds;
 }
 
 - (CGSize)contentSizeOfTopView
 {
-    UIViewController *topViewController = [self topViewController];
+    UIViewController *topViewController = self.topViewController;
     CGSize contentSize = CGSizeZero;
     switch ([UIApplication sharedApplication].statusBarOrientation) {
         case UIInterfaceOrientationLandscapeLeft:
@@ -737,7 +738,7 @@ static NSMutableSet *_retainedPopupControllers;
     
     toViewController.view.frame = fromViewController.view.frame;
     
-    UIViewController *topViewController = [self topViewController];
+    UIViewController *topViewController = self.topViewController;
     
     if (toViewController == _containerViewController) { // Presenting
         [fromViewController beginAppearanceTransition:NO animated:YES];
