@@ -219,13 +219,16 @@ static NSMutableSet *_retainedPopupControllers;
 {
     UIViewController *topViewController = self.topViewController;
     if (object == _navigationBar || object == topViewController.navigationItem) {
-        [self updateNavigationBarAniamted:NO];
+        if (topViewController.isViewLoaded && topViewController.view.superview) {
+            [self updateNavigationBarAniamted:NO];
+        }
     }
-    else if (object == topViewController && topViewController.isViewLoaded && topViewController.view.superview) {
-        [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut
-         animations:^{
-             [self layoutContainerView];
-         } completion:nil];
+    else if (object == topViewController) {
+        if (topViewController.isViewLoaded && topViewController.view.superview) {
+            [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+                [self layoutContainerView];
+            } completion:nil];
+        }
     }
 }
 
