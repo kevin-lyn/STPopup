@@ -779,17 +779,18 @@ static NSMutableSet *_retainedPopupControllers;
         
         CGFloat lastBackgroundViewAlpha = _backgroundView.alpha;
         _backgroundView.alpha = 0;
+        _backgroundView.userInteractionEnabled = NO;
         _containerView.userInteractionEnabled = NO;
         [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             _backgroundView.alpha = lastBackgroundViewAlpha;
             _containerView.alpha = 1;
             _containerView.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished) {
+            _backgroundView.userInteractionEnabled = YES;
             _containerView.userInteractionEnabled = YES;
+            
             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
-            
             [topViewController didMoveToParentViewController:toViewController];
-            
             [fromViewController endAppearanceTransition];
         }];
     }
@@ -807,6 +808,7 @@ static NSMutableSet *_retainedPopupControllers;
         _containerView.transform = lastTransform;
         
         CGFloat lastBackgroundViewAlpha = _backgroundView.alpha;
+        _backgroundView.userInteractionEnabled = NO;
         _containerView.userInteractionEnabled = NO;
         [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             _backgroundView.alpha = 0;
@@ -823,6 +825,7 @@ static NSMutableSet *_retainedPopupControllers;
                     break;
             }
         } completion:^(BOOL finished) {
+            _backgroundView.userInteractionEnabled = YES;
             _containerView.userInteractionEnabled = YES;
             _containerView.transform = CGAffineTransformIdentity;
             [fromViewController.view removeFromSuperview];
