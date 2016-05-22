@@ -766,7 +766,7 @@ static NSMutableSet *_retainedPopupControllers;
         switch (self.transitionStyle) {
             case STPopupTransitionStyleFade: {
                 _containerView.alpha = 0;
-                _containerView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+                _containerView.transform = CGAffineTransformMakeScale(1.05, 1.05);
             }
                 break;
             case STPopupTransitionStyleSlideVertical:
@@ -815,7 +815,6 @@ static NSMutableSet *_retainedPopupControllers;
             switch (self.transitionStyle) {
                 case STPopupTransitionStyleFade: {
                     _containerView.alpha = 0;
-                    _containerView.transform = CGAffineTransformMakeScale(0.9, 0.9);
                 }
                     break;
                 case STPopupTransitionStyleSlideVertical:
