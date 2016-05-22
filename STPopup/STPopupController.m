@@ -152,6 +152,12 @@ static NSMutableSet *_retainedPopupControllers;
     [_containerViewController.view insertSubview:_backgroundView atIndex:0];
 }
 
+- (void)setHidesCloseButton:(BOOL)hidesCloseButton
+{
+    _hidesCloseButton = hidesCloseButton;
+    [self updateNavigationBarAniamted:NO];
+}
+
 #pragma mark - Observers
 
 - (void)setupObservers
@@ -366,11 +372,17 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)updateNavigationBarAniamted:(BOOL)animated
 {
+    BOOL shouldAnimateDefaultLeftBarItem = animated && _navigationBar.topItem.leftBarButtonItem == _defaultLeftBarItem;
+    
     UIViewController *topViewController = self.topViewController;
     UIView *lastTitleView = _navigationBar.topItem.titleView;
     _navigationBar.items = @[ [UINavigationItem new] ];
     _navigationBar.topItem.leftBarButtonItems = topViewController.navigationItem.leftBarButtonItems ? : (topViewController.navigationItem.hidesBackButton ? nil : @[ _defaultLeftBarItem ]);
     _navigationBar.topItem.rightBarButtonItems = topViewController.navigationItem.rightBarButtonItems;
+    if (self.hidesCloseButton && topViewController == _viewControllers.firstObject &&
+        _navigationBar.topItem.leftBarButtonItem == _defaultLeftBarItem) {
+        _navigationBar.topItem.leftBarButtonItems = nil;
+    }
     
     if (animated) {
         UIView *fromTitleView, *toTitleView;
@@ -423,7 +435,8 @@ static NSMutableSet *_retainedPopupControllers;
         }
     }
     _defaultLeftBarItem.tintColor = _navigationBar.tintColor;
-    [_defaultLeftBarItem setType:_viewControllers.count > 1 ? STPopupLeftBarItemArrow : STPopupLeftBarItemCross animated:animated];
+    [_defaultLeftBarItem setType:_viewControllers.count > 1 ? STPopupLeftBarItemArrow : STPopupLeftBarItemCross
+                        animated:shouldAnimateDefaultLeftBarItem];
 }
 
 - (void)setNavigationBarHidden:(BOOL)navigationBarHidden

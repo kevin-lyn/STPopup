@@ -56,6 +56,11 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 @property (nonatomic, assign) BOOL navigationBarHidden;
 
 /**
+ Hides close button if there is only one view controller in the view controllers stack.
+ */
+@property (nonatomic, assign) BOOL hidesCloseButton;
+
+/**
  Navigation bar of popup.
  @see STPopupNavigationBar
  */
