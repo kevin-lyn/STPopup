@@ -740,7 +740,7 @@ static NSMutableSet *_retainedPopupControllers;
 {
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     if (toViewController == _containerViewController) {
-        return 0.5;
+        return self.transitionStyle == STPopupTransitionStyleFade ? 0.25 : 0.5;
     }
     else {
         return self.transitionStyle == STPopupTransitionStyleFade ? 0.2 : 0.35;
@@ -794,18 +794,31 @@ static NSMutableSet *_retainedPopupControllers;
         _backgroundView.alpha = 0;
         _backgroundView.userInteractionEnabled = NO;
         _containerView.userInteractionEnabled = NO;
-        [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        
+        void (^animationBlock)() = ^{
             _backgroundView.alpha = lastBackgroundViewAlpha;
             _containerView.alpha = 1;
             _containerView.transform = CGAffineTransformIdentity;
-        } completion:^(BOOL finished) {
+        };
+        void (^completionBlock)(BOOL) = ^(BOOL finished){
             _backgroundView.userInteractionEnabled = YES;
             _containerView.userInteractionEnabled = YES;
             
             [transitionContext completeTransition:![transitionContext transitionWasCancelled]];
             [topViewController didMoveToParentViewController:toViewController];
             [fromViewController endAppearanceTransition];
-        }];
+        };
+        
+        switch (self.transitionStyle) {
+            case STPopupTransitionStyleFade:
+                [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:animationBlock completion:completionBlock];
+                break;
+            case STPopupTransitionStyleSlideVertical:
+                [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:animationBlock completion:completionBlock];
+                break;
+            default:
+                break;
+        }
     }
     else { // Dismissing
         [toViewController beginAppearanceTransition:YES animated:YES];
