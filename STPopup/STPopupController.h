@@ -30,6 +30,7 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 @property (nonatomic, assign, readonly) BOOL presented;
 
 @property (nonatomic, strong) void (^closeCompletion)(void);
+@property (nonatomic, assign) BOOL ignoreKeyboardEvent;
 
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController;
 
