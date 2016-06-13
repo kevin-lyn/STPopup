@@ -9,10 +9,12 @@
 #import "STPopupController.h"
 #import "STPopupLeftBarItem.h"
 #import "STPopupNavigationBar.h"
+#import "STPopupPopoverArrowView.h"
 #import "UIViewController+STPopup.h"
 #import "UIResponder+STPopup.h"
 
 CGFloat const STPopupBottomSheetExtraHeight = 80;
+CGFloat const STPopupPopoverMargin = 10;
 
 static NSMutableSet *_retainedPopupControllers;
 
@@ -96,6 +98,7 @@ static NSMutableSet *_retainedPopupControllers;
     UIView *_contentView;
     UILabel *_defaultTitleLabel;
     STPopupLeftBarItem *_defaultLeftBarItem;
+    STPopupPopoverArrowView *_popoverArrowView;
     NSDictionary *_keyboardInfo;
     BOOL _observing;
 }
@@ -477,20 +480,93 @@ static NSMutableSet *_retainedPopupControllers;
     CGSize contentSizeOfTopView = [self contentSizeOfTopView];
     CGFloat containerViewWidth = contentSizeOfTopView.width;
     CGFloat containerViewHeight = contentSizeOfTopView.height + navigationBarHeight;
-    CGFloat containerViewY = (_containerViewController.view.bounds.size.height - containerViewHeight) / 2;
+    CGFloat containerViewX = (_containerViewController.view.bounds.size.width - containerViewWidth) / 2;
+    CGFloat containerViewY = 0;
     
-    if (self.style == STPopupStyleBottomSheet) {
-        containerViewY = _containerViewController.view.bounds.size.height - containerViewHeight;
-        containerViewHeight += STPopupBottomSheetExtraHeight;
+    switch (self.style) {
+        case STPopupStyleFormSheet: {
+            containerViewY = (_containerViewController.view.bounds.size.height - containerViewHeight) / 2;
+        }
+            break;
+        case STPopupStyleBottomSheet: {
+            containerViewY = _containerViewController.view.bounds.size.height - containerViewHeight;
+            containerViewHeight += STPopupBottomSheetExtraHeight;
+        }
+            break;
+        case STPopupStylePopover: {
+            CGPoint popoverOrigin = [self popoverOriginForContainerSize:CGSizeMake(containerViewWidth, containerViewHeight)];
+            containerViewX = popoverOrigin.x;
+            containerViewY = popoverOrigin.y;
+        }
+            break;
+        default:
+            break;
     }
     
-    _containerView.frame = CGRectMake((_containerViewController.view.bounds.size.width - containerViewWidth) / 2,
-                                      containerViewY, containerViewWidth, containerViewHeight);
+    if (self.style == STPopupStylePopover) {
+        [self layoutPopoverArrow];
+        CGRect popoverArrowRect = _popoverArrowView.frame;
+        CGPoint offsetSize = CGPointMake(popoverArrowRect.origin.x + popoverArrowRect.size.width / 2 - containerViewX,
+                                         popoverArrowRect.origin.y + popoverArrowRect.size.height / 2 - containerViewY);
+        switch (self.popoverArrowDirection) {
+            case STPopupPopoverArrowDirectionUp:
+                self.containerView.layer.anchorPoint = CGPointMake(offsetSize.x / containerViewWidth, 0);
+                break;
+            case STPopupPopoverArrowDirectionDown:
+                self.containerView.layer.anchorPoint = CGPointMake(offsetSize.x / containerViewWidth, 1);
+                break;
+            case STPopupPopoverArrowDirectionLeft:
+                self.containerView.layer.anchorPoint = CGPointMake(0, offsetSize.y / containerViewHeight);
+                break;
+            case STPopupPopoverArrowDirectionRight:
+                self.containerView.layer.anchorPoint = CGPointMake(1, offsetSize.y / containerViewHeight);
+                break;
+            default:
+                break;
+        }
+    }
+    else {
+        [_popoverArrowView removeFromSuperview];
+        _popoverArrowView = nil;
+        self.containerView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+    }
+    
+    _containerView.frame = CGRectMake(containerViewX, containerViewY, containerViewWidth, containerViewHeight);
     _navigationBar.frame = CGRectMake(0, 0, containerViewWidth, preferredNavigationBarHeight);
     _contentView.frame = CGRectMake(0, navigationBarHeight, contentSizeOfTopView.width, contentSizeOfTopView.height);
     
     UIViewController *topViewController = self.topViewController;
     topViewController.view.frame = _contentView.bounds;
+}
+
+- (void)layoutPopoverArrow
+{
+    if (!_popoverArrowView) {
+        _popoverArrowView = [STPopupPopoverArrowView new];
+        [_popoverArrowView sizeToFit];
+        [_containerViewController.view addSubview:_popoverArrowView];
+    }
+    
+    CGPoint popoverArrowOrigin = [self popoverArrowOrigin];
+    _popoverArrowView.frame = CGRectMake(popoverArrowOrigin.x, popoverArrowOrigin.y,
+                                     _popoverArrowView.frame.size.width, _popoverArrowView.frame.size.height);
+    
+    switch (self.popoverArrowDirection) {
+        case STPopupPopoverArrowDirectionUp:
+            _popoverArrowView.transform = CGAffineTransformIdentity;
+            break;
+        case STPopupPopoverArrowDirectionDown:
+            _popoverArrowView.transform = CGAffineTransformMakeRotation(M_PI);
+            break;
+        case STPopupPopoverArrowDirectionLeft:
+            _popoverArrowView.transform = CGAffineTransformMakeRotation(-M_PI_2);
+            break;
+        case STPopupPopoverArrowDirectionRight:
+            _popoverArrowView.transform = CGAffineTransformMakeRotation(M_PI_2);
+            break;
+        default:
+            break;
+    }
 }
 
 - (CGSize)contentSizeOfTopView
@@ -515,6 +591,73 @@ static NSMutableSet *_retainedPopupControllers;
     NSAssert(!CGSizeEqualToSize(contentSize, CGSizeZero), @"contentSizeInPopup should not be size zero.");
     
     return contentSize;
+}
+
+- (CGPoint)popoverOriginForContainerSize:(CGSize)containerSize
+{
+    CGRect targetRect = self.popoverTargetRect;
+    CGSize maxSize = _containerViewController.view.frame.size;
+    CGPoint popoverOrigin = CGPointZero;
+    switch (self.popoverArrowDirection) {
+        case STPopupPopoverArrowDirectionUp:
+            popoverOrigin = CGPointMake(targetRect.origin.x + targetRect.size.width / 2,
+                                        targetRect.origin.y + targetRect.size.height + STPopupPopoverArrowViewHeight);
+            break;
+        case STPopupPopoverArrowDirectionDown:
+            popoverOrigin = CGPointMake(targetRect.origin.x + targetRect.size.width / 2,
+                                        targetRect.origin.y - containerSize.height - STPopupPopoverArrowViewHeight);
+            break;
+        case STPopupPopoverArrowDirectionLeft:
+            popoverOrigin = CGPointMake(targetRect.origin.x + targetRect.size.width + STPopupPopoverArrowViewHeight,
+                                        targetRect.origin.y + targetRect.size.height / 2);
+            break;
+        case STPopupPopoverArrowDirectionRight:
+            popoverOrigin = CGPointMake(targetRect.origin.x - containerSize.width - STPopupPopoverArrowViewHeight,
+                                        targetRect.origin.y + targetRect.size.height / 2);
+            break;
+    }
+    
+    if (self.popoverArrowDirection == STPopupPopoverArrowDirectionUp || self.popoverArrowDirection == STPopupPopoverArrowDirectionDown) {
+        // Adjust popover origin for horizontal space
+        if (popoverOrigin.x + containerSize.width + STPopupPopoverMargin > maxSize.width) {
+            popoverOrigin.x = maxSize.width - STPopupPopoverMargin - containerSize.width;
+        }
+        else if (popoverOrigin.x < STPopupPopoverMargin) {
+            popoverOrigin.x = STPopupPopoverMargin;
+        }
+    }
+    else {
+        // Adjust popover origin for vertical space
+        if (popoverOrigin.y + containerSize.height + STPopupPopoverMargin > maxSize.height) {
+            popoverOrigin.y = maxSize.height - STPopupPopoverMargin - containerSize.height;
+        }
+        else if (popoverOrigin.y < STPopupPopoverMargin) {
+            popoverOrigin.y = STPopupPopoverMargin;
+        }
+    }
+    
+    return popoverOrigin;
+}
+
+- (CGPoint)popoverArrowOrigin
+{
+    CGRect targetRect = self.popoverTargetRect;
+    switch (self.popoverArrowDirection) {
+        case STPopupPopoverArrowDirectionUp:
+            return CGPointMake(targetRect.origin.x + (STPopupPopoverArrowViewWidth - targetRect.size.width) / 2,
+                               targetRect.origin.y + targetRect.size.height);
+        case STPopupPopoverArrowDirectionDown:
+            return CGPointMake(targetRect.origin.x + (STPopupPopoverArrowViewWidth - targetRect.size.width) / 2,
+                               targetRect.origin.y - STPopupPopoverArrowViewHeight);
+        case STPopupPopoverArrowDirectionLeft:
+            return CGPointMake(targetRect.origin.x + targetRect.size.width,
+                               targetRect.origin.y + (STPopupPopoverArrowViewWidth - targetRect.size.height) / 2);
+        case STPopupPopoverArrowDirectionRight:
+            return CGPointMake(targetRect.origin.x - STPopupPopoverArrowViewHeight,
+                               targetRect.origin.y + (STPopupPopoverArrowViewWidth - targetRect.size.height) / 2);
+        default:
+            break;
+    }
 }
 
 - (CGFloat)preferredNavigationBarHeight
@@ -612,6 +755,10 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
+    if (self.style == STPopupStylePopover) {
+        return;
+    }
+    
     UIView<UIKeyInput> *currentTextInput = [self getCurrentTextInputInView:_containerView];
     if (!currentTextInput) {
         return;
@@ -623,6 +770,10 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
+    if (self.style == STPopupStylePopover) {
+        return;
+    }
+    
     _keyboardInfo = nil;
     
     NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
@@ -740,13 +891,20 @@ static NSMutableSet *_retainedPopupControllers;
 {
     UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
     if (toViewController == _containerViewController) {
+        if (self.style == STPopupStylePopover) {
+            return 0.5;
+        }
         return self.transitionStyle == STPopupTransitionStyleFade ? 0.25 : 0.5;
     }
     else {
+        if (self.style == STPopupStylePopover) {
+            return 0.15;
+        }
         return self.transitionStyle == STPopupTransitionStyleFade ? 0.2 : 0.35;
     }
 }
 
+// TODO (kevin) delegate out transition logic so that it won't have so many if-else.
 - (void)animateTransition:(id <UIViewControllerContextTransitioning>)transitionContext
 {
     UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
@@ -776,18 +934,24 @@ static NSMutableSet *_retainedPopupControllers;
         
         _containerView.transform = lastTransform;
         
-        switch (self.transitionStyle) {
-            case STPopupTransitionStyleFade: {
-                _containerView.alpha = 0;
-                _containerView.transform = CGAffineTransformMakeScale(1.05, 1.05);
+        if (self.style != STPopupStylePopover) {
+            switch (self.transitionStyle) {
+                case STPopupTransitionStyleFade: {
+                    _containerView.alpha = 0;
+                    _containerView.transform = CGAffineTransformMakeScale(1.05, 1.05);
+                }
+                    break;
+                case STPopupTransitionStyleSlideVertical:
+                default: {
+                    _containerView.alpha = 1;
+                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height - originY);
+                }
+                    break;
             }
-                break;
-            case STPopupTransitionStyleSlideVertical:
-            default: {
-                _containerView.alpha = 1;
-                _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height - originY);
-            }
-                break;
+        }
+        else { // "transitionStyle" will be ignored if style is "STPopupStylePopover"
+            _containerView.alpha = 1;
+            _containerView.transform = CGAffineTransformMakeScale(0.1, 0.1);
         }
         
         CGFloat lastBackgroundViewAlpha = _backgroundView.alpha;
@@ -838,16 +1002,22 @@ static NSMutableSet *_retainedPopupControllers;
         _containerView.userInteractionEnabled = NO;
         [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
             _backgroundView.alpha = 0;
-            switch (self.transitionStyle) {
-                case STPopupTransitionStyleFade: {
-                    _containerView.alpha = 0;
+            if (self.style != STPopupStylePopover) {
+                switch (self.transitionStyle) {
+                    case STPopupTransitionStyleFade: {
+                        _containerView.alpha = 0;
+                    }
+                        break;
+                    case STPopupTransitionStyleSlideVertical:
+                    default: {
+                        _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height - originY +
+                                                                                    _containerView.frame.size.height);
+                    }
+                        break;
                 }
-                    break;
-                case STPopupTransitionStyleSlideVertical:
-                default: {
-                    _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height - originY + _containerView.frame.size.height);
-                }
-                    break;
+            }
+            else {
+                _containerView.transform = CGAffineTransformMakeScale(0.1, 0.1);
             }
         } completion:^(BOOL finished) {
             _backgroundView.userInteractionEnabled = YES;
@@ -870,8 +1040,11 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)popupNavigationBar:(STPopupNavigationBar *)navigationBar touchDidMoveWithOffset:(CGFloat)offset
 {
-    [_containerView endEditing:YES];
+    if (self.style == STPopupStylePopover) {
+        return;
+    }
     
+    [_containerView endEditing:YES];
     if (self.style == STPopupStyleBottomSheet && offset < -STPopupBottomSheetExtraHeight) {
         return;
     }

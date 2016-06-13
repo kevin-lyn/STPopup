@@ -34,7 +34,7 @@
         }
             break;
         case 2: {
-            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"PopupViewController2"]];
+            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"PopupViewController2"]];
             popupController.containerView.layer.cornerRadius = 4;
             [popupController presentInViewController:self];
         }
@@ -59,14 +59,22 @@
             if (NSClassFromString(@"UIBlurEffect")) {
                 UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
                 popupController.backgroundView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-                popupController.backgroundView.alpha = 0.8; // This is not necessary
             }
             [popupController presentInViewController:self];
         }
             break;
         case 5: {
-            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"BottomSheetDemoViewController"]];
+            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"BottomSheetDemoViewController"]];
             popupController.style = STPopupStyleBottomSheet;
+            [popupController presentInViewController:self];
+        }
+            break;
+        case 6: {
+            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"PopupViewController2"]];
+            popupController.containerView.layer.cornerRadius = 4;
+            popupController.style = STPopupStylePopover;
+            popupController.popoverTargetRect = [[tableView cellForRowAtIndexPath:indexPath] convertRect:CGRectMake(50, 10, 50, 50) toView:self.view.window];
+            popupController.popoverArrowDirection = STPopupPopoverArrowDirectionDown;
             [popupController presentInViewController:self];
         }
             break;

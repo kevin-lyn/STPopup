@@ -17,7 +17,11 @@ typedef NS_ENUM(NSUInteger, STPopupStyle) {
     /**
      Popup will be horizontally centered and sticked to bottom.
      */
-    STPopupStyleBottomSheet
+    STPopupStyleBottomSheet,
+    /**
+     Popup will be presented as a popover with an arrow pointed to target view.
+     */
+    STPopupStylePopover
 };
 
 typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
@@ -29,6 +33,13 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
      Fade-in in center from transparent to opaque.
      */
     STPopupTransitionStyleFade
+};
+
+typedef NS_ENUM(NSUInteger, STPopupPopoverArrowDirection) {
+    STPopupPopoverArrowDirectionUp,
+    STPopupPopoverArrowDirectionDown,
+    STPopupPopoverArrowDirectionLeft,
+    STPopupPopoverArrowDirectionRight
 };
 
 @interface STPopupController : NSObject
@@ -44,6 +55,17 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
  @see STPopupTransitionStyle
  */
 @property (nonatomic, assign) STPopupTransitionStyle transitionStyle;
+
+/**
+ Will be used when "style" is STPopupStylePopover. It decides the position of the popup.
+ @see STPopupStyle
+ */
+@property (nonatomic, assign) CGRect popoverTargetRect;
+
+/**
+ Arrow direction when "style" is STPopupStylePopover.
+ */
+@property (nonatomic, assign) STPopupPopoverArrowDirection popoverArrowDirection;
 
 /**
  Corner radius of the container view.
