@@ -56,14 +56,14 @@
 {
     float barWidth, barHeight = 1.5, barX, bar1Y, bar2Y;
     switch (self.type) {
-        case STPopupLeftBarItemCross: {
+        case STPopupLeftBarItemTypeCross: {
             barWidth = _customView.frame.size.height * 2 / 5;
             barX = (_customView.frame.size.width - barWidth) / 2;
             bar1Y = (_customView.frame.size.height - barHeight) / 2;
             bar2Y = bar1Y;
         }
             break;
-        case STPopupLeftBarItemArrow: {
+        case STPopupLeftBarItemTypeArrow: {
             barWidth = _customView.frame.size.height / 4;
             barX = (_customView.frame.size.width - barWidth) / 2 - barWidth / 2;
             bar1Y = (_customView.frame.size.height - barHeight) / 2 + barWidth / 2 * sin(M_PI_4);

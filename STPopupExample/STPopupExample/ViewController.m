@@ -73,9 +73,10 @@
             STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[self.storyboard instantiateViewControllerWithIdentifier:@"PopupViewController2"]];
             popupController.containerView.layer.cornerRadius = 4;
             popupController.style = STPopupStylePopover;
-            popupController.popoverTargetRect = [[tableView cellForRowAtIndexPath:indexPath] convertRect:CGRectMake(50, 10, 50, 50) toView:self.view.window];
-            popupController.popoverArrowDirection = STPopupPopoverArrowDirectionDown;
+            popupController.popoverTargetRect = CGRectMake(self.view.frame.size.width / 2, 20, 0, 44);
+            popupController.popoverArrowDirection = STPopupPopoverArrowDirectionUp;
             [popupController presentInViewController:self];
+
         }
             break;
         default:

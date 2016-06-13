@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, STPopupLeftBarItemType) {
-    STPopupLeftBarItemCross,
-    STPopupLeftBarItemArrow
+    STPopupLeftBarItemTypeCross,
+    STPopupLeftBarItemTypeArrow
 };
 
 @interface STPopupLeftBarItem : UIBarButtonItem

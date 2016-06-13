@@ -13,6 +13,9 @@ CGFloat const STPopupPopoverArrowViewHeight = 15;
 CGFloat const STPopupPopoverArrowViewRadius = 4;
 
 @implementation STPopupPopoverArrowView
+{
+    UIColor *_arrowColor;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -20,6 +23,16 @@ CGFloat const STPopupPopoverArrowViewRadius = 4;
         self.opaque = NO;
     }
     return self;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    _arrowColor = backgroundColor;
+}
+
+- (UIColor *)backgroundColor
+{
+    return _arrowColor;
 }
 
 - (void)drawRect:(CGRect)rect
@@ -32,7 +45,12 @@ CGFloat const STPopupPopoverArrowViewRadius = 4;
     CGContextAddLineToPoint(context, rect.size.width, rect.size.height);
     CGContextAddLineToPoint(context, 0, rect.size.height);
     
-    [[UIColor whiteColor] setFill];
+    if (_arrowColor) {
+        [_arrowColor setFill];
+    }
+    else {
+        [[UIColor whiteColor] setFill];
+    }
     CGContextFillPath(context);
 }
 
