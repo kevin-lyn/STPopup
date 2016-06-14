@@ -543,6 +543,40 @@ static NSMutableSet *_retainedPopupControllers;
     }
 }
 
+- (CGSize)contentSizeOfTopView
+{
+    UIViewController *topViewController = self.topViewController;
+    CGSize contentSize = CGSizeZero;
+    switch ([UIApplication sharedApplication].statusBarOrientation) {
+        case UIInterfaceOrientationLandscapeLeft:
+        case UIInterfaceOrientationLandscapeRight: {
+            contentSize = topViewController.landscapeContentSizeInPopup;
+            if (CGSizeEqualToSize(contentSize, CGSizeZero)) {
+                contentSize = topViewController.contentSizeInPopup;
+            }
+        }
+            break;
+        default: {
+            contentSize = topViewController.contentSizeInPopup;
+        }
+            break;
+    }
+    
+    NSAssert(!CGSizeEqualToSize(contentSize, CGSizeZero), @"contentSizeInPopup should not be size zero.");
+    
+    return contentSize;
+}
+
+- (CGFloat)preferredNavigationBarHeight
+{
+    // The preferred height of navigation bar is different between iPhone (4, 5, 6) and 6 Plus.
+    // Create a navigation controller to get the preferred height of navigation bar.
+    UINavigationController *navigationController = [UINavigationController new];
+    return navigationController.navigationBar.bounds.size.height;
+}
+
+#pragma mark - Popover layout
+
 - (void)layoutPopoverArrow
 {
     if (!_popoverArrowView) {
@@ -571,30 +605,6 @@ static NSMutableSet *_retainedPopupControllers;
     CGRect popoverArrowFrame = _popoverArrowView.frame;
     popoverArrowFrame.origin = [self popoverArrowOrigin];
     _popoverArrowView.frame = popoverArrowFrame;
-}
-
-- (CGSize)contentSizeOfTopView
-{
-    UIViewController *topViewController = self.topViewController;
-    CGSize contentSize = CGSizeZero;
-    switch ([UIApplication sharedApplication].statusBarOrientation) {
-        case UIInterfaceOrientationLandscapeLeft:
-        case UIInterfaceOrientationLandscapeRight: {
-            contentSize = topViewController.landscapeContentSizeInPopup;
-            if (CGSizeEqualToSize(contentSize, CGSizeZero)) {
-                contentSize = topViewController.contentSizeInPopup;
-            }
-        }
-            break;
-        default: {
-            contentSize = topViewController.contentSizeInPopup;
-        }
-            break;
-    }
-    
-    NSAssert(!CGSizeEqualToSize(contentSize, CGSizeZero), @"contentSizeInPopup should not be size zero.");
-    
-    return contentSize;
 }
 
 - (CGPoint)popoverOriginForContainerSize:(CGSize)containerSize
@@ -701,14 +711,6 @@ static NSMutableSet *_retainedPopupControllers;
     CGColorSpaceRelease(colorSpace);
     
     return [UIColor colorWithRed:pixel[0]/255.0 green:pixel[1]/255.0 blue:pixel[2]/255.0 alpha:pixel[3]/255.0];
-}
-
-- (CGFloat)preferredNavigationBarHeight
-{
-    // The preferred height of navigation bar is different between iPhone (4, 5, 6) and 6 Plus.
-    // Create a navigation controller to get the preferred height of navigation bar.
-    UINavigationController *navigationController = [UINavigationController new];
-    return navigationController.navigationBar.bounds.size.height;
 }
 
 #pragma mark - UI setup
