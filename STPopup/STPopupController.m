@@ -631,23 +631,38 @@ static NSMutableSet *_retainedPopupControllers;
             break;
     }
     
+    CGPoint arrowOrigin = [self popoverArrowOrigin];
+    // Adjust popover origin for horizontal and vertical space,
+    // also make sure it's aligned with the arrow.
     if (self.popoverArrowDirection == STPopupPopoverArrowDirectionUp ||
         self.popoverArrowDirection == STPopupPopoverArrowDirectionDown) {
-        // Adjust popover origin for horizontal space
         if (popoverOrigin.x + containerSize.width + STPopupPopoverMargin > maxSize.width) {
             popoverOrigin.x = maxSize.width - STPopupPopoverMargin - containerSize.width;
         }
         else if (popoverOrigin.x < STPopupPopoverMargin) {
             popoverOrigin.x = STPopupPopoverMargin;
         }
+        
+        if (popoverOrigin.x > arrowOrigin.x) {
+            popoverOrigin.x = arrowOrigin.x;
+        }
+        else if (popoverOrigin.x + containerSize.width < arrowOrigin.x + STPopupPopoverArrowViewWidth) {
+            popoverOrigin.x = arrowOrigin.x + STPopupPopoverArrowViewWidth - containerSize.width;
+        }
     }
     else {
-        // Adjust popover origin for vertical space
         if (popoverOrigin.y + containerSize.height + STPopupPopoverMargin > maxSize.height) {
             popoverOrigin.y = maxSize.height - STPopupPopoverMargin - containerSize.height;
         }
         else if (popoverOrigin.y < STPopupPopoverMargin) {
             popoverOrigin.y = STPopupPopoverMargin;
+        }
+        
+        if (popoverOrigin.y > arrowOrigin.y) {
+            popoverOrigin.y = arrowOrigin.y;
+        }
+        else if (popoverOrigin.y + containerSize.height < arrowOrigin.y + STPopupPopoverArrowViewWidth) {
+            popoverOrigin.y = arrowOrigin.y + STPopupPopoverArrowViewWidth - containerSize.height;
         }
     }
     
