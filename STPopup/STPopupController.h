@@ -26,6 +26,10 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
      */
     STPopupTransitionStyleSlideVertical,
     /**
+     Slide from top to center
+     */
+    STPopupTransitionStyleSlideVerticalReverse,
+    /**
      Fade-in in center from transparent to opaque.
      */
     STPopupTransitionStyleFade
