@@ -254,6 +254,8 @@ static NSMutableSet *_retainedPopupControllers;
     [self setupObservers];
     
     [_retainedPopupControllers addObject:self];
+    
+    viewController = viewController.tabBarController ? : viewController;
     [viewController presentViewController:_containerViewController animated:YES completion:completion];
 }
 
