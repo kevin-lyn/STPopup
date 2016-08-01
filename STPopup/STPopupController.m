@@ -533,7 +533,12 @@ static NSMutableSet *_retainedPopupControllers;
 {
     _containerViewController = [STPopupContainerViewController new];
     _containerViewController.view.backgroundColor = [UIColor clearColor];
-    _containerViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    if ([[[UIDevice currentDevice] systemVersion] compare:@"8.0" options:NSNumericSearch] != NSOrderedAscending) {
+        _containerViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    }
+    else {
+        _containerViewController.modalPresentationStyle = UIModalPresentationCustom;
+    }
     _containerViewController.transitioningDelegate = self;
     [self setupBackgroundView];
     [self setupContainerView];
