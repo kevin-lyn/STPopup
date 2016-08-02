@@ -821,7 +821,7 @@ static NSMutableSet *_retainedPopupControllers;
                 [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:animationBlock completion:completionBlock];
                 break;
             case STPopupTransitionStyleSlideVertical:
-                [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:animationBlock completion:completionBlock];
+                [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:animationBlock completion:completionBlock];
                 break;
             default:
                 break;
