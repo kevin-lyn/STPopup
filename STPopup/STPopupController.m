@@ -231,7 +231,7 @@ static NSMutableSet *_retainedPopupControllers;
     }
     else if (object == topViewController) {
         if (topViewController.isViewLoaded && topViewController.view.superview) {
-            [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 [self layoutContainerView];
             } completion:nil];
         }
@@ -338,7 +338,7 @@ static NSMutableSet *_retainedPopupControllers;
         
         _containerView.userInteractionEnabled = NO;
         toViewController.view.alpha = 0;
-        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             [self layoutContainerView];
             [_contentView addSubview:toViewController.view];
             capturedView.alpha = 0;
@@ -416,7 +416,7 @@ static NSMutableSet *_retainedPopupControllers;
         _navigationBar.topItem.titleView = toTitleView;
         toTitleView.alpha = 0;
         
-        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             fromTitleView.alpha = 0;
             toTitleView.alpha = 1;
         } completion:^(BOOL finished) {
@@ -460,7 +460,7 @@ static NSMutableSet *_retainedPopupControllers;
     if (!navigationBarHidden) {
         _navigationBar.hidden = navigationBarHidden;
     }
-    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration:0.5 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         _navigationBar.alpha = navigationBarHidden ? 0 : 1;
         [self layoutContainerView];
     } completion:^(BOOL finished) {
@@ -605,11 +605,11 @@ static NSMutableSet *_retainedPopupControllers;
 - (void)orientationDidChange
 {
     [_containerView endEditing:YES];
-    [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+    [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
         _containerView.alpha = 0;
     } completion:^(BOOL finished) {
         [self layoutContainerView];
-        [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             _containerView.alpha = 1;
         } completion:nil];
     }];
@@ -821,7 +821,7 @@ static NSMutableSet *_retainedPopupControllers;
                 [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:animationBlock completion:completionBlock];
                 break;
             case STPopupTransitionStyleSlideVertical:
-                [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:animationBlock completion:completionBlock];
+                [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:animationBlock completion:completionBlock];
                 break;
             default:
                 break;
@@ -896,7 +896,7 @@ static NSMutableSet *_retainedPopupControllers;
     }
     else {
         [_containerView endEditing:YES];
-        [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+        [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.7 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             _containerView.transform = CGAffineTransformIdentity;
         } completion:nil];
     }
