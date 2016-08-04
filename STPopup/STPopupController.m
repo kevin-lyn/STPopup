@@ -789,6 +789,11 @@ static NSMutableSet *_retainedPopupControllers;
                 _containerView.transform = CGAffineTransformMakeScale(1.05, 1.05);
             }
                 break;
+            case STPopupTransitionStyleSlideVerticalReverse: {
+                _containerView.alpha = 1;
+                _containerView.transform = CGAffineTransformMakeTranslation(0, - _containerViewController.view.bounds.size.height + originY);
+                break;
+            }
             case STPopupTransitionStyleSlideVertical:
             default: {
                 _containerView.alpha = 1;
@@ -820,6 +825,7 @@ static NSMutableSet *_retainedPopupControllers;
             case STPopupTransitionStyleFade:
                 [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 options:UIViewAnimationOptionCurveEaseOut animations:animationBlock completion:completionBlock];
                 break;
+            case STPopupTransitionStyleSlideVerticalReverse:
             case STPopupTransitionStyleSlideVertical:
                 [UIView animateWithDuration:[self transitionDuration:transitionContext] delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:animationBlock completion:completionBlock];
                 break;
@@ -850,6 +856,11 @@ static NSMutableSet *_retainedPopupControllers;
                     _containerView.alpha = 0;
                 }
                     break;
+                    
+                case STPopupTransitionStyleSlideVerticalReverse: {
+                    _containerView.transform = CGAffineTransformMakeTranslation(0, - _containerViewController.view.bounds.size.height + originY - _containerView.frame.size.height);
+                    break;
+                }
                 case STPopupTransitionStyleSlideVertical:
                 default: {
                     _containerView.transform = CGAffineTransformMakeTranslation(0, _containerViewController.view.bounds.size.height - originY + _containerView.frame.size.height);
