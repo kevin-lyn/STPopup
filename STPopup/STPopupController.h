@@ -37,6 +37,7 @@ typedef NS_ENUM(NSUInteger, STPopupControllerTransitioningAction) {
 
 /**
  Animate transitioning the container view of popup controller. "completion" need to be called after transitioning is finished.
+ Initially "containerView" will be placed at the final position with transform = CGAffineTransformIdentity if it's presenting.
  */
 - (void)popupControllerAnimateTransition:(STPopupControllerTransitioningContext *)context completion:(void(^)())completion;
 

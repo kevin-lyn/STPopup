@@ -829,6 +829,7 @@ static NSMutableSet *_retainedPopupControllers;
         _backgroundView.alpha = 0;
         _backgroundView.userInteractionEnabled = NO;
         _containerView.userInteractionEnabled = NO;
+        _containerView.transform = CGAffineTransformIdentity;
         
         [UIView animateWithDuration:[transitioning popupControllerTransitionDuration:context] delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             _backgroundView.alpha = lastBackgroundViewAlpha;

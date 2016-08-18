@@ -19,9 +19,7 @@
 {
     UIView *containerView = context.containerView;
     if (context.action == STPopupControllerTransitioningActionPresent) {
-        containerView.transform = CGAffineTransformIdentity;
-        CGFloat originY = containerView.frame.origin.y;
-        containerView.transform = CGAffineTransformMakeTranslation(0, containerView.superview.bounds.size.height - originY);
+        containerView.transform = CGAffineTransformMakeTranslation(0, containerView.superview.bounds.size.height - containerView.frame.origin.y);
         
         [UIView animateWithDuration:[self popupControllerTransitionDuration:context] delay:0 usingSpringWithDamping:1 initialSpringVelocity:1 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             context.containerView.transform = CGAffineTransformIdentity;
