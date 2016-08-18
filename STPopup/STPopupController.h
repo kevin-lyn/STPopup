@@ -9,6 +9,39 @@
 #import <UIKit/UIKit.h>
 #import <STPopup/STPopupNavigationBar.h>
 
+typedef NS_ENUM(NSUInteger, STPopupControllerTransitioningAction) {
+    STPopupControllerTransitioningActionPresent,
+    STPopupControllerTransitioningActionDismiss
+};
+
+@interface STPopupControllerTransitioningContext : NSObject
+
+/**
+ Indicating the transitioning is a "present" or "dismiss" action.
+ */
+@property (nonatomic, assign, readonly) STPopupControllerTransitioningAction action;
+
+/**
+ Container view of popup controller.
+ */
+@property (nonatomic, strong, readonly) UIView *containerView;
+
+@end
+
+@protocol STPopupControllerTransitioning <NSObject>
+
+/**
+ Return duration of transitioning, it will be used to animate transitioning of background view.
+ */
+- (NSTimeInterval)popupControllerTransitionDuration:(STPopupControllerTransitioningContext *)context;
+
+/**
+ Animate transitioning the container view of popup controller. "completion" need to be called after transitioning is finished.
+ */
+- (void)popupControllerAnimateTransition:(STPopupControllerTransitioningContext *)context completion:(void(^)())completion;
+
+@end
+
 typedef NS_ENUM(NSUInteger, STPopupStyle) {
     /**
      Popup will be vertically and horizontally centered.
@@ -28,7 +61,11 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
     /**
      Fade-in in center from transparent to opaque.
      */
-    STPopupTransitionStyleFade
+    STPopupTransitionStyleFade,
+    /**
+     Custom transitioning by providing an implementation of STPopupControllerTransitioning protocol
+     */
+    STPopupTransitionStyleCustom
 };
 
 @interface STPopupController : NSObject
@@ -44,6 +81,11 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
  @see STPopupTransitionStyle
  */
 @property (nonatomic, assign) STPopupTransitionStyle transitionStyle;
+
+/**
+ Custom defined transitioning, it will be used if "transitionStyle" is set to STPopupTransitionStyleCustom
+ */
+@property (nonatomic, weak) id<STPopupControllerTransitioning> transitioning;
 
 /**
  Corner radius of the container view.

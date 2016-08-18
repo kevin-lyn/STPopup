@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A14D9941D65971B00149145 /* STPopupControllerTransitioningSlideVertical.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A14D9921D65971B00149145 /* STPopupControllerTransitioningSlideVertical.h */; };
+		0A14D9951D65971B00149145 /* STPopupControllerTransitioningSlideVertical.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A14D9931D65971B00149145 /* STPopupControllerTransitioningSlideVertical.m */; };
+		0A14D9981D65A03000149145 /* STPopupControllerTransitioningFade.h in Headers */ = {isa = PBXBuildFile; fileRef = 0A14D9961D65A03000149145 /* STPopupControllerTransitioningFade.h */; };
+		0A14D9991D65A03000149145 /* STPopupControllerTransitioningFade.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A14D9971D65A03000149145 /* STPopupControllerTransitioningFade.m */; };
 		76D8223C1C1DB5E400FCF988 /* STPopup.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D8223B1C1DB5E400FCF988 /* STPopup.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76D8224D1C1DB62600FCF988 /* STPopupController.h in Headers */ = {isa = PBXBuildFile; fileRef = 76D822431C1DB62600FCF988 /* STPopupController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76D8224E1C1DB62600FCF988 /* STPopupController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76D822441C1DB62600FCF988 /* STPopupController.m */; };
@@ -21,6 +25,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A14D9921D65971B00149145 /* STPopupControllerTransitioningSlideVertical.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupControllerTransitioningSlideVertical.h; sourceTree = "<group>"; };
+		0A14D9931D65971B00149145 /* STPopupControllerTransitioningSlideVertical.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupControllerTransitioningSlideVertical.m; sourceTree = "<group>"; };
+		0A14D9961D65A03000149145 /* STPopupControllerTransitioningFade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STPopupControllerTransitioningFade.h; sourceTree = "<group>"; };
+		0A14D9971D65A03000149145 /* STPopupControllerTransitioningFade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STPopupControllerTransitioningFade.m; sourceTree = "<group>"; };
 		76D822381C1DB5E400FCF988 /* STPopup.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = STPopup.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76D8223B1C1DB5E400FCF988 /* STPopup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = STPopup.h; sourceTree = "<group>"; };
 		76D8223D1C1DB5E400FCF988 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -76,6 +84,10 @@
 				76D8224A1C1DB62600FCF988 /* UIResponder+STPopup.m */,
 				76D8224B1C1DB62600FCF988 /* UIViewController+STPopup.h */,
 				76D8224C1C1DB62600FCF988 /* UIViewController+STPopup.m */,
+				0A14D9921D65971B00149145 /* STPopupControllerTransitioningSlideVertical.h */,
+				0A14D9931D65971B00149145 /* STPopupControllerTransitioningSlideVertical.m */,
+				0A14D9961D65A03000149145 /* STPopupControllerTransitioningFade.h */,
+				0A14D9971D65A03000149145 /* STPopupControllerTransitioningFade.m */,
 				76D8223B1C1DB5E400FCF988 /* STPopup.h */,
 				76D8223D1C1DB5E400FCF988 /* Info.plist */,
 			);
@@ -90,6 +102,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				76D822511C1DB62600FCF988 /* STPopupNavigationBar.h in Headers */,
+				0A14D9941D65971B00149145 /* STPopupControllerTransitioningSlideVertical.h in Headers */,
+				0A14D9981D65A03000149145 /* STPopupControllerTransitioningFade.h in Headers */,
 				76D822551C1DB62600FCF988 /* UIViewController+STPopup.h in Headers */,
 				76D8224D1C1DB62600FCF988 /* STPopupController.h in Headers */,
 				76D8223C1C1DB5E400FCF988 /* STPopup.h in Headers */,
@@ -165,8 +179,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A14D9991D65A03000149145 /* STPopupControllerTransitioningFade.m in Sources */,
 				76D822561C1DB62600FCF988 /* UIViewController+STPopup.m in Sources */,
 				76D822521C1DB62600FCF988 /* STPopupNavigationBar.m in Sources */,
+				0A14D9951D65971B00149145 /* STPopupControllerTransitioningSlideVertical.m in Sources */,
 				76D8224E1C1DB62600FCF988 /* STPopupController.m in Sources */,
 				76D822541C1DB62600FCF988 /* UIResponder+STPopup.m in Sources */,
 				76D822501C1DB62600FCF988 /* STPopupLeftBarItem.m in Sources */,
