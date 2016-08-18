@@ -730,6 +730,10 @@ static NSMutableSet *_retainedPopupControllers;
 - (UIView<UIKeyInput> *)getCurrentTextInputInView:(UIView *)view
 {
     if ([view conformsToProtocol:@protocol(UIKeyInput)] && view.isFirstResponder) {
+        // Quick fix for web view issue
+        if ([view isKindOfClass:NSClassFromString(@"UIWebBrowserView")] || [view isKindOfClass:NSClassFromString(@"WKContentView")]) {
+            return nil;
+        }
         return (UIView<UIKeyInput> *)view;
     }
     
