@@ -132,6 +132,11 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 @property (nonatomic, assign, readonly) BOOL presented;
 
 /**
+ Spacing between keyboard and popup
+ */
+@property (nonatomic, assign) CGFloat spacing;
+
+/**
  Init the popup with root view controller.
  */
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController;

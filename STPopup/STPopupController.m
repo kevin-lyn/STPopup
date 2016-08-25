@@ -138,6 +138,7 @@ static NSMutableSet *_retainedPopupControllers;
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController
 {
     if (self = [self init]) {
+        _spacing = 5.0;
         [self pushViewController:rootViewController animated:NO];
     }
     return self;
@@ -695,8 +696,7 @@ static NSMutableSet *_retainedPopupControllers;
         offsetY = keyboardHeight;
     }
     else {
-        CGFloat spacing = 5;
-        offsetY = _containerView.frame.origin.y + _containerView.bounds.size.height - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+        offsetY = _containerView.frame.origin.y + _containerView.bounds.size.height - (_containerViewController.view.bounds.size.height - keyboardHeight - _spacing);
         if (offsetY <= 0) { // _containerView can be totally shown, so no need to reposition
             return;
         }
@@ -706,8 +706,8 @@ static NSMutableSet *_retainedPopupControllers;
         if (_containerView.frame.origin.y - offsetY < statusBarHeight) { // _containerView will be covered by status bar if it is repositioned with "offsetY"
             offsetY = _containerView.frame.origin.y - statusBarHeight;
             // currentTextField can not be totally shown if _containerView is going to repositioned with "offsetY"
-            if (textFieldBottomY - offsetY > _containerViewController.view.bounds.size.height - keyboardHeight - spacing) {
-                offsetY = textFieldBottomY - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+            if (textFieldBottomY - offsetY > _containerViewController.view.bounds.size.height - keyboardHeight - _spacing) {
+                offsetY = textFieldBottomY - (_containerViewController.view.bounds.size.height - keyboardHeight - _spacing);
             }
         }
     }
