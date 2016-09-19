@@ -26,6 +26,6 @@
  Popup controller which is containing the view controller.
  Will be nil if the view controller is not contained in any popup controller.
  */
-@property (nonatomic, weak, readonly) STPopupController *popupController;
+@property (nonatomic, weak, readonly, nullable) STPopupController *popupController;
 
 @end
