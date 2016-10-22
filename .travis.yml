@@ -1,4 +1,4 @@
 language: objective-c
 osx_image: xcode8
 script:
-    - xcodebuild test -project STPopupExample/STPopupExample.xcodeproj -scheme STPopupExample -sdk iphonesimulator | xcpretty
+    - xcodebuild -project STPopup.xcodeproj -scheme STPopup -sdk iphonesimulator
