@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, STPopupLeftBarItemType) {
     STPopupLeftBarItemCross,
     STPopupLeftBarItemArrow
@@ -21,3 +23,5 @@ typedef NS_ENUM(NSUInteger, STPopupLeftBarItemType) {
 - (void)setType:(STPopupLeftBarItemType)type animated:(BOOL)animated;
 
 @end
+
+NS_ASSUME_NONNULL_END

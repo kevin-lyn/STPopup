@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class STPopupController;
 
 @interface UIViewController (STPopup)
@@ -26,6 +28,8 @@
  Popup controller which is containing the view controller.
  Will be nil if the view controller is not contained in any popup controller.
  */
-@property (nonatomic, weak, readonly) STPopupController *popupController;
+@property (nullable, nonatomic, weak, readonly) STPopupController *popupController;
 
 @end
+
+NS_ASSUME_NONNULL_END
