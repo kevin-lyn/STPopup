@@ -1,5 +1,4 @@
 language: objective-c
-before_script:
-    - brew update && brew upgrade xctool
+osx_image: xcode8
 script:
-    - xctool test -project STPopupExample/STPopupExample.xcodeproj -scheme STPopupExample -sdk iphonesimulator
+    - xcodebuild test -project STPopupExample/STPopupExample.xcodeproj -scheme STPopupExample -sdk iphonesimulator | xcpretty
