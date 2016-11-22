@@ -695,19 +695,22 @@ static NSMutableSet *_retainedPopupControllers;
         offsetY = keyboardHeight;
     }
     else {
-        CGFloat spacing = 5;
-        offsetY = _containerView.frame.origin.y + _containerView.bounds.size.height - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
-        if (offsetY <= 0) { // _containerView can be totally shown, so no need to reposition
-            return;
-        }
-        
         CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
-        
-        if (_containerView.frame.origin.y - offsetY < statusBarHeight) { // _containerView will be covered by status bar if it is repositioned with "offsetY"
-            offsetY = _containerView.frame.origin.y - statusBarHeight;
-            // currentTextField can not be totally shown if _containerView is going to repositioned with "offsetY"
-            if (textFieldBottomY - offsetY > _containerViewController.view.bounds.size.height - keyboardHeight - spacing) {
-                offsetY = textFieldBottomY - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+        if (_containerView.bounds.size.height <= _containerViewController.view.bounds.size.height - keyboardHeight - statusBarHeight) {
+            offsetY = _containerView.frame.origin.y - (statusBarHeight + (_containerViewController.view.bounds.size.height - keyboardHeight - statusBarHeight - _containerView.bounds.size.height) / 2);
+        }
+        else {
+            CGFloat spacing = 5;
+            offsetY = _containerView.frame.origin.y + _containerView.bounds.size.height - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+            if (offsetY <= 0) { // _containerView can be totally shown, so no need to translate the origin
+                return;
+            }
+            if (_containerView.frame.origin.y - offsetY < statusBarHeight) { // _containerView will be covered by status bar if the origin is translated by "offsetY"
+                offsetY = _containerView.frame.origin.y - statusBarHeight;
+                // currentTextField can not be totally shown if _containerView is going to repositioned with "offsetY"
+                if (textFieldBottomY - offsetY > _containerViewController.view.bounds.size.height - keyboardHeight - spacing) {
+                    offsetY = textFieldBottomY - (_containerViewController.view.bounds.size.height - keyboardHeight - spacing);
+                }
             }
         }
     }
