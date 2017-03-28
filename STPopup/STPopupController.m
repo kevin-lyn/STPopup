@@ -333,6 +333,35 @@ static NSMutableSet *_retainedPopupControllers;
     topViewController.popupController = nil;
 }
 
+
+- (void)popToRootViewControllerAnimated:(BOOL)animated
+{
+    if (_viewControllers.count <= 1) {
+        [self dismiss];
+        return;
+    }
+    
+    NSMutableArray* tempViewControllersArray = [NSMutableArray arrayWithArray:_viewControllers];
+    UIViewController *topViewController;
+    for (int i = 0 ; i<tempViewControllersArray.count ; i++) {
+            
+        topViewController = self.topViewController;
+        [self destroyObserversOfViewController:topViewController];
+        [_viewControllers removeObject:topViewController];
+        
+        if (_viewControllers.count == 1) {
+            break;
+        }
+    }
+    
+    if (self.presented) {
+        [self transitFromViewController:topViewController toViewController:self.topViewController animated:animated];
+    }
+    
+    topViewController.popupController = nil;
+}
+
+
 - (void)transitFromViewController:(UIViewController *)fromViewController toViewController:(UIViewController *)toViewController animated:(BOOL)animated
 {
     [fromViewController beginAppearanceTransition:NO animated:animated];
