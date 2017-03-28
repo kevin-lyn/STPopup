@@ -336,8 +336,7 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)popToRootViewControllerAnimated:(BOOL)animated
 {
-    if (_viewControllers.count <= 1) {
-        [self dismiss];
+    if (_viewControllers.count == 1) {
         return;
     }
     
