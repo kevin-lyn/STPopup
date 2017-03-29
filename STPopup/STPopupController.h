@@ -134,6 +134,11 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 @property (nonatomic, assign, readonly) BOOL presented;
 
 /**
+ The view controller that presented the popup.
+ */
+@property (nonatomic, readonly) UIViewController *presentingViewController;
+
+/**
  Init the popup with root view controller.
  */
 - (instancetype)initWithRootViewController:(UIViewController *)rootViewController;
