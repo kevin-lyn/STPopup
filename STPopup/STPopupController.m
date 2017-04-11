@@ -177,6 +177,25 @@ static NSMutableSet *_retainedPopupControllers;
     [self updateNavigationBarAniamted:NO];
 }
 
+- (void)setKeyboardHandlingEnabled:(BOOL)keyboardHandlingEnabled {
+    BOOL wasKeyboardHandlingEnabled = _keyboardHandlingEnabled;
+    _keyboardHandlingEnabled = keyboardHandlingEnabled;
+    // Only do something if the value changes
+    if (wasKeyboardHandlingEnabled != keyboardHandlingEnabled) {
+        NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+        // Enable or disable the keyboard handling by subscribing or unsubscribing from keyboard notifications
+        if (wasKeyboardHandlingEnabled) {
+            [notificationCenter removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+            [notificationCenter removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
+            [notificationCenter removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+        } else {
+            [notificationCenter addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+            [notificationCenter addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillChangeFrameNotification object:nil];
+            [notificationCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+        }
+    }
+}
+
 #pragma mark - Observers
 
 - (void)setupObservers
@@ -192,7 +211,7 @@ static NSMutableSet *_retainedPopupControllers;
     
     // Observe orientation change
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
-    
+
     // Observe responder change
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(firstResponderDidChange) name:STPopupFirstResponderDidChangeNotification object:nil];
 }
@@ -580,6 +599,7 @@ static NSMutableSet *_retainedPopupControllers;
     
     _transitioningSlideVertical = [STPopupControllerTransitioningSlideVertical new];
     _transitioningFade = [STPopupControllerTransitioningFade new];
+    self.keyboardHandlingEnabled = YES;
 }
 
 - (void)setupBackgroundView
