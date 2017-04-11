@@ -174,6 +174,14 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
  */
 - (void)popViewControllerAnimated:(BOOL)animated;
 
+
+/**
+ Pops all view controllers from the stack until it reaches the root view controller
+
+ @param animated YES if animated
+ */
+- (void)popToRootViewControllerAnimated:(BOOL)animated;
+
 /**
  Set hidden status of navigation bar with animated flag.
  @see navigationBarHidden
