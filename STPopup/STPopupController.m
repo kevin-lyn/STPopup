@@ -825,6 +825,7 @@ static NSMutableSet *_retainedPopupControllers;
     UIViewController *topViewController = self.topViewController;
     
     STPopupControllerTransitioningContext *context = [self convertTransitioningContext:transitionContext];
+    
     id<STPopupControllerTransitioning> transitioning = nil;
     switch (self.transitionStyle) {
         case STPopupTransitionStyleSlideVertical:
@@ -838,6 +839,9 @@ static NSMutableSet *_retainedPopupControllers;
             break;
     }
     NSAssert(transitioning, @"transitioning should be provided if it's using STPopupTransitionStyleCustom");
+    
+    context.targetViewController = topViewController;
+    context.sourceViewController = fromViewController;
     
     if (context.action == STPopupControllerTransitioningActionPresent) {
         [fromViewController beginAppearanceTransition:NO animated:YES];
