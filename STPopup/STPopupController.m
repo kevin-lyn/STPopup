@@ -429,6 +429,7 @@ static NSMutableSet *_retainedPopupControllers;
         UIView *fromTitleView, *toTitleView;
         if (lastTitleView == _defaultTitleLabel)    {
             UILabel *tempLabel = [[UILabel alloc] initWithFrame:_defaultTitleLabel.frame];
+            tempLabel.center = _navigationBar.center;
             tempLabel.textColor = _defaultTitleLabel.textColor;
             tempLabel.font = _defaultTitleLabel.font;
             tempLabel.attributedText = [[NSAttributedString alloc] initWithString:_defaultTitleLabel.text ? : @""
