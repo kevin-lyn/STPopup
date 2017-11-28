@@ -18,6 +18,9 @@
 - (instancetype)initWithTarget:(id)target action:(SEL)action
 {
     _customView = [[UIControl alloc] initWithFrame:CGRectMake(0, 0, 18, 44)];
+	
+	  _customView.accessibilityLabel = @"closeButton";
+	
     if (self = [super initWithCustomView:_customView]) {
         [_customView addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
         _bar1 = [UIView new];
