@@ -174,7 +174,7 @@ static NSMutableSet *_retainedPopupControllers;
 - (void)setHidesCloseButton:(BOOL)hidesCloseButton
 {
     _hidesCloseButton = hidesCloseButton;
-    [self updateNavigationBarAniamted:NO];
+    [self updateNavigationBarAnimated:NO];
 }
 
 #pragma mark - Observers
@@ -245,7 +245,7 @@ static NSMutableSet *_retainedPopupControllers;
     UIViewController *topViewController = self.topViewController;
     if (object == _navigationBar || object == topViewController.navigationItem) {
         if (topViewController.isViewLoaded && topViewController.view.superview) {
-            [self updateNavigationBarAniamted:NO];
+            [self updateNavigationBarAnimated:NO];
         }
     }
     else if (object == topViewController) {
@@ -393,13 +393,13 @@ static NSMutableSet *_retainedPopupControllers;
             [fromViewController endAppearanceTransition];
             [toViewController endAppearanceTransition];
         }];
-        [self updateNavigationBarAniamted:animated];
+        [self updateNavigationBarAnimated:animated];
     }
     else {
         [self layoutContainerView];
         [_contentView addSubview:toViewController.view];
         [_containerViewController setNeedsStatusBarAppearanceUpdate];
-        [self updateNavigationBarAniamted:animated];
+        [self updateNavigationBarAnimated:animated];
         
         [fromViewController.view removeFromSuperview];
         [fromViewController removeFromParentViewController];
@@ -411,7 +411,7 @@ static NSMutableSet *_retainedPopupControllers;
     }
 }
 
-- (void)updateNavigationBarAniamted:(BOOL)animated
+- (void)updateNavigationBarAnimated:(BOOL)animated
 {
     BOOL shouldAnimateDefaultLeftBarItem = animated && _navigationBar.topItem.leftBarButtonItem == _defaultLeftBarItem;
     
@@ -851,7 +851,7 @@ static NSMutableSet *_retainedPopupControllers;
         [self layoutContainerView];
         [_contentView addSubview:topViewController.view];
         [toViewController setNeedsStatusBarAppearanceUpdate];
-        [self updateNavigationBarAniamted:NO];
+        [self updateNavigationBarAnimated:NO];
         
         CGFloat lastBackgroundViewAlpha = _backgroundView.alpha;
         _backgroundView.alpha = 0;
