@@ -64,7 +64,9 @@
 - (void)st_presentViewController:(UIViewController *)viewControllerToPresent animated:(BOOL)flag completion:(void (^)(void))completion
 {
     if (!self.popupController) {
-        [self st_presentViewController:viewControllerToPresent animated:flag completion:completion];
+        if (viewControllerToPresent != nil) {
+            [self st_presentViewController:viewControllerToPresent animated:flag completion:completion];
+        }
         return;
     }
     
