@@ -28,6 +28,12 @@ typedef NS_ENUM(NSUInteger, STPopupControllerTransitioningAction) {
  */
 @property (nonatomic, strong, readonly) UIView *containerView;
 
+/**
+ Indicating the target/source View Controller.
+ */
+@property (nonatomic, strong) UIViewController *targetViewController;
+@property (nonatomic, strong) UIViewController *sourceViewController;
+
 @end
 
 @protocol STPopupControllerTransitioning <NSObject>
@@ -174,10 +180,8 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
  */
 - (void)popViewControllerAnimated:(BOOL)animated;
 
-
 /**
  Pops all view controllers from the stack until it reaches the root view controller
-
  @param animated YES if animated
  */
 - (void)popToRootViewControllerAnimated:(BOOL)animated;
