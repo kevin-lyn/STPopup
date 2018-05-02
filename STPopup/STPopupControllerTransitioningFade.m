@@ -15,7 +15,7 @@
     return context.action == STPopupControllerTransitioningActionPresent ? 0.25 : 0.2;
 }
 
-- (void)popupControllerAnimateTransition:(STPopupControllerTransitioningContext *)context completion:(void (^)())completion
+- (void)popupControllerAnimateTransition:(STPopupControllerTransitioningContext *)context completion:(void (^)(void))completion
 {
     UIView *containerView = context.containerView;
     if (context.action == STPopupControllerTransitioningActionPresent) {
