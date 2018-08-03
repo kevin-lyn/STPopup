@@ -106,6 +106,11 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 @property (nonatomic, assign) BOOL hidesCloseButton;
 
 /**
+ Enable or disable internal keyboard handling, default is YES.
+ */
+@property (nonatomic, assign) BOOL keyboardHandlingEnabled;
+
+/**
  Navigation bar of popup.
  @see STPopupNavigationBar
  */
