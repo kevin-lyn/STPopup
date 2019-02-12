@@ -512,6 +512,9 @@ static NSMutableSet *_retainedPopupControllers;
 
 - (void)layoutContainerView
 {
+    CGAffineTransform lastTransform = _containerView.transform;
+    _containerView.transform = CGAffineTransformIdentity;
+    
     _backgroundView.frame = _containerViewController.view.bounds;
  
     CGFloat preferredNavigationBarHeight = [self preferredNavigationBarHeight];
@@ -533,6 +536,8 @@ static NSMutableSet *_retainedPopupControllers;
     
     UIViewController *topViewController = self.topViewController;
     topViewController.view.frame = _contentView.bounds;
+    _containerView.transform = lastTransform;
+    [self adjustContainerViewOrigin];
 }
 
 - (CGSize)contentSizeOfTopView
