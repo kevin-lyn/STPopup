@@ -252,7 +252,9 @@ static NSMutableSet *_retainedPopupControllers;
         if (topViewController.isViewLoaded && topViewController.view.superview) {
             [UIView animateWithDuration:0.3 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                 [self layoutContainerView];
-            } completion:nil];
+            } completion:^(BOOL finished) {
+                [self adjustContainerViewOrigin];
+            }];
         }
     }
 }
