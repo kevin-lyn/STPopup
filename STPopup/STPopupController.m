@@ -458,6 +458,7 @@ static NSMutableSet *_retainedPopupControllers;
             toTitleView = _defaultTitleLabel;
         }
         
+        fromTitleView.center = _navigationBar.center;
         [_navigationBar addSubview:fromTitleView];
         _navigationBar.topItem.titleView = toTitleView;
         toTitleView.alpha = 0;
