@@ -112,6 +112,7 @@ static NSMutableSet *_retainedPopupControllers;
     UILabel *_defaultTitleLabel;
     STPopupLeftBarItem *_defaultLeftBarItem;
     NSDictionary *_keyboardInfo;
+    UIEdgeInsets _safeAreaInsets;
     BOOL _observing;
     
     // Built-in transitioning
@@ -277,6 +278,9 @@ static NSMutableSet *_retainedPopupControllers;
     [_retainedPopupControllers addObject:self];
     
     viewController = viewController.tabBarController ? : viewController;
+    if (@available(iOS 11.0, *)) {
+        _safeAreaInsets = viewController.view.safeAreaInsets;
+    }
     [viewController presentViewController:_containerViewController animated:YES completion:completion];
 }
 
@@ -524,6 +528,7 @@ static NSMutableSet *_retainedPopupControllers;
     CGFloat containerViewY = (_containerViewController.view.bounds.size.height - containerViewHeight) / 2;
     
     if (self.style == STPopupStyleBottomSheet) {
+        containerViewHeight += _safeAreaInsets.bottom;
         containerViewY = _containerViewController.view.bounds.size.height - containerViewHeight;
         containerViewHeight += STPopupBottomSheetExtraHeight;
     }
@@ -715,7 +720,7 @@ static NSMutableSet *_retainedPopupControllers;
     
     CGFloat offsetY = 0;
     if (self.style == STPopupStyleBottomSheet) {
-        offsetY = keyboardHeight;
+        offsetY = keyboardHeight - _safeAreaInsets.bottom;
     }
     else {
         CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
