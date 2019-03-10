@@ -659,6 +659,7 @@ static NSMutableSet *_retainedPopupControllers;
         self->_containerView.alpha = 0;
     } completion:^(BOOL finished) {
         [self layoutContainerView];
+        [self updateNavigationBarAnimated:NO];
         [UIView animateWithDuration:0.2 delay:0 usingSpringWithDamping:1 initialSpringVelocity:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             self->_containerView.alpha = 1;
         } completion:nil];
