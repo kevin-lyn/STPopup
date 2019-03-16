@@ -106,6 +106,11 @@ typedef NS_ENUM(NSUInteger, STPopupTransitionStyle) {
 @property (nonatomic, assign) BOOL hidesCloseButton;
 
 /**
+ The insets that you use to determine the safe area for the popup.
+ */
+@property (nonatomic, assign) UIEdgeInsets safeAreaInsets;
+
+/**
  Navigation bar of popup.
  @see STPopupNavigationBar
  */

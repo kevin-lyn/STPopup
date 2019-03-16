@@ -112,7 +112,7 @@ static NSMutableSet *_retainedPopupControllers;
     UILabel *_defaultTitleLabel;
     STPopupLeftBarItem *_defaultLeftBarItem;
     NSDictionary *_keyboardInfo;
-    UIEdgeInsets _safeAreaInsets;
+    BOOL _didOverrideSafeAreaInsets;
     BOOL _observing;
     
     // Built-in transitioning
@@ -176,6 +176,12 @@ static NSMutableSet *_retainedPopupControllers;
 {
     _hidesCloseButton = hidesCloseButton;
     [self updateNavigationBarAnimated:NO];
+}
+
+- (void)setSafeAreaInsets:(UIEdgeInsets)safeAreaInsets
+{
+    _safeAreaInsets = safeAreaInsets;
+    _didOverrideSafeAreaInsets = YES;
 }
 
 #pragma mark - Observers
@@ -279,7 +285,9 @@ static NSMutableSet *_retainedPopupControllers;
     
     viewController = viewController.tabBarController ? : viewController;
     if (@available(iOS 11.0, *)) {
-        _safeAreaInsets = viewController.view.safeAreaInsets;
+        if (!_didOverrideSafeAreaInsets) {
+            _safeAreaInsets = viewController.view.safeAreaInsets;
+        }
     }
     [viewController presentViewController:_containerViewController animated:YES completion:completion];
 }
