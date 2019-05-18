@@ -12,6 +12,7 @@
 		763128D21BCA9EE8009C5D7E /* BottomSheetDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 763128D11BCA9EE8009C5D7E /* BottomSheetDemoViewController.m */; };
 		763128D51BCAA3C5009C5D7E /* MultiSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 763128D41BCAA3C5009C5D7E /* MultiSelectionViewController.m */; };
 		766A9BA21BA55F350062C75B /* PopupViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 766A9BA11BA55F350062C75B /* PopupViewController3.m */; };
+		7672E4B222908BB90075F798 /* BulletinBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7672E4B122908BB90075F798 /* BulletinBoardViewController.m */; };
 		76ACB5541BA2934D00A09710 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5531BA2934D00A09710 /* main.m */; };
 		76ACB5571BA2934D00A09710 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5561BA2934D00A09710 /* AppDelegate.m */; };
 		76ACB55A1BA2934D00A09710 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 76ACB5591BA2934D00A09710 /* ViewController.m */; };
@@ -67,6 +68,8 @@
 		763128D41BCAA3C5009C5D7E /* MultiSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MultiSelectionViewController.m; sourceTree = "<group>"; };
 		766A9BA01BA55F350062C75B /* PopupViewController3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupViewController3.h; sourceTree = "<group>"; };
 		766A9BA11BA55F350062C75B /* PopupViewController3.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupViewController3.m; sourceTree = "<group>"; };
+		7672E4B022908BB90075F798 /* BulletinBoardViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BulletinBoardViewController.h; sourceTree = "<group>"; };
+		7672E4B122908BB90075F798 /* BulletinBoardViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BulletinBoardViewController.m; sourceTree = "<group>"; };
 		76ACB54E1BA2934D00A09710 /* STPopupExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = STPopupExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76ACB5521BA2934D00A09710 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76ACB5531BA2934D00A09710 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -130,6 +133,8 @@
 				763128D11BCA9EE8009C5D7E /* BottomSheetDemoViewController.m */,
 				763128D31BCAA3C5009C5D7E /* MultiSelectionViewController.h */,
 				763128D41BCAA3C5009C5D7E /* MultiSelectionViewController.m */,
+				7672E4B022908BB90075F798 /* BulletinBoardViewController.h */,
+				7672E4B122908BB90075F798 /* BulletinBoardViewController.m */,
 				76ACB55B1BA2934D00A09710 /* Main.storyboard */,
 				76ACB55E1BA2934D00A09710 /* Images.xcassets */,
 				76ACB5601BA2934D00A09710 /* LaunchScreen.xib */,
@@ -245,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				76ACB5861BA2BE8100A09710 /* PopupViewController2.m in Sources */,
+				7672E4B222908BB90075F798 /* BulletinBoardViewController.m in Sources */,
 				763128D21BCA9EE8009C5D7E /* BottomSheetDemoViewController.m in Sources */,
 				76ACB5831BA2BE7500A09710 /* PopupViewController1.m in Sources */,
 				763128D51BCAA3C5009C5D7E /* MultiSelectionViewController.m in Sources */,

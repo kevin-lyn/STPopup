@@ -78,6 +78,13 @@
             [popupController presentInViewController:self];
         }
             break;
+        case 7: {
+            STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"BulletinBoardViewController"]];
+            popupController.style = STPopupStyleBottomSheet;
+            popupController.containerView.backgroundColor = [UIColor clearColor];
+            [popupController presentInViewController:self];
+        }
+            break;
         default:
             break;
     }
