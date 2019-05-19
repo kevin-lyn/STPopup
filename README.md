@@ -14,7 +14,7 @@
 - iOS 7+.
 - Compatible with Swift.
 
-## Use cases
+## Use Cases
 ![Use Cases](https://user-images.githubusercontent.com/1491282/57985696-b6e01300-7a63-11e9-91a9-b5aa55262967.jpg)
 
 ## Get Started
