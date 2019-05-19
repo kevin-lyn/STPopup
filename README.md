@@ -26,31 +26,30 @@ pod 'STPopup'
 ```ruby
 github "kevin0571/STPopup"
 ```
-**Import header file**
+  
+**Import header file**  
 Objective-C
 ```objc
 #import <STPopup/STPopup.h>
 ```
-
 Swift
 ```swift
 import STPopup
 ```
 
-**Initialize and present STPopupController**
+**Initialize and present STPopupController**  
 Objective-C
 ```objc
 STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:viewController];
 [popupController presentInViewController:self];
 ```
-
 Swift
 ```swift
 let popupController = let popupController = STPopupController(rootViewController: viewController)
 popupController.present(in: self)
 ```
 
-**Set content size in view controller**
+**Set content size in view controller**  
 Objective-C
 ```objc
 @implementation ViewController
@@ -82,8 +81,8 @@ class ViewController: UIViewController {
     }
 }
 ```
-**Set content size of view controller which is loaded from Storyboard**
-Set content size in storyboard or in `awakeFromNib`.
+**Set content size of view controller which is loaded from Storyboard**  
+Set content size in storyboard or in `awakeFromNib`.  
 ![Storyboard](https://user-images.githubusercontent.com/1491282/57982394-dca5f180-7a3c-11e9-8d63-3ca6c3837860.png)
 
 **Push, pop and dismiss view controllers**  
@@ -102,7 +101,7 @@ popupController?.dismiss()
 
 ![Push & Pop](https://cloud.githubusercontent.com/assets/1491282/9857915/0d4ab3ee-5b50-11e5-81bc-8fbae3ad8c06.gif)
 
-**Bottom sheet style**
+**Bottom sheet style**  
 Objective-C
 ```objc
 STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[ViewController new]];
@@ -117,7 +116,7 @@ popupController.present(in: self)
 ```
 ![Bottom Sheet](https://cloud.githubusercontent.com/assets/1491282/10417963/7649f356-7080-11e5-8f3c-0cb817b8353e.gif)
 
-**Customize popup transition style**
+**Customize popup transition style**  
 Objective-C
 ```objc
 #pragma mark - STPopupControllerTransitioning
@@ -191,7 +190,7 @@ popupController.transitioning = self
 popupController.present(in: self)
 ```
 
-**Blur background**
+**Blur background**  
 Objective-C
 ```objc
 STPopupController *popupController = [[STPopupController alloc] initWithRootViewController:[PopupViewController1 new]];
@@ -209,7 +208,7 @@ if NSClassFromString("UIBlurEffect") != nil {
 }
 ```
 
-**Action of tapping on area outside of popup**
+**Action of tapping on area outside of popup**  
 Objective-C
 ```objc
 [popupController.backgroundView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundViewDidTap)]];
@@ -219,7 +218,7 @@ Swift
 popupController.backgroundView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(backgroundViewDidTap)))
 ```
 
-**Customize UI**
+**Customize UI**  
 Objective-C
 ```objc
 [STPopupNavigationBar appearance].barTintColor = [UIColor colorWithRed:0.20 green:0.60 blue:0.86 alpha:1.0];
@@ -247,15 +246,15 @@ UIBarButtonItem
 ![Customize UI](https://cloud.githubusercontent.com/assets/1491282/9911306/0f6db056-5cd4-11e5-9329-33b0cf02e1b0.png)
 
 **Auto-reposition when keyboard is showing up**  
-This is default behavior.
+This is default behavior.  
 ![Auto-reposition](https://cloud.githubusercontent.com/assets/1491282/9858277/5b29b130-5b52-11e5-9569-7560a0853493.gif)
 
 **Drag to dismiss**  
-This is default behavior.
+This is default behavior.  
 ![Drag to dismiss](https://cloud.githubusercontent.com/assets/1491282/9858334/b103fc96-5b52-11e5-9c3f-517367ed9386.gif)
 
 **Handle orientation change**  
-This is default behavior.
+This is default behavior.  
 ![Orientation change](https://cloud.githubusercontent.com/assets/1491282/9858372/e6538880-5b52-11e5-8882-8705588606ba.gif)
 
 Please checkout the example project for more details.
