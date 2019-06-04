@@ -286,7 +286,7 @@ static NSMutableSet *_retainedPopupControllers;
     viewController = viewController.tabBarController ? : viewController;
     if (@available(iOS 11.0, *)) {
         if (!_didOverrideSafeAreaInsets) {
-            _safeAreaInsets = viewController.view.safeAreaInsets;
+            _safeAreaInsets = viewController.view.window.safeAreaInsets;
         }
     }
     [viewController presentViewController:_containerViewController animated:YES completion:completion];
