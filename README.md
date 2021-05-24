@@ -45,7 +45,7 @@ STPopupController *popupController = [[STPopupController alloc] initWithRootView
 ```
 Swift
 ```swift
-let popupController = let popupController = STPopupController(rootViewController: viewController)
+let popupController = STPopupController(rootViewController: viewController)
 popupController.present(in: self)
 ```
 
