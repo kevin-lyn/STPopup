@@ -88,10 +88,12 @@ fileprivate struct PopupViewControllerRepresentable<ContentView>: UIViewControll
 
         let hostingController = UIHostingController(rootView: contentView!)
         hostingController.contentSizeInPopup = hostingController.sizeThatFits(in: view.bounds.size)
+        hostingController.view.backgroundColor = .clear
         self.hostingController = hostingController
 
         let popupController = STPopupController(rootViewController: hostingController)
         popupController.navigationBarHidden = true
+        popupController.containerView.backgroundColor = .clear
         popupController.present(in: self)
       } else {
         if isPresented.wrappedValue {
