@@ -91,6 +91,7 @@ fileprivate struct PopupViewControllerRepresentable<ContentView>: UIViewControll
         self.hostingController = hostingController
 
         let popupController = STPopupController(rootViewController: hostingController)
+        popupController.navigationBarHidden = true
         popupController.present(in: self)
       } else {
         if isPresented.wrappedValue {
