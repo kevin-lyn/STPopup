@@ -10,17 +10,20 @@
 
 import SwiftUI
 
+public typealias PopupStyle = STPopupStyle
+
 @available (iOS 13.0, *)
 public extension View {
-  @ViewBuilder func popup<ContentView>(
+  func popup<ContentView>(
     isPresented: Binding<Bool>,
+    style: PopupStyle = .formSheet,
     onDismiss: (() -> Void)? = nil,
     @ViewBuilder contentView: @escaping () -> ContentView
   ) -> some View where ContentView: View {
     overlay(
       // We don't need a binding for now. It's exposed as `Binding` so that we can change internal implementation
       // without affecting public API.
-      PopupView(isPresented: isPresented.wrappedValue, onDismiss: onDismiss, contentView: contentView())
+      PopupView(isPresented: isPresented.wrappedValue, style: style, onDismiss: onDismiss, contentView: contentView())
         .frame(
           width: isPresented.wrappedValue ? Self.windowSize.width : 0,
           height: isPresented.wrappedValue ? Self.windowSize.height : 0
@@ -42,6 +45,7 @@ public extension View {
 @available (iOS 13.0, *)
 fileprivate struct PopupView<ContentView>: UIViewControllerRepresentable where ContentView: View {
   let isPresented: Bool
+  let style: PopupStyle
   let onDismiss: (() -> Void)?
   let contentView: ContentView
   
@@ -52,6 +56,7 @@ fileprivate struct PopupView<ContentView>: UIViewControllerRepresentable where C
   func updateUIViewController(_ popupViewController: PopupViewController, context: Context) {
     popupViewController.contentView = contentView
     popupViewController.isPresented = isPresented
+    popupViewController.style = style
     popupViewController.onDismiss = onDismiss
     popupViewController.didUpdate()
   }
@@ -59,6 +64,7 @@ fileprivate struct PopupView<ContentView>: UIViewControllerRepresentable where C
   class PopupViewController: UIViewController {
     var contentView: ContentView?
     var isPresented: Bool = false
+    var style: PopupStyle = .formSheet
     var onDismiss: (() -> Void)?
     
     private var hostingController: UIHostingController<ContentView>?
@@ -95,6 +101,7 @@ fileprivate struct PopupView<ContentView>: UIViewControllerRepresentable where C
         return
       }
       if let hostingController = hostingController {
+        hostingController.popupController?.style = style
         hostingController.rootView = contentView
         hostingController.contentSizeInPopup = hostingController.sizeThatFits(in: view.bounds.size)
       } else {
@@ -104,6 +111,7 @@ fileprivate struct PopupView<ContentView>: UIViewControllerRepresentable where C
         self.hostingController = hostingController
         
         let popupController = STPopupController(rootViewController: hostingController)
+        popupController.style = style
         popupController.navigationBarHidden = true
         popupController.containerView.backgroundColor = .clear
         popupController.present(in: self)
