@@ -10,6 +10,7 @@ import STPopup
 
 struct ContentView: View {
   @State private var isPresentingPopup = false
+  @State private var showsAdditionalMessage = false
   
   var body: some View {
     Button("Show Popup") {
@@ -21,6 +22,9 @@ struct ContentView: View {
         Image(systemName: "location")
           .font(.system(.largeTitle))
         Text("Location Service")
+        if showsAdditionalMessage {
+          Text("Tap to dismiss")
+        }
         Button("Enable") {
           isPresentingPopup = false
         }
@@ -30,6 +34,11 @@ struct ContentView: View {
       .padding(.trailing)
       .background(Color(.white))
       .cornerRadius(10)
+    }
+    .onAppear {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+        showsAdditionalMessage = true
+      }
     }
   }
 }
